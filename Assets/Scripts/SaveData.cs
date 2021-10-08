@@ -43,9 +43,6 @@ public class SaveData
             bloodUI_splatters[i] = (splatter.pos.x, splatter.pos.y, splatter.index);
             i ++;
         }
-
-        // enemies = EnemySpawning.enemies;
-        // enemy_spawnTimer = EnemySpawning.instance.timer;
     }
 
     public void Load()
@@ -66,12 +63,6 @@ public class SaveData
         {
             PlayerBloodUI.AddSplatter(new Vector2(splatter.x, splatter.y), splatter.index, false);
         }
-
-        // foreach(var enemy in enemies)
-        // {
-        //     EnemySpawning.instance.Spawn(new Vector3(enemy.pos[0], enemy.pos[1], enemy.pos[2]), enemy.index);
-        // }
-        // EnemySpawning.instance.timer = enemy_spawnTimer;
     }
 
     public static string DIRECTORY_PATH
