@@ -1,31 +1,42 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class MenuHandler : MonoBehaviour
 {
-    // hierarchy
-    // wow such empty
-
     static MenuHandler instance;
     private static int currentMenu;
+    private static Stack<int> prevMenu;
+    public static bool anyMenu;
 
     public void Init()
     {
         instance = this;
 
+        prevMenu = new Stack<int>();
+
         for(int i=0; i<instance.transform.childCount; i++)
         {
             instance.transform.GetChild(i).gameObject.SetActive(false);
         }
-        Close(true);
+        Close();
+        anyMenu = false;
     }
 
-    public static void Close(bool all)
+    public static void Close()
     {
         instance.transform.GetChild(currentMenu).gameObject.SetActive(false);
-        if(all)
+    }
+
+    public static void Back()
+    {
+        Close();
+        anyMenu = false;
+        if(prevMenu.Count != 0)
         {
-            // PlayerInput.instance.enabled = true;
+            currentMenu = prevMenu.Pop();
+            instance.transform.GetChild(currentMenu).gameObject.SetActive(true);
+            anyMenu = true;
         }
     }
 
@@ -37,9 +48,14 @@ public class MenuHandler : MonoBehaviour
         }
         set
         {
-            Close(false);
+            if(anyMenu)
+            {
+                prevMenu.Push(currentMenu);
+                Close();
+            }
             currentMenu = value;
             instance.transform.GetChild(currentMenu).gameObject.SetActive(true);
+            anyMenu = true;
         }
     }
 }

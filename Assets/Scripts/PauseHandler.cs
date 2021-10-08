@@ -53,6 +53,7 @@ public class PauseHandler : MonoBehaviour
 
     public static void Pause()
     {
+        Blur();
         ShowCursor();
 
         paused = true;
@@ -65,6 +66,7 @@ public class PauseHandler : MonoBehaviour
 
     public static void UnPause()
     {
+        UnBlur();
         HideCursor();
 
         UnfreezePhysics();

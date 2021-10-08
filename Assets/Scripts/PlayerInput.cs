@@ -116,9 +116,8 @@ public class PlayerInput : MonoBehaviour
 
         if(Input.GetKeyDown(KeyCode.Escape))
         {
-            PauseHandler.ShowCursor();
+            PauseHandler.Pause();
             MenuHandler.CurrentMenu = 0;
-            enabled = false;
             return;
         }
 
