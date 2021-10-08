@@ -6,6 +6,11 @@ public class PlayerMovement : MonoBehaviour
 
     // hierarchy
     public Transform t_camera;
+    public float walkAccel;
+    public float walkMaxSpeed;
+    public float friction;
+    public float groundNormal;
+    public float jumpForce;
 
     // components
     public static Rigidbody m_rigidbody;
@@ -36,33 +41,37 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        grounded = normal.y > PlayerStats.GROUND_NORMAL;
+        grounded = normal.y > groundNormal;
     }
 
     void FixedUpdate()
     {
         if(grounded)
         {
-            // accellerate
-            m_rigidbody.AddRelativeForce(PlayerInput.input_move.x*PlayerStats.WALK_ACCEL, 0, PlayerInput.input_move.z*PlayerStats.WALK_ACCEL);
+            // accelerate
+            m_rigidbody.AddRelativeForce(PlayerInput.input_move.x*walkAccel, 0, PlayerInput.input_move.z*walkAccel);
+            
+            m_rigidbody.AddForce(0, PlayerInput.input_move.y*jumpForce, 0);
 
             // get vel
             Vector3 vel = m_rigidbody.velocity;
+            vel.y = 0; // dont care about y for speed cap & friction
             
             // speed cap
-            if(vel.magnitude > PlayerStats.MAX_WALK_SPEED)
+            if(vel.magnitude > walkMaxSpeed)
             {
                 vel.Normalize();
-                vel *= PlayerStats.MAX_WALK_SPEED;
+                vel *= walkMaxSpeed;
             }
 
             // friction
             if(PlayerInput.input_move.x == 0 && PlayerInput.input_move.z == 0)
             {
-                vel *= PlayerStats.FRICTION;
+                vel *= friction;
             }
 
             // set vel
+            vel.y = m_rigidbody.velocity.y; // dont affect y for speed cap & friction
             m_rigidbody.velocity = vel;
         }
     }

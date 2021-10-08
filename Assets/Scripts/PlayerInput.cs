@@ -128,6 +128,8 @@ public class PlayerInput : MonoBehaviour
             if(GetKey("walk_left"))     input_move.x --;
             if(GetKey("walk_right"))    input_move.x ++;
             input_move.Normalize();
+
+            if(GetKey("jump")) input_move.y ++;
         }
 
         // mouse look
