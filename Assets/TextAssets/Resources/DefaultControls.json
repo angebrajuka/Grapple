@@ -1,0 +1,8 @@
+{
+    "keybinds": [
+        {"name": "walk_front",      "key": 119 },
+        {"name": "walk_back",       "key": 115 },
+        {"name": "walk_left",       "key": 97  },
+        {"name": "walk_right",      "key": 100 }
+    ]
+}
