@@ -30,6 +30,8 @@ public class Init : MonoBehaviour
             SaveData.TryLoad();
         }
 
+        PauseHandler.UnPause();
+
         Destroy(gameObject);
     }
 }
