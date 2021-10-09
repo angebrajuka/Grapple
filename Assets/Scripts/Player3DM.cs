@@ -1,11 +1,13 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Player3DM : MonoBehaviour
 {
     // hierarchy
     public Transform startL, startR;
-    
-    SpringJoint jointL, jointR;
+    public GameObject hook;
+
+    public Stack<GameObject> joints;
 
     public void Init()
     {
