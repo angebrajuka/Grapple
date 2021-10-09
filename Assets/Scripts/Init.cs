@@ -16,10 +16,9 @@ public class Init : MonoBehaviour
         musicController.Init();
         player.GetComponent<PauseHandler>().Init();
 
-        // player.GetComponent<DynamicLoading>().Init();
         player.GetComponent<PlayerInput>().Init();
         player.GetComponent<PlayerMovement>().Init();
-        // player.GetComponent<EnemySpawning>().Init();
+        player.GetComponent<Player3DM>().Init();
 
         canvas.GetComponent<PlayerBloodUI>().Init();
 
