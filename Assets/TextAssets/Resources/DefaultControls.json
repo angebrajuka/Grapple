@@ -4,6 +4,8 @@
         {"name": "walk_back",       "key": 115  },
         {"name": "walk_left",       "key": 97   },
         {"name": "walk_right",      "key": 100  },
-        {"name": "jump",            "key": 32   }
+        {"name": "jump",            "key": 32   },
+        {"name": "grapple_shootL",  "key": 325  },
+        {"name": "grapple_shootR",  "key": 324  }
     ]
 }

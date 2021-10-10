@@ -30,9 +30,13 @@ public class PlayerInput : MonoBehaviour
 
     public static PlayerInput instance;
 
+    // hierarchy
+    public Single3DM left3DM, right3DM;
+
     // settings
     public static Dictionary<string, KeyCode> keybinds;
     public static Vector2 speed_look;
+    public static float speed_scroll;
 
     // input
     public static Vector3 input_move;
@@ -75,6 +79,12 @@ public class PlayerInput : MonoBehaviour
         if(PlayerPrefs.HasKey("speed_look_x"))
         {
             speed_look.Set(PlayerPrefs.GetFloat("speed_look_x"), PlayerPrefs.GetFloat("speed_look_y"));
+        }
+
+        speed_scroll = 1;
+        if(PlayerPrefs.HasKey("speed_scroll"))
+        {
+            speed_scroll = PlayerPrefs.GetFloat("speed_scroll");
         }
     }
 
@@ -137,5 +147,18 @@ public class PlayerInput : MonoBehaviour
             input_look.x = Input.GetAxis("Mouse X") * speed_look.x;
             input_look.y = Input.GetAxis("Mouse Y") * speed_look.y;
         }
+
+        if(GetKeyDown("grapple_shootL"))
+        {
+            left3DM.ShootHook();
+        }
+        if(GetKeyDown("grapple_shootR"))
+        {
+            right3DM.ShootHook();
+        }
+
+        var scroll = Input.GetAxis("Mouse ScrollWheel")*speed_scroll;
+        left3DM.AdjustDistance(scroll);
+        right3DM.AdjustDistance(scroll);
     }
 }
