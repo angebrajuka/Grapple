@@ -9,4 +9,9 @@ public class Player3DM : MonoBehaviour
     public float shootSpeed;
     public float maxRetractSpeed;
     public float autoRetractSpeed;
+
+    public void Init()
+    {
+        
+    }
 }
