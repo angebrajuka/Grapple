@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 2184542157532956533}
   - component: {fileID: 993006495539575100}
   - component: {fileID: -243470386967477212}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: P_GrappleLineSegment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -171,7 +171,7 @@ GameObject:
   - component: {fileID: 6102813851392625541}
   - component: {fileID: 3592007905954418773}
   - component: {fileID: 1747814423603363867}
-  m_Layer: 7
+  m_Layer: 8
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
