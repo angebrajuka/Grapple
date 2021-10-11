@@ -1,15 +1,27 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class Single3DM : MonoBehaviour
+public class ThreeDM : MonoBehaviour
 {
     // hierarchy
-    public Player3DM p3dm;
+    public GameObject prefab_hook;
+    public GameObject prefab_cableSegment;
+    public ConfigurableJoint joint;
+    public float shootSpeed;
+    public float maxAdjustSpeed;
+    public float autoRetractSpeed;
 
     GrappleHook hook;
     Stack<GameObject> cableSegments = new Stack<GameObject>();
     bool autoRetracting;
     float targetLength=0, length=0;
+
+    public void SetJointMotion(ConfigurableJointMotion motionType)
+    {
+        joint.xMotion = motionType;
+        joint.yMotion = motionType;
+        joint.zMotion = motionType;
+    }
 
     public void DestroyHook()
     {
@@ -25,15 +37,19 @@ public class Single3DM : MonoBehaviour
     {
         if(hook == null)
         {
-            var obj = Instantiate(p3dm.prefab_hook, transform.position, transform.rotation, null);
+            var obj = Instantiate(prefab_hook, transform.position, PlayerMovement.instance.t_camera.rotation, null);
             hook = obj.GetComponent<GrappleHook>();
+            hook.threeDM = this;
             var rb = obj.GetComponent<Rigidbody>();
-            rb.AddRelativeForce(Vector3.forward*p3dm.shootSpeed);
+            rb.AddRelativeForce(Vector3.forward*shootSpeed);
+            autoRetracting = false;
+            targetLength = 0;
         }
         else
         {
             hook.enabled = false;
             autoRetracting = true;
+            hook.GetComponent<Rigidbody>().isKinematic = false;
         }
     }
 
@@ -46,12 +62,10 @@ public class Single3DM : MonoBehaviour
         {
             length += 1;
             var oldLast = cableSegments.Count == 0 ? hook.gameObject : cableSegments.Peek();
-            var newLast = Instantiate(p3dm.prefab_cableSegment, transform.position, transform.rotation, null);
-            var oldJoint = oldLast.GetComponent<ConfigurableJoint>();
-            oldJoint.connectedBody = newLast.GetComponent<Rigidbody>();
+            var newLast = Instantiate(prefab_cableSegment, transform.position, PlayerMovement.instance.t_camera.rotation, null);
             cableSegments.Push(newLast);
             var newJoint = newLast.GetComponent<ConfigurableJoint>();
-            newJoint.connectedBody = PlayerMovement.m_rigidbody;
+            newJoint.connectedBody = oldLast.GetComponent<Rigidbody>();
         }
         while(targetLength - length < 1)
         {
@@ -72,6 +86,8 @@ public class Single3DM : MonoBehaviour
             {
             }
         }
+        if(cableSegments.Count > 0)
+            joint.connectedBody = cableSegments.Peek().GetComponent<Rigidbody>();
     }
 
     public void Update()
@@ -82,7 +98,7 @@ public class Single3DM : MonoBehaviour
         }
         if(autoRetracting)
         {
-            AdjustDistance(p3dm.autoRetractSpeed*Time.deltaTime);
+            AdjustDistance(-autoRetractSpeed*Time.deltaTime);
         }
     }
 }

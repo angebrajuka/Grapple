@@ -31,7 +31,7 @@ public class PlayerInput : MonoBehaviour
     public static PlayerInput instance;
 
     // hierarchy
-    public Single3DM left3DM, right3DM;
+    public ThreeDM threeDM;
 
     // settings
     public static Dictionary<string, KeyCode> keybinds;
@@ -148,17 +148,11 @@ public class PlayerInput : MonoBehaviour
             input_look.y = Input.GetAxis("Mouse Y") * speed_look.y;
         }
 
-        if(GetKeyDown("grapple_shootL"))
+        if(GetKeyDown("grapple_shoot"))
         {
-            left3DM.ShootHook();
-        }
-        if(GetKeyDown("grapple_shootR"))
-        {
-            right3DM.ShootHook();
+            threeDM.ShootHook();
         }
 
-        var scroll = Input.GetAxis("Mouse ScrollWheel")*speed_scroll;
-        left3DM.AdjustDistance(scroll);
-        right3DM.AdjustDistance(scroll);
+        threeDM.AdjustDistance(Mathf.Min(threeDM.maxAdjustSpeed, Input.GetAxis("Mouse ScrollWheel")*speed_scroll));
     }
 }
