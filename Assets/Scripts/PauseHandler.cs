@@ -90,6 +90,13 @@ public class PauseHandler : MonoBehaviour
 
     void Update()
     {
+        if(Input.GetKeyDown(KeyCode.Escape) && !paused)
+        {
+            Pause();
+            MenuHandler.CurrentMenu = 0;
+            return;
+        }
+
         dofComponent.focalLength.value = Mathf.Lerp(dofComponent.focalLength.value, focalLengthVal, Time.unscaledDeltaTime*4);
     }
 }

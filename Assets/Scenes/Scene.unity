@@ -347,7 +347,7 @@ MonoBehaviour:
   prefab_hook: {fileID: 5952125858084161475, guid: fa20ec6f79036a841af65901696560a9, type: 3}
   shootSpeed: 200
   maxAdjustSpeed: 1
-  autoRetractSpringForce: 10
+  autoRetractSpringForce: 20
   autoRetractSpringDamper: 5
 --- !u!1 &409810998
 GameObject:
@@ -1733,9 +1733,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   t_camera: {fileID: 1687258585}
-  walkAccel: 100
+  walkAccel: 150
   walkMaxSpeed: 12
-  friction: 0.8
+  friction: 0.85
   groundNormal: 0.8
   jumpForce: 200
 --- !u!114 &1887390186

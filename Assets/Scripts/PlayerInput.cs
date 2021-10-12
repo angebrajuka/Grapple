@@ -38,20 +38,13 @@ public class PlayerInput : MonoBehaviour
     public static Vector2 speed_look;
     public static float speed_scroll;
 
-    // input
-    public static Vector3 input_move;
-    public static Vector2 input_look;
-
     public void Init()
     {
         instance = this;
 
         keybinds = new Dictionary<string, KeyCode>();
 
-        input_move = new Vector3(0, 0);
-        input_look = new Vector2(0, 0);
         speed_look = new Vector2(0, 0);
-
         LoadSettings();
     }
 
@@ -117,42 +110,5 @@ public class PlayerInput : MonoBehaviour
     public static bool GetKeyDown(string key)
     {
         return Input.GetKeyDown(keybinds[key]);
-    }
-
-    void Update()
-    {
-        input_move.Set(0, 0, 0);
-        input_look.Set(0, 0);
-
-        if(Input.GetKeyDown(KeyCode.Escape))
-        {
-            PauseHandler.Pause();
-            MenuHandler.CurrentMenu = 0;
-            return;
-        }
-
-        // movement
-        {
-            if(GetKey("walk_front"))    input_move.z ++;
-            if(GetKey("walk_back"))     input_move.z --;
-            if(GetKey("walk_left"))     input_move.x --;
-            if(GetKey("walk_right"))    input_move.x ++;
-            input_move.Normalize();
-
-            if(GetKey("jump")) input_move.y ++;
-        }
-
-        // mouse look
-        {
-            input_look.x = Input.GetAxis("Mouse X") * speed_look.x;
-            input_look.y = Input.GetAxis("Mouse Y") * speed_look.y;
-        }
-
-        if(GetKeyDown("grapple_shoot"))
-        {
-            threeDM.ShootHook();
-        }
-
-        threeDM.AdjustDistance(Mathf.Min(threeDM.maxAdjustSpeed, Input.GetAxis("Mouse ScrollWheel")*speed_scroll));
     }
 }

@@ -10,7 +10,7 @@ public class GrappleHook : MonoBehaviour
     public FixedJoint fixedJoint;
     public ThreeDM threeDM;
 
-    public void SetJointMotion(bool active)
+    void SetJointMotion(bool active)
     {
         ConfigurableJointMotion motionType = active ? ConfigurableJointMotion.Limited : ConfigurableJointMotion.Free;
         configJoint.xMotion = motionType;
@@ -27,8 +27,6 @@ public class GrappleHook : MonoBehaviour
 
     public void Retract()
     {
-        if(fixedJoint != null && fixedJoint.connectedBody == null) Destroy(fixedJoint);
-
         SetJointMotion(false);
 
         springJoint.spring = threeDM.autoRetractSpringForce;
@@ -42,6 +40,7 @@ public class GrappleHook : MonoBehaviour
         if(!enabled) return;
 
         LockMotion(other.rigidbody);
+        configJoint.SetDistance();
 
         enabled = false;
     }
