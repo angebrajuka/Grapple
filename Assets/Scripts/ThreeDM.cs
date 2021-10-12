@@ -8,6 +8,7 @@ public class ThreeDM : MonoBehaviour
     public float shootSpeed;
     public float maxAdjustSpeed;
     public float autoRetractSpringForce;
+    public float autoRetractSpringDamper;
 
     GrappleHook hook;
     float targetLength=0, length=0;

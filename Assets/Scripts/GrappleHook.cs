@@ -32,6 +32,7 @@ public class GrappleHook : MonoBehaviour
         SetJointMotion(false);
 
         springJoint.spring = threeDM.autoRetractSpringForce;
+        springJoint.damper = threeDM.autoRetractSpringDamper;
 
         enabled = false;
     }
