@@ -10,6 +10,7 @@ public class ThreeDM : MonoBehaviour
     public float maxAdjustSpeed;
     public float autoRetractSpringForce;
     public float autoRetractSpringDamper;
+    public float recoilForce;
 
     GrappleHook hook;
 
@@ -22,6 +23,8 @@ public class ThreeDM : MonoBehaviour
         hook.springJoint.connectedBody = PlayerMovement.m_rigidbody;
         var rb = obj.GetComponent<Rigidbody>();
         rb.AddRelativeForce(Vector3.forward*shootSpeed);
+
+        PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);
     }
 
     public void DestroyHook()

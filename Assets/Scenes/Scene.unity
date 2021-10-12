@@ -347,8 +347,9 @@ MonoBehaviour:
   prefab_hook: {fileID: 5952125858084161475, guid: fa20ec6f79036a841af65901696560a9, type: 3}
   shootSpeed: 200
   maxAdjustSpeed: 1
-  autoRetractSpringForce: 20
+  autoRetractSpringForce: 15
   autoRetractSpringDamper: 5
+  recoilForce: 400
 --- !u!1 &409810998
 GameObject:
   m_ObjectHideFlags: 0
