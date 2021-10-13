@@ -4,6 +4,7 @@ using static GrappleHook.State;
 public class GrappleHook : MonoBehaviour
 {
     // hierarchy
+    public AudioClip clip_reload;
     public ConfigurableJoint configJoint;
     public Rigidbody m_rigidbody;
 
@@ -30,6 +31,7 @@ public class GrappleHook : MonoBehaviour
 
         state = RETRACTING;
         configJoint.SetDistance();
+        threeDM.source_cableSpinning.Play();
     }
 
     void OnCollisionEnter(Collision other)
@@ -43,14 +45,21 @@ public class GrappleHook : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(state == RETRACTING && configJoint.linearLimit.limit > threeDM.minDistance)
+        if(state == RETRACTING)
         {
-            var ll = configJoint.linearLimit;
-            ll.limit -= (fixedJoint == null ? threeDM.autoRetractSpeedFast : threeDM.autoRetractSpeedSlow);
-            configJoint.linearLimit = ll;
-            var quat = Quaternion.LookRotation(m_rigidbody.position-PlayerMovement.m_rigidbody.position);
-            m_rigidbody.rotation = quat;
-            // TODO  fix this patch mess of rotation
+            if(configJoint.linearLimit.limit > threeDM.minDistance)
+            {
+                var ll = configJoint.linearLimit;
+                ll.limit -= (fixedJoint == null ? threeDM.autoRetractSpeedFast : threeDM.autoRetractSpeedSlow);
+                configJoint.linearLimit = ll;
+                var quat = Quaternion.LookRotation(m_rigidbody.position-PlayerMovement.m_rigidbody.position);
+                m_rigidbody.rotation = quat;
+                // TODO  fix this patch mess of rotation
+            }
+            else
+            {
+                threeDM.source_cableSpinning.Stop();
+            }
         }
     }
 
@@ -58,6 +67,9 @@ public class GrappleHook : MonoBehaviour
     {
         if(state == RETRACTING && fixedJoint == null && Vector3.Distance(configJoint.GetStart(), configJoint.GetEnd()) < threeDM.destroyDistance)
         {
+            AudioManager.PlayClip(clip_reload);
+            threeDM.returnTime = Time.time;
+            threeDM.source_cableSpinning.Stop();
             Destroy(gameObject);
         }
     }
