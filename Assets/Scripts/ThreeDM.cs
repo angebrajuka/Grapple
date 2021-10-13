@@ -6,11 +6,12 @@ public class ThreeDM : MonoBehaviour
 {
     // hierarchy
     public GameObject prefab_hook;
-    public float shootSpeed;
-    public float maxAdjustSpeed;
-    public float autoRetractSpringForce;
-    public float autoRetractSpringDamper;
+    public float shootForce;
+    public float autoRetractSpeedFast;
+    public float autoRetractSpeedSlow;
     public float recoilForce;
+    public float minDistance;
+    public float destroyDistance;
 
     GrappleHook hook;
 
@@ -20,17 +21,10 @@ public class ThreeDM : MonoBehaviour
         hook = obj.GetComponent<GrappleHook>();
         hook.threeDM = this;
         hook.configJoint.connectedBody = PlayerMovement.m_rigidbody;
-        hook.springJoint.connectedBody = PlayerMovement.m_rigidbody;
         var rb = obj.GetComponent<Rigidbody>();
-        rb.AddRelativeForce(Vector3.forward*shootSpeed);
-
+        rb.AddRelativeForce(Vector3.forward*shootForce);
+        rb.AddForce(PlayerMovement.m_rigidbody.velocity);
         PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);
-    }
-
-    public void DestroyHook()
-    {
-        Destroy(hook.gameObject);
-        hook = null;
     }
 
     void Update()
@@ -39,6 +33,15 @@ public class ThreeDM : MonoBehaviour
         {
             if(hook == null) ShootHook();
             else hook.Retract();
+        }
+        if(hook != null)
+        {
+            if(GetKeyDown("grapple_end"))
+            {
+                hook.Retract();
+                hook.configJoint.connectedMassScale = 0;
+                Destroy(hook.fixedJoint);
+            }
         }
     }
 }

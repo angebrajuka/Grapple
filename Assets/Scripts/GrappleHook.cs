@@ -1,47 +1,64 @@
 using UnityEngine;
+using static GrappleHook.State;
 
 public class GrappleHook : MonoBehaviour
 {
     // hierarchy
     public ConfigurableJoint configJoint;
-    public SpringJoint springJoint;
     public Rigidbody m_rigidbody;
 
     public FixedJoint fixedJoint;
     public ThreeDM threeDM;
 
-    void SetJointMotion(bool active)
+    public enum State
     {
-        ConfigurableJointMotion motionType = active ? ConfigurableJointMotion.Limited : ConfigurableJointMotion.Free;
-        configJoint.xMotion = motionType;
-        configJoint.yMotion = motionType;
-        configJoint.zMotion = motionType;
+        SHOOTING,
+        SWINGING,
+        RETRACTING
     }
+    public State state = SHOOTING;
 
     public void LockMotion(Rigidbody other)
     {
         fixedJoint = gameObject.AddComponent<FixedJoint>();
         fixedJoint.connectedBody = other;
-        SetJointMotion(true);
     }
 
     public void Retract()
     {
-        SetJointMotion(false);
+        if(state == RETRACTING) return;
 
-        springJoint.spring = threeDM.autoRetractSpringForce;
-        springJoint.damper = threeDM.autoRetractSpringDamper;
-
-        enabled = false;
+        state = RETRACTING;
+        configJoint.SetDistance();
     }
 
     void OnCollisionEnter(Collision other)
     {
-        if(!enabled) return;
+        if(state != SHOOTING) return;
 
         LockMotion(other.rigidbody);
         configJoint.SetDistance();
+        state = SWINGING;
+    }
 
-        enabled = false;
+    void FixedUpdate()
+    {
+        if(state == RETRACTING && configJoint.linearLimit.limit > threeDM.minDistance)
+        {
+            var ll = configJoint.linearLimit;
+            ll.limit -= (fixedJoint == null ? threeDM.autoRetractSpeedFast : threeDM.autoRetractSpeedSlow);
+            configJoint.linearLimit = ll;
+            var quat = Quaternion.LookRotation(m_rigidbody.position-PlayerMovement.m_rigidbody.position);
+            m_rigidbody.rotation = quat;
+            // TODO  fix this patch mess of rotation
+        }
+    }
+
+    void Update()
+    {
+        if(state == RETRACTING && fixedJoint == null && Vector3.Distance(configJoint.GetStart(), configJoint.GetEnd()) < threeDM.destroyDistance)
+        {
+            Destroy(gameObject);
+        }
     }
 }
