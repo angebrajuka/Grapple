@@ -71,9 +71,9 @@ public class PlayerMovement : MonoBehaviour
     {
         // accelerate
         m_rigidbody.AddRelativeForce(
-            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? input_move.x*(grounded ? walkAccel : airWalkAccel) : 0,
+            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? (input_move.x*(grounded ? walkAccel : airWalkAccel))*Time.fixedDeltaTime : 0,
             0,
-            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.forward)) < walkMaxSpeed ? input_move.z*(grounded ? walkAccel : airWalkAccel) : 0
+            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.forward)) < walkMaxSpeed ? (input_move.z*(grounded ? walkAccel : airWalkAccel))*Time.fixedDeltaTime : 0
         );
 
         if(grounded)

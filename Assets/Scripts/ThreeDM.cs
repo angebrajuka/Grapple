@@ -18,7 +18,7 @@ public class ThreeDM : MonoBehaviour
     public float reloadTime;
 
     GrappleHook hook;
-    [HideInInspector] public float returnTime;
+    public float returnTime;
 
     bool CanShoot
     {

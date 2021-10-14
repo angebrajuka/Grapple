@@ -11,6 +11,12 @@ public class GrappleHook : MonoBehaviour
 
     public FixedJoint fixedJoint;
     public ThreeDM threeDM;
+    float maxDist;
+
+    void Start()
+    {
+        maxDist = configJoint.linearLimit.limit-2;
+    }
 
     public enum State
     {
@@ -24,27 +30,35 @@ public class GrappleHook : MonoBehaviour
     {
         fixedJoint = gameObject.AddComponent<FixedJoint>();
         fixedJoint.connectedBody = other;
+        fixedJoint.enableCollision = false;
+        if(other == null)
+        {
+            configJoint.massScale = 0;
+            m_rigidbody.velocity *= 0;
+        }
     }
 
     public void Retract()
     {
-        if(state == RETRACTING) return;
-
-        state = RETRACTING;
-        configJoint.SetDistance();
         if(fixedJoint == null)
         {
             GetComponent<Collider>().enabled = false;
             configJoint.connectedMassScale = 0;
         }
+
+        if(state == RETRACTING) return;
+
+        state = RETRACTING;
+        configJoint.SetDistance();
+        configJoint.massScale = 1;
         threeDM.source_cableSpinning.Play();
     }
 
-    void OnCollisionEnter(Collision other)
+    void OnTriggerEnter(Collider other)
     {
         if(state != SHOOTING) return;
 
-        LockMotion(other.rigidbody);
+        LockMotion(other.gameObject.GetComponent<Rigidbody>());
         configJoint.SetDistance();
         state = SWINGING;
     }
@@ -53,14 +67,11 @@ public class GrappleHook : MonoBehaviour
     {
         if(state == RETRACTING)
         {
-            if(configJoint.linearLimit.limit > threeDM.minDistance)
+            if(configJoint.linearLimit.limit > threeDM.minDistance || fixedJoint == null)
             {
                 var ll = configJoint.linearLimit;
-                ll.limit -= (fixedJoint == null ? threeDM.autoRetractSpeedFast : threeDM.autoRetractSpeedSlow);
+                ll.limit -= (fixedJoint == null ? threeDM.autoRetractSpeedFast : threeDM.autoRetractSpeedSlow)*Time.fixedDeltaTime;
                 configJoint.linearLimit = ll;
-                var quat = Quaternion.LookRotation(m_rigidbody.position-PlayerMovement.m_rigidbody.position);
-                m_rigidbody.rotation = quat;
-                // TODO  fix this patch mess of rotation
             }
             else
             {
@@ -71,6 +82,11 @@ public class GrappleHook : MonoBehaviour
 
     void Update()
     {
+        if(fixedJoint == null && Vector3.Distance(m_rigidbody.position+configJoint.anchor, PlayerMovement.m_rigidbody.position+configJoint.connectedAnchor) > maxDist)
+        {
+            Retract();
+        }
+
         if(state == RETRACTING && fixedJoint == null && Vector3.Distance(configJoint.GetStart(), configJoint.GetEnd()) < threeDM.destroyDistance)
         {
             AudioManager.PlayClip(clip_reload);
