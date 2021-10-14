@@ -39,27 +39,19 @@ public class ThreeDM : MonoBehaviour
 
     void Update()
     {
-        if(GetKeyDown("grapple_shoot"))
+        if(GetKey("grapple_shoot") && hook == null && CanShoot)
         {
-            if(hook == null && CanShoot)
-            {
-                ShootHook();
-                AudioManager.PlayClip(clip_shoot, volume_shoot);
-            }
-            else if(hook != null)
-            {
-                hook.Retract();
-            }
+            ShootHook();
+            AudioManager.PlayClip(clip_shoot, volume_shoot);
         }
-        if(hook != null)
+        else if(GetKeyUp("grapple_shoot") && hook != null)
         {
-            if(GetKeyDown("grapple_end") && hook.configJoint.connectedMassScale != 0)
-            {
-                hook.GetComponent<Collider>().enabled = false;
-                hook.Retract();
-                hook.configJoint.connectedMassScale = 0;
-                Destroy(hook.fixedJoint);
-            }
+            hook.Retract();
+        }
+        else if(hook != null && GetKeyDown("grapple_shoot"))
+        {
+            Destroy(hook.fixedJoint);
+            hook.Retract();
         }
     }
 }

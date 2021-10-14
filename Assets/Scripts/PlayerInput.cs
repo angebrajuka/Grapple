@@ -111,4 +111,9 @@ public class PlayerInput : MonoBehaviour
     {
         return Input.GetKeyDown(keybinds[key]);
     }
+
+    public static bool GetKeyUp(string key)
+    {
+        return Input.GetKeyUp(keybinds[key]);
+    }
 }

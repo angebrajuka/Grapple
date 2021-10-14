@@ -32,6 +32,11 @@ public class GrappleHook : MonoBehaviour
 
         state = RETRACTING;
         configJoint.SetDistance();
+        if(fixedJoint == null)
+        {
+            GetComponent<Collider>().enabled = false;
+            configJoint.connectedMassScale = 0;
+        }
         threeDM.source_cableSpinning.Play();
     }
 
