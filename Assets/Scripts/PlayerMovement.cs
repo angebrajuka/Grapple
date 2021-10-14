@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     // hierarchy
     public Transform t_camera;
     public float walkAccel;
+    public float airWalkAccel;
     public float walkMaxSpeed;
     public float friction;
     public float groundNormal;
@@ -68,22 +69,23 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        // accelerate
+        m_rigidbody.AddRelativeForce(
+            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? input_move.x*(grounded ? walkAccel : airWalkAccel) : 0,
+            0,
+            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.forward)) < walkMaxSpeed ? input_move.z*(grounded ? walkAccel : airWalkAccel) : 0
+        );
+
         if(grounded)
         {
-            // accelerate
-            m_rigidbody.AddRelativeForce(
-                Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? input_move.x*walkAccel : 0,
-                0,
-                Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.forward)) < walkMaxSpeed ? input_move.z*walkAccel : 0
-            );
-
-            m_rigidbody.AddForce(0, input_move.y*jumpForce, 0);
-
             // friction
             Vector3 vel = m_rigidbody.velocity;
             vel *= friction;
             vel.y = m_rigidbody.velocity.y; // dont affect y for friction
             m_rigidbody.velocity = vel;
+
+            // jump
+            m_rigidbody.AddForce(0, input_move.y*jumpForce, 0);
         }
     }
 

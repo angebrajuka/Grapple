@@ -7,6 +7,7 @@ public class GrappleHook : MonoBehaviour
     public AudioClip clip_reload;
     public ConfigurableJoint configJoint;
     public Rigidbody m_rigidbody;
+    public LineRenderer m_lineRenderer;
 
     public FixedJoint fixedJoint;
     public ThreeDM threeDM;
@@ -72,5 +73,11 @@ public class GrappleHook : MonoBehaviour
             threeDM.source_cableSpinning.Stop();
             Destroy(gameObject);
         }
+    }
+
+    void LateUpdate()
+    {
+        m_lineRenderer.SetPosition(0, m_rigidbody.position+configJoint.anchor);
+        m_lineRenderer.SetPosition(m_lineRenderer.positionCount-1, threeDM.transform.position);
     }
 }

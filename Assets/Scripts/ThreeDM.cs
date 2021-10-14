@@ -46,7 +46,7 @@ public class ThreeDM : MonoBehaviour
                 ShootHook();
                 AudioManager.PlayClip(clip_shoot, volume_shoot);
             }
-            else
+            else if(hook != null)
             {
                 hook.Retract();
             }
