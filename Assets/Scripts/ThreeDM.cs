@@ -28,12 +28,18 @@ public class ThreeDM : MonoBehaviour
     public void ShootHook()
     {
         var obj = Instantiate(prefab_hook, transform.position, PlayerMovement.instance.t_camera.rotation, null);
+        RaycastHit hit;
+        Vector3 direction = PlayerMovement.instance.t_camera.TransformDirection(Vector3.forward);
+        var rb = obj.GetComponent<Rigidbody>();
+        if(PlayerEyes.Raycast(out hit))
+        {
+            obj.transform.LookAt(hit.point);
+            direction = (hit.point-rb.position).normalized;
+        }
         hook = obj.GetComponent<GrappleHook>();
         hook.threeDM = this;
         hook.configJoint.connectedBody = PlayerMovement.m_rigidbody;
-        var rb = obj.GetComponent<Rigidbody>();
-        rb.AddRelativeForce(Vector3.forward*shootForce);
-        rb.AddForce(PlayerMovement.m_rigidbody.velocity);
+        rb.AddForce(direction*shootForce);
         PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);
     }
 
