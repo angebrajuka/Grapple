@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5952125858084161472}
   - component: {fileID: 5952125858084161473}
   - component: {fileID: 3962282006248940618}
+  - component: {fileID: 9126216024733544372}
   - component: {fileID: 7990317378554902160}
   - component: {fileID: -7658063650059081547}
   - component: {fileID: 2024707212064137224}
@@ -68,9 +69,23 @@ MonoBehaviour:
   configJoint: {fileID: -7658063650059081547}
   m_rigidbody: {fileID: 5952125858084161473}
   m_lineRenderer: {fileID: 2024707212064137224}
+  m_sphereCollider: {fileID: 9126216024733544372}
   fixedJoint: {fileID: 0}
   threeDM: {fileID: 0}
   state: 0
+--- !u!135 &9126216024733544372
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5952125858084161475}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.07
+  m_Center: {x: 0, y: 0, z: 0.18}
 --- !u!136 &7990317378554902160
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -81,7 +96,7 @@ CapsuleCollider:
   m_Material: {fileID: 13400000, guid: 30f8051b993add443a075cef761d0d7d, type: 2}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 0.07
+  m_Radius: 0.05
   m_Height: 0.50928366
   m_Direction: 2
   m_Center: {x: 0, y: 0, z: 0.21238899}

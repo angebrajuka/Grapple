@@ -8,6 +8,7 @@ public class GrappleHook : MonoBehaviour
     public ConfigurableJoint configJoint;
     public Rigidbody m_rigidbody;
     public LineRenderer m_lineRenderer;
+    public SphereCollider m_sphereCollider;
 
     public FixedJoint fixedJoint;
     public ThreeDM threeDM;
@@ -54,15 +55,6 @@ public class GrappleHook : MonoBehaviour
         threeDM.source_cableSpinning.Play();
     }
 
-    void OnTriggerEnter(Collider other)
-    {
-        if(state != SHOOTING) return;
-
-        LockMotion(other.gameObject.GetComponent<Rigidbody>());
-        configJoint.SetDistance();
-        state = SWINGING;
-    }
-
     void FixedUpdate()
     {
         if(state == RETRACTING)
@@ -77,6 +69,16 @@ public class GrappleHook : MonoBehaviour
             {
                 threeDM.source_cableSpinning.Stop();
             }
+        }
+
+        const int layermask = (Layers.PLAYER | Layers.PLAYER_ARMS);
+        RaycastHit hit;
+        if(state == SHOOTING && Physics.SphereCast(m_rigidbody.position+m_sphereCollider.center, m_sphereCollider.radius, m_rigidbody.velocity, out hit, m_rigidbody.velocity.magnitude*Time.fixedDeltaTime, layermask))
+        {
+            m_rigidbody.MovePosition(m_rigidbody.position+m_rigidbody.velocity.normalized*(hit.distance+0.5f));
+            LockMotion(hit.rigidbody);
+            configJoint.SetDistance();
+            state = SWINGING;
         }
     }
 
