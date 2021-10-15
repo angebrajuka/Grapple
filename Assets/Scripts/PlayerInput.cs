@@ -5,12 +5,12 @@ using System.Collections.Generic;
 public class JsonKeybindPair
 {
     public string name;
-    public int key;
+    public int[] keys;
 
-    public JsonKeybindPair(KeyValuePair<string, KeyCode> bind)
+    public JsonKeybindPair(KeyValuePair<string, int[]> bind)
     {
         this.name = bind.Key;
-        this.key = (int)bind.Value;
+        this.keys = bind.Value;
     }
 }
 
@@ -34,7 +34,7 @@ public class PlayerInput : MonoBehaviour
     public ThreeDM threeDM;
 
     // settings
-    public static Dictionary<string, KeyCode> keybinds;
+    public static Dictionary<string, int[]> keybinds;
     public static Vector2 speed_look;
     public static float speed_scroll;
 
@@ -42,7 +42,7 @@ public class PlayerInput : MonoBehaviour
     {
         instance = this;
 
-        keybinds = new Dictionary<string, KeyCode>();
+        keybinds = new Dictionary<string, int[]>();
 
         speed_look = new Vector2(0, 0);
         LoadSettings();
@@ -53,8 +53,8 @@ public class PlayerInput : MonoBehaviour
         var binds = JsonUtility.FromJson<KeybindsJson>(bindsTxt).keybinds;
         foreach(var bind in binds)
         {
-            if(!keybinds.ContainsKey(bind.name)) keybinds.Add(bind.name, (KeyCode)bind.key);
-            else keybinds[bind.name] = (KeyCode)bind.key;
+            if(!keybinds.ContainsKey(bind.name)) keybinds.Add(bind.name, bind.keys);
+            else keybinds[bind.name] = bind.keys;
         }
     }
 
@@ -104,16 +104,31 @@ public class PlayerInput : MonoBehaviour
 
     public static bool GetKey(string key)
     {
-        return Input.GetKey(keybinds[key]);
+        bool down = false;
+        foreach(var bind in keybinds[key])
+        {
+            if(Input.GetKey((KeyCode)bind)) down = true;
+        }
+        return down;
     }
 
     public static bool GetKeyDown(string key)
     {
-        return Input.GetKeyDown(keybinds[key]);
+        bool down = false;
+        foreach(var bind in keybinds[key])
+        {
+            if(Input.GetKeyDown((KeyCode)bind)) down = true;
+        }
+        return down;
     }
 
     public static bool GetKeyUp(string key)
     {
-        return Input.GetKeyUp(keybinds[key]);
+        bool up = false;
+        foreach(var bind in keybinds[key])
+        {
+            if(Input.GetKeyUp((KeyCode)bind)) up = true;
+        }
+        return up;
     }
 }
