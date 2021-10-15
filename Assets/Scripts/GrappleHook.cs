@@ -11,6 +11,8 @@ public class GrappleHook : MonoBehaviour
     public SphereCollider m_sphereCollider;
 
     public FixedJoint fixedJoint;
+    bool addJoint=false;
+    Rigidbody other;
     public ThreeDM threeDM;
     float maxDist;
 
@@ -29,13 +31,12 @@ public class GrappleHook : MonoBehaviour
 
     public void LockMotion(Rigidbody other)
     {
-        fixedJoint = gameObject.AddComponent<FixedJoint>();
-        fixedJoint.connectedBody = other;
-        fixedJoint.enableCollision = false;
+        this.other = other;
+        addJoint = true;
         if(other == null)
         {
-            configJoint.massScale = 0;
             m_rigidbody.velocity *= 0;
+            configJoint.massScale = 0;
         }
     }
 
@@ -75,7 +76,7 @@ public class GrappleHook : MonoBehaviour
         RaycastHit hit;
         if(state == SHOOTING && Physics.SphereCast(m_rigidbody.position+m_sphereCollider.center, m_sphereCollider.radius, m_rigidbody.velocity, out hit, m_rigidbody.velocity.magnitude*Time.fixedDeltaTime, layermask))
         {
-            m_rigidbody.MovePosition(m_rigidbody.position+m_rigidbody.velocity.normalized*(hit.distance+0.5f));
+            m_rigidbody.position += m_rigidbody.velocity.normalized*hit.distance;
             LockMotion(hit.rigidbody);
             configJoint.SetDistance();
             state = SWINGING;
@@ -100,6 +101,14 @@ public class GrappleHook : MonoBehaviour
 
     void LateUpdate()
     {
+        if(addJoint)
+        {
+            fixedJoint = gameObject.AddComponent<FixedJoint>();
+            fixedJoint.connectedBody = other;
+            fixedJoint.enableCollision = false;
+            addJoint = false;
+        }
+
         m_lineRenderer.SetPosition(0, m_rigidbody.position+configJoint.anchor);
         m_lineRenderer.SetPosition(m_lineRenderer.positionCount-1, threeDM.transform.position);
     }
