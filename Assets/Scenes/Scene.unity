@@ -2454,15 +2454,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   t_camera: {fileID: 1687258585}
-  walkAccel: 10000
-  airWalkAccel: 500
+  walkAccel: 25000
+  airWalkAccel: 1000
   walkMaxSpeed: 12
-  friction_normal: 0.95
-  friction_slide: 0.99
+  friction_normal: 0.9
+  friction_slide: 1
   groundNormal: 0.8
   jumpForce: 600
-  slideForce: 500
-  slideHeightAdjust: 1
+  slideForce: 800
+  slideStartThreshhold: 0.8
+  slideMaxSpeed: 15
+  slideHeightAdjust: 1.5
   cameraHeightAdjustSpeed: 12
 --- !u!114 &1887390186
 MonoBehaviour:
@@ -2500,7 +2502,7 @@ Rigidbody:
   m_GameObject: {fileID: 1887390182}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0.3
+  m_Drag: 0.25
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0

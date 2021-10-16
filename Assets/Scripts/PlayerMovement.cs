@@ -15,6 +15,8 @@ public class PlayerMovement : MonoBehaviour
     public float groundNormal;
     public float jumpForce;
     public float slideForce;
+    public float slideStartThreshhold;
+    public float slideMaxSpeed;
     public float slideHeightAdjust;
     public float cameraHeightAdjustSpeed;
 
@@ -26,25 +28,10 @@ public class PlayerMovement : MonoBehaviour
     Vector3 cameraTargetPos;
     Vector3 cameraDefaultPos;
     bool grounded;
-    bool p_sliding;
-    bool sliding
-    {
-        get { return p_sliding; }
-        set
-        {
-            bool wasSliding = p_sliding;
-            p_sliding = value;
-            if(sliding == wasSliding) return;
-
-            int mult = sliding ? -1 : 1;
-            m_collider.height += slideHeightAdjust * mult;
-            var vec = Vector3.up*slideHeightAdjust/2 * mult;
-            m_collider.center += vec;
-            cameraTargetPos = vec;
-        }
-    }
+    bool p_crouching;
     Vector3 input_move;
     Vector2 input_look;
+    bool input_crouch;
 
     public void Init()
     {
@@ -57,9 +44,30 @@ public class PlayerMovement : MonoBehaviour
 
         normal = new Vector3(0, 0, 0);
         grounded = false;
-        sliding = false;
+        crouching = false;
         input_move = new Vector3(0, 0);
         input_look = new Vector2(0, 0);
+        input_crouch = false;
+    }
+
+    bool crouching
+    {
+        get { return p_crouching; }
+        set
+        {
+            bool wasCrouching = p_crouching;
+            p_crouching = value;
+            if(crouching == wasCrouching) return;
+
+            int mult = crouching ? -1 : 1;
+            m_collider.height += slideHeightAdjust * mult;
+            var vec = Vector3.up*slideHeightAdjust/2 * mult;
+            m_collider.center += vec;
+            cameraTargetPos = vec;
+            var zvel = m_rigidbody.RelativeVelocity().z;
+            if(grounded && crouching && zvel > walkMaxSpeed*slideStartThreshhold && zvel < slideMaxSpeed)
+                m_rigidbody.AddRelativeForce(0, 0, slideForce);
+        }
     }
 
     void OnCollisionExit(Collision collision) {
@@ -89,23 +97,12 @@ public class PlayerMovement : MonoBehaviour
         if(GetKey("walk_right"))    input_move.x ++;
         input_move.Normalize();
 
-        if(GetKey("jump"))
+        if(GetKeyDown("jump"))
         {
             input_move.y ++;
-            sliding = false;
         }
 
-        bool slidingKey = GetKey("slide");
-        if(!sliding && grounded && slidingKey)
-        {
-            sliding = true;
-            if(m_rigidbody.RelativeVelocity().z > walkMaxSpeed-1)
-                m_rigidbody.AddRelativeForce(0, 0, slideForce);
-        }
-        if(sliding && !slidingKey && m_rigidbody.RelativeVelocity().z <= walkMaxSpeed/2f)
-        {
-            sliding = false;
-        }
+        input_crouch = GetKey("slide");
 
         input_look.x = Input.GetAxis("Mouse X") * speed_look.x;
         input_look.y = Input.GetAxis("Mouse Y") * speed_look.y;
@@ -117,21 +114,28 @@ public class PlayerMovement : MonoBehaviour
     {
         // accelerate
         m_rigidbody.AddRelativeForce(
-            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? (input_move.x*(grounded && !sliding ? walkAccel : airWalkAccel))*Time.fixedDeltaTime : 0,
+            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? (input_move.x*(grounded && !crouching ? walkAccel : airWalkAccel))*Time.fixedDeltaTime : 0,
             0,
-            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.forward)) < walkMaxSpeed ? (input_move.z*(grounded && !sliding ? walkAccel : airWalkAccel))*Time.fixedDeltaTime : 0
+            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.forward)) < walkMaxSpeed ? (input_move.z*(grounded && !crouching ? walkAccel : airWalkAccel))*Time.fixedDeltaTime : 0
         );
 
         if(grounded)
         {
             // friction
             Vector3 vel = m_rigidbody.velocity;
-            vel *= sliding ? friction_slide : friction_normal;
+            vel *= crouching ? friction_slide : friction_normal;
             vel.y = m_rigidbody.velocity.y; // dont affect y for friction
             m_rigidbody.velocity = vel;
 
             // jump
             m_rigidbody.AddForce(0, input_move.y*jumpForce, 0);
+
+            // crouch & slide
+            crouching = input_crouch;
+        }
+        else
+        {
+            crouching = false;
         }
     }
 
