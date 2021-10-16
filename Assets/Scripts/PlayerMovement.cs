@@ -95,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         {
             m_rigidbody.AddRelativeForce(0, 0, slideForce);
         }
-        if(GetKeyUp("slide") && sliding && grounded && m_rigidbody.RelativeVelocity().z > slideForce)
+        if(GetKeyUp("slide") && sliding && grounded && m_rigidbody.RelativeVelocity().z > 1)
         {
             m_rigidbody.AddRelativeForce(0, 0, -slideForce);
         }
