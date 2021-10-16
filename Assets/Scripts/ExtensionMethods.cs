@@ -30,4 +30,9 @@ public static class ExtensionMethods
     {
         return Vector3.Distance(joint.GetStart(), joint.GetEnd()) <= joint.linearLimit.limit+tolerance;
     }
+
+    public static Vector3 RelativeVelocity(this Rigidbody rb)
+    {
+        return rb.transform.InverseTransformDirection(rb.velocity);
+    }
 }
