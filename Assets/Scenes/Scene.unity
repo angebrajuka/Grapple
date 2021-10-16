@@ -2382,6 +2382,7 @@ GameObject:
   - component: {fileID: 1887390188}
   - component: {fileID: 1887390187}
   - component: {fileID: 1887390189}
+  - component: {fileID: 1887390192}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -2431,21 +2432,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   t_camera: {fileID: 1687258585}
-  m_colliderDefault: {fileID: 1887390187}
-  m_colliderCrouch: {fileID: 1887390189}
+  colliderDefault: {fileID: 1887390187}
+  colliderCrouch: {fileID: 1887390189}
+  colliderGrounded: {fileID: 1887390192}
   walkAccelDefault: 25000
   walkAccelCrouch: 8000
   walkAccelAir: 1000
   walkMaxSpeed: 12
   friction_normal: 0.9
   friction_slide: 1
-  groundNormal: 0.8
-  jumpForce: 600
+  jumpForce: 800
   jumpTimeLeeway: 0.2
   slideForce: 800
   slideTime: 0.4
-  slideStartThreshhold: 0.8
-  slideMaxSpeed: 13
+  slideStartThreshhold: 0.7
+  slideMaxSpeed: 20
   cameraHeightAdjustSpeed: 12
 --- !u!114 &1887390186
 MonoBehaviour:
@@ -2482,7 +2483,7 @@ Rigidbody:
   m_GameObject: {fileID: 1887390182}
   serializedVersion: 2
   m_Mass: 1
-  m_Drag: 0.25
+  m_Drag: 0.2
   m_AngularDrag: 10
   m_UseGravity: 1
   m_IsKinematic: 0
@@ -2545,6 +2546,19 @@ MonoBehaviour:
   destroyDistance: 0.5
   reloadTime: 0.5
   returnTime: 0
+--- !u!135 &1887390192
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887390182}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Radius: 0.2
+  m_Center: {x: 0, y: -0.81, z: 0}
 --- !u!1 &1901785097
 GameObject:
   m_ObjectHideFlags: 0
