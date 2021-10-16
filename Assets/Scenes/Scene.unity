@@ -2461,7 +2461,7 @@ MonoBehaviour:
   friction_slide: 0.99
   groundNormal: 0.8
   jumpForce: 600
-  slideForce: 1000
+  slideForce: 500
   slideHeightAdjust: 1
   cameraHeightAdjustSpeed: 12
 --- !u!114 &1887390186

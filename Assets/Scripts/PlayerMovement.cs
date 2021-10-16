@@ -89,17 +89,23 @@ public class PlayerMovement : MonoBehaviour
         if(GetKey("walk_right"))    input_move.x ++;
         input_move.Normalize();
 
-        if(GetKey("jump")) input_move.y ++;
+        if(GetKey("jump"))
+        {
+            input_move.y ++;
+            sliding = false;
+        }
 
-        if(GetKeyDown("slide") && !sliding && grounded)
+        bool slidingKey = GetKey("slide");
+        if(!sliding && grounded && slidingKey)
         {
-            m_rigidbody.AddRelativeForce(0, 0, slideForce);
+            sliding = true;
+            if(m_rigidbody.RelativeVelocity().z > walkMaxSpeed-1)
+                m_rigidbody.AddRelativeForce(0, 0, slideForce);
         }
-        if(GetKeyUp("slide") && sliding && grounded && m_rigidbody.RelativeVelocity().z > 1)
+        if(sliding && !slidingKey && m_rigidbody.RelativeVelocity().z <= walkMaxSpeed/2f)
         {
-            m_rigidbody.AddRelativeForce(0, 0, -slideForce);
+            sliding = false;
         }
-        sliding = GetKey("slide");
 
         input_look.x = Input.GetAxis("Mouse X") * speed_look.x;
         input_look.y = Input.GetAxis("Mouse Y") * speed_look.y;
@@ -109,6 +115,8 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        Debug.Log(m_rigidbody.RelativeVelocity().z);
+
         // accelerate
         m_rigidbody.AddRelativeForce(
             Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? (input_move.x*(grounded && !sliding ? walkAccel : airWalkAccel))*Time.fixedDeltaTime : 0,
