@@ -9,6 +9,7 @@ public class ThreeDM : MonoBehaviour
     public AudioClip clip_shoot;
     public float volume_shoot;
     public AudioSource source_cableSpinning;
+    public float fixedJointBreakForce;
     public float shootForce;
     public float autoRetractSpeedFast;
     public float autoRetractSpeedSlow;

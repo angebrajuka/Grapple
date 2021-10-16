@@ -106,6 +106,8 @@ public class GrappleHook : MonoBehaviour
             fixedJoint = gameObject.AddComponent<FixedJoint>();
             fixedJoint.connectedBody = other;
             fixedJoint.enableCollision = false;
+            fixedJoint.breakForce = threeDM.fixedJointBreakForce;
+            fixedJoint.breakTorque = threeDM.fixedJointBreakForce;
             addJoint = false;
         }
 
