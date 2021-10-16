@@ -18,6 +18,7 @@ public class Init : MonoBehaviour
 
         player.GetComponent<PlayerInput>().Init();
         player.GetComponent<PlayerMovement>().Init();
+        player.GetComponent<PlayerThreeDM>().Init();
 
         canvas.GetComponent<PlayerBloodUI>().Init();
 

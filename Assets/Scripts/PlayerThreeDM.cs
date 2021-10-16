@@ -2,9 +2,12 @@ using UnityEngine;
 using System.Collections.Generic;
 using static PlayerInput;
 
-public class ThreeDM : MonoBehaviour
+public class PlayerThreeDM : MonoBehaviour
 {
+    public static PlayerThreeDM instance;
+
     // hierarchy
+    public Transform t_threeDM;
     public GameObject prefab_hook;
     public AudioClip clip_shoot;
     public float volume_shoot;
@@ -21,14 +24,19 @@ public class ThreeDM : MonoBehaviour
     GrappleHook hook;
     public float returnTime;
 
-    bool CanShoot
+    public void Init()
+    {
+        instance = this;
+    }
+
+    public bool CanShoot
     {
         get { return Time.time - returnTime > reloadTime; }
     }
 
     public void ShootHook()
     {
-        var obj = Instantiate(prefab_hook, transform.position, PlayerMovement.instance.t_camera.rotation, null);
+        var obj = Instantiate(prefab_hook, t_threeDM.position, PlayerMovement.instance.t_camera.rotation, null);
         RaycastHit hit;
         Vector3 direction = PlayerMovement.instance.t_camera.TransformDirection(Vector3.forward);
         var rb = obj.GetComponent<Rigidbody>();
@@ -38,7 +46,6 @@ public class ThreeDM : MonoBehaviour
             direction = (hit.point-rb.position).normalized;
         }
         hook = obj.GetComponent<GrappleHook>();
-        hook.threeDM = this;
         hook.configJoint.connectedBody = PlayerMovement.m_rigidbody;
         rb.AddForce(direction*shootForce);
         PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);

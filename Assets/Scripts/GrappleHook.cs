@@ -13,7 +13,6 @@ public class GrappleHook : MonoBehaviour
     public FixedJoint fixedJoint;
     bool addJoint=false;
     Rigidbody other;
-    public ThreeDM threeDM;
     float maxDist;
 
     void Start()
@@ -53,22 +52,22 @@ public class GrappleHook : MonoBehaviour
         state = RETRACTING;
         configJoint.SetDistance();
         configJoint.massScale = 1;
-        threeDM.source_cableSpinning.Play();
+        PlayerThreeDM.instance.source_cableSpinning.Play();
     }
 
     void FixedUpdate()
     {
         if(state == RETRACTING)
         {
-            if(configJoint.linearLimit.limit > threeDM.minDistance || fixedJoint == null)
+            if(configJoint.linearLimit.limit > PlayerThreeDM.instance.minDistance || fixedJoint == null)
             {
                 var ll = configJoint.linearLimit;
-                ll.limit -= (fixedJoint == null ? threeDM.autoRetractSpeedFast : threeDM.autoRetractSpeedSlow)*Time.fixedDeltaTime;
+                ll.limit -= (fixedJoint == null ? PlayerThreeDM.instance.autoRetractSpeedFast : PlayerThreeDM.instance.autoRetractSpeedSlow)*Time.fixedDeltaTime;
                 configJoint.linearLimit = ll;
             }
             else
             {
-                threeDM.source_cableSpinning.Stop();
+                PlayerThreeDM.instance.source_cableSpinning.Stop();
             }
         }
 
@@ -90,11 +89,11 @@ public class GrappleHook : MonoBehaviour
             Retract();
         }
 
-        if(state == RETRACTING && fixedJoint == null && Vector3.Distance(configJoint.GetStart(), configJoint.GetEnd()) < threeDM.destroyDistance)
+        if(state == RETRACTING && fixedJoint == null && Vector3.Distance(configJoint.GetStart(), configJoint.GetEnd()) < PlayerThreeDM.instance.destroyDistance)
         {
             AudioManager.PlayClip(clip_reload);
-            threeDM.returnTime = Time.time;
-            threeDM.source_cableSpinning.Stop();
+            PlayerThreeDM.instance.returnTime = Time.time;
+            PlayerThreeDM.instance.source_cableSpinning.Stop();
             Destroy(gameObject);
         }
     }
@@ -106,12 +105,12 @@ public class GrappleHook : MonoBehaviour
             fixedJoint = gameObject.AddComponent<FixedJoint>();
             fixedJoint.connectedBody = other;
             fixedJoint.enableCollision = false;
-            fixedJoint.breakForce = threeDM.fixedJointBreakForce;
-            fixedJoint.breakTorque = threeDM.fixedJointBreakForce;
+            fixedJoint.breakForce = PlayerThreeDM.instance.fixedJointBreakForce;
+            fixedJoint.breakTorque = PlayerThreeDM.instance.fixedJointBreakForce;
             addJoint = false;
         }
 
         m_lineRenderer.SetPosition(0, m_rigidbody.position+configJoint.anchor);
-        m_lineRenderer.SetPosition(m_lineRenderer.positionCount-1, threeDM.transform.position);
+        m_lineRenderer.SetPosition(m_lineRenderer.positionCount-1, PlayerThreeDM.instance.t_threeDM.position);
     }
 }

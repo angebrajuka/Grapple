@@ -17,6 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public float friction_slide;
     public float groundNormal;
     public float jumpForce;
+    public float jumpTimeLeeway;
     public float slideForce;
     public float slideTime;
     public float slideStartThreshhold;
@@ -37,6 +38,7 @@ public class PlayerMovement : MonoBehaviour
     Vector2 input_look;
     bool input_crouch;
     float slideStartTime;
+    float jumpInputTime;
 
     public void Init()
     {
@@ -56,7 +58,8 @@ public class PlayerMovement : MonoBehaviour
         input_move = new Vector3(0, 0);
         input_look = new Vector2(0, 0);
         input_crouch = false;
-        slideStartTime=-1000;
+        slideStartTime = -1000;
+        jumpInputTime = -1000;
     }
 
     bool Crouching
@@ -83,8 +86,7 @@ public class PlayerMovement : MonoBehaviour
 
     bool Sliding
     {
-        get
-        { return Crouching && Time.time <= slideStartTime+slideTime; }
+        get { return Crouching && Time.time <= slideStartTime+slideTime; }
     }
 
     void OnCollisionExit(Collision collision) {
@@ -115,6 +117,10 @@ public class PlayerMovement : MonoBehaviour
         input_move.Normalize();
 
         if(GetKeyDown("jump"))
+        {
+            jumpInputTime = Time.time;
+        }
+        if(Time.time <= jumpInputTime+jumpTimeLeeway)
         {
             input_move.y ++;
         }

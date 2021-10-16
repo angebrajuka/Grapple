@@ -30,9 +30,6 @@ public class PlayerInput : MonoBehaviour
 
     public static PlayerInput instance;
 
-    // hierarchy
-    public ThreeDM threeDM;
-
     // settings
     public static Dictionary<string, int[]> keybinds;
     public static Vector2 speed_look;
