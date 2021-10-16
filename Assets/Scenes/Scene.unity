@@ -1459,9 +1459,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1097735633}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.64, y: -0.5, z: 1.72}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.5, y: -0.52, z: 0.71}
+  m_LocalScale: {x: 0.21018, y: 0.20697999, z: 1.1593}
   m_Children: []
   m_Father: {fileID: 1687258585}
   m_RootOrder: 1
@@ -2377,6 +2377,7 @@ GameObject:
   - component: {fileID: 1887390186}
   - component: {fileID: 1887390185}
   - component: {fileID: 1887390191}
+  - component: {fileID: 1887390193}
   - component: {fileID: 1887390190}
   - component: {fileID: 1887390184}
   - component: {fileID: 1887390188}
@@ -2559,6 +2560,20 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.2
   m_Center: {x: 0, y: -0.81, z: 0}
+--- !u!114 &1887390193
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1887390182}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45861185cce88c3478dc8d851da1e2c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gunPosition: {fileID: 1097735634}
+  moveSpeed: 0.5
 --- !u!1 &1901785097
 GameObject:
   m_ObjectHideFlags: 0
