@@ -23,6 +23,7 @@ public class PlayerMovement : MonoBehaviour
     // components
     public static Rigidbody m_rigidbody;
     public static CapsuleCollider m_collider;
+    public static SphereCollider m_uncrouchCollider;
 
     Vector3 normal;
     Vector3 cameraTargetPos;
@@ -39,8 +40,10 @@ public class PlayerMovement : MonoBehaviour
 
         m_rigidbody = GetComponent<Rigidbody>();
         m_collider = GetComponent<CapsuleCollider>();
+        m_uncrouchCollider = GetComponent<SphereCollider>();
 
-        cameraDefaultPos = t_camera.localPosition;
+        cameraTargetPos = Vector3.up*slideHeightAdjust/2;
+        cameraDefaultPos = t_camera.localPosition-cameraTargetPos;
 
         normal = new Vector3(0, 0, 0);
         grounded = false;
@@ -61,9 +64,8 @@ public class PlayerMovement : MonoBehaviour
 
             int mult = crouching ? -1 : 1;
             m_collider.height += slideHeightAdjust * mult;
-            var vec = Vector3.up*slideHeightAdjust/2 * mult;
-            m_collider.center += vec;
-            cameraTargetPos = vec;
+            cameraTargetPos *= -1;
+            m_collider.center += cameraTargetPos;
             var zvel = m_rigidbody.RelativeVelocity().z;
             if(grounded && crouching && zvel > walkMaxSpeed*slideStartThreshhold && zvel < slideMaxSpeed)
                 m_rigidbody.AddRelativeForce(0, 0, slideForce);
@@ -106,8 +108,6 @@ public class PlayerMovement : MonoBehaviour
 
         input_look.x = Input.GetAxis("Mouse X") * speed_look.x;
         input_look.y = Input.GetAxis("Mouse Y") * speed_look.y;
-
-        t_camera.localPosition = Vector3.Lerp(t_camera.localPosition, cameraDefaultPos+cameraTargetPos, cameraHeightAdjustSpeed*Time.deltaTime);
     }
 
     void FixedUpdate()
@@ -131,9 +131,9 @@ public class PlayerMovement : MonoBehaviour
             m_rigidbody.AddForce(0, input_move.y*jumpForce, 0);
 
             // crouch & slide
-            crouching = input_crouch;
+            crouching = input_crouch || crouching;
         }
-        else
+        if((!input_crouch || !grounded) && Physics.OverlapSphere(m_uncrouchCollider.center+m_rigidbody.position, m_uncrouchCollider.radius).Length <= 1) // 1 because it collides with m_uncrouchTrigger
         {
             crouching = false;
         }
@@ -141,6 +141,8 @@ public class PlayerMovement : MonoBehaviour
 
     void LateUpdate()
     {
+        t_camera.localPosition = Vector3.Lerp(t_camera.localPosition, cameraDefaultPos+cameraTargetPos, cameraHeightAdjustSpeed*Time.deltaTime);
+
         Vector3 rotation;
         if(input_look.x != 0)
         {
