@@ -17,7 +17,9 @@ public class Init : MonoBehaviour
         player.GetComponent<PauseHandler>().Init();
 
         Guns.Init();
+        PlayerInventory.Init();
 
+        player.GetComponent<PlayerAnimator>().Init();
         player.GetComponent<PlayerInput>().Init();
         player.GetComponent<PlayerMovement>().Init();
         player.GetComponent<PlayerThreeDM>().Init();

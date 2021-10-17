@@ -17,13 +17,15 @@ public class Gun
     public float        reloadTime;
     public float        vol_shoot;
     public float        vol_reload;
-    public float[]      pos_barrelTip;
+    public float[]      pos_offset;
+    public float[]      pos_barrelTip; // relative to 0,0,0 in the .fbx file
     public string       muzzleFlashName;
 
     [System.NonSerialized()] public AudioClip    clip_shoot;
     [System.NonSerialized()] public AudioClip    clip_reload;
     [System.NonSerialized()] public Mesh         mesh;
     [System.NonSerialized()] public GameObject   prefab_muzzleFlash;
+    [System.NonSerialized()] public Vector3      vec_offset;
     [System.NonSerialized()] public Vector3      vec_barrelTip;
 }
 
@@ -54,6 +56,7 @@ public class Guns
             Debug.Assert(gun.mesh != null, "mesh null");
 
             gun.vec_barrelTip = new Vector3(gun.pos_barrelTip[0], gun.pos_barrelTip[1], gun.pos_barrelTip[2]);
+            gun.vec_offset = new Vector3(gun.pos_offset[0], gun.pos_offset[1], gun.pos_offset[2]);
 
             guns.Add(gun.name, gun);
         }

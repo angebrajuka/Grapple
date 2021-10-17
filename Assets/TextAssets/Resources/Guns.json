@@ -14,6 +14,7 @@
             "reloadTime":       0.3,
             "vol_shoot":        0.5,
             "vol_reload":       0.5,
+            "pos_offset":       [0, 0, 0],
             "pos_barrelTip":    [0, 0, 0],
             "muzzleFlashName":  ""
         }
