@@ -1,0 +1,21 @@
+{
+    "guns": [
+        {
+            "name":             "PumpActionShotgun",
+            "ammoType":         "Shells",
+            "damage":           50,
+            "rpm":              180,
+            "magSize":          1,
+            "bulletsPerShot":   1,
+            "pellets":          16,
+            "range":            20,
+            "spread":           40.0,
+            "recoil":           600.0,
+            "reloadTime":       0.3,
+            "vol_shoot":        0.5,
+            "vol_reload":       0.5,
+            "pos_barrelTip":    [0, 0, 0],
+            "muzzleFlashName":  null
+        }
+    ]
+}
