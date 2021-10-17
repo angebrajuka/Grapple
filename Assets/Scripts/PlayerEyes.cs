@@ -20,6 +20,6 @@ public class PlayerEyes : MonoBehaviour
             directionOffset = Vector3.zero;
         }
 
-        return Physics.Raycast(PlayerMovement.instance.t_camera.position+positionOffset, PlayerMovement.instance.t_camera.TransformDirection(Vector3.forward), out hit, range, layermask);
+        return Physics.Raycast(PlayerMovement.instance.t_camera.position+positionOffset, PlayerMovement.instance.t_camera.TransformDirection((Vector3.forward+directionOffset).normalized), out hit, range, layermask);
     }
 }

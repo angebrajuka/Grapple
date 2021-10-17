@@ -24,6 +24,7 @@ public class Gun
     [System.NonSerialized()] public AudioClip    clip_reload;
     [System.NonSerialized()] public Mesh         mesh;
     [System.NonSerialized()] public GameObject   prefab_muzzleFlash;
+    [System.NonSerialized()] public Vector3      vec_barrelTip;
 }
 
 public class GunsJson
@@ -51,6 +52,8 @@ public class Guns
             Debug.Assert(gun.clip_reload != null, "clip_reload null");
             Debug.Assert(gun.prefab_muzzleFlash != null, "prefab_muzzleFlash null");
             Debug.Assert(gun.mesh != null, "mesh null");
+
+            gun.vec_barrelTip = new Vector3(gun.pos_barrelTip[0], gun.pos_barrelTip[1], gun.pos_barrelTip[2]);
 
             guns.Add(gun.name, gun);
         }

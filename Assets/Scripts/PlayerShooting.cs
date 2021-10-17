@@ -22,4 +22,31 @@ public class PlayerShooting : MonoBehaviour
         euler.z = 0;
         gunPosition.localEulerAngles = euler;
     }
+
+    public static bool ShootBullet(Gun gun)
+    {
+        var directionOffset = Vector3.zero;
+
+        RaycastHit hit;
+        if(PlayerEyes.Raycast(out hit, gun.range, gun.vec_barrelTip, directionOffset))
+        {
+            // gun logic here
+
+            return true;
+        }
+
+        return false;
+    }
+
+    public static bool Shoot(Gun gun)
+    {
+        bool hit = false;
+
+        for(int i=0; i<gun.pellets; i++)
+        {
+            hit = ShootBullet(gun) || hit;
+        }
+
+        return hit;
+    }
 }
