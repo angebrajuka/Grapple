@@ -44,10 +44,13 @@ public class Guns
         {
             gun.clip_shoot = Resources.Load<AudioClip>("clip_"+gun.name+"_shoot");
             gun.clip_reload = Resources.Load<AudioClip>("clip_"+gun.name+"_reload");
-            gun.prefab_muzzleFlash = Resources.Load<GameObject>("prefab_muzzleFlash_/"+gun.muzzleFlashName == null ? gun.ammoType : gun.muzzleFlashName);
+            gun.prefab_muzzleFlash = Resources.Load<GameObject>("p_muzzleFlash_"+(gun.muzzleFlashName == "" ? gun.ammoType : gun.muzzleFlashName));
             gun.mesh = Resources.Load<Mesh>("mesh_"+gun.name);
 
-            Debug.Assert(gun.clip_shoot != null && gun.clip_reload != null/* && gun.prefab_muzzleFlash != null && gun.mesh != null*/, "gun not properly initialized");
+            Debug.Assert(gun.clip_shoot != null, "clip_shoot null");
+            Debug.Assert(gun.clip_reload != null, "clip_reload null");
+            Debug.Assert(gun.prefab_muzzleFlash != null, "prefab_muzzleFlash null");
+            Debug.Assert(gun.mesh != null, "mesh null");
 
             guns.Add(gun.name, gun);
         }
