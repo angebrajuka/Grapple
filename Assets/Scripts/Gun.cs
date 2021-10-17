@@ -47,6 +47,8 @@ public class Guns
             gun.prefab_muzzleFlash = Resources.Load<GameObject>("prefab_muzzleFlash_/"+gun.muzzleFlashName == null ? gun.ammoType : gun.muzzleFlashName);
             gun.mesh = Resources.Load<Mesh>("mesh_"+gun.name);
 
+            Debug.Assert(gun.clip_shoot != null && gun.clip_reload != null/* && gun.prefab_muzzleFlash != null && gun.mesh != null*/, "gun not properly initialized");
+
             guns.Add(gun.name, gun);
         }
     }

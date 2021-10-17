@@ -2538,7 +2538,7 @@ MonoBehaviour:
   clip_shoot: {fileID: 8300000, guid: ebae53426e61d504da4567d5e48040d1, type: 3}
   volume_shoot: 0.5
   source_cableSpinning: {fileID: 311314396}
-  fixedJointBreakForce: 1000
+  fixedJointBreakForce: 1500
   shootForce: 1200
   autoRetractSpeedFast: 100
   autoRetractSpeedSlow: 10
