@@ -6,6 +6,9 @@
         {"name": "walk_right",      "keys": [100] },
         {"name": "jump",            "keys": [32] },
         {"name": "slide",           "keys": [304] },
-        {"name": "grapple_shoot",   "keys": [324] }
+        {"name": "grapple_shoot",   "keys": [324] },
+        {"name": "gun_switch_0",    "keys": [49] },
+        {"name": "gun_switch_1",    "keys": [50] },
+        {"name": "gun_switch_2",    "keys": [51] }
     ]
 }

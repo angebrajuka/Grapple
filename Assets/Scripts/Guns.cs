@@ -9,7 +9,7 @@ public class Gun
     public int          damage;
     public int          rpm;
     public int          magSize;
-    public int          bulletsPerShot;
+    public int          ammoPerShot;
     public int          pellets;
     public int          range;
     public float        spread;
@@ -17,15 +17,13 @@ public class Gun
     public float        reloadTime;
     public float        vol_shoot;
     public float        vol_reload;
-    public float[]      pos_offset;
     public float[]      pos_barrelTip; // relative to 0,0,0 in the .fbx file
     public string       muzzleFlashName;
 
     [System.NonSerialized()] public AudioClip    clip_shoot;
     [System.NonSerialized()] public AudioClip    clip_reload;
-    [System.NonSerialized()] public Mesh         mesh;
+    [System.NonSerialized()] public GameObject   mesh;
     [System.NonSerialized()] public GameObject   prefab_muzzleFlash;
-    [System.NonSerialized()] public Vector3      vec_offset;
     [System.NonSerialized()] public Vector3      vec_barrelTip;
 }
 
@@ -46,19 +44,26 @@ public class Guns
         foreach(var gun in gunsJson.guns)
         {
             gun.clip_shoot = Resources.Load<AudioClip>("clip_"+gun.name+"_shoot");
-            gun.clip_reload = Resources.Load<AudioClip>("clip_"+gun.name+"_reload");
-            gun.prefab_muzzleFlash = Resources.Load<GameObject>("p_muzzleFlash_"+(gun.muzzleFlashName == "" ? gun.ammoType : gun.muzzleFlashName));
-            gun.mesh = Resources.Load<Mesh>("mesh_"+gun.name);
-
             Debug.Assert(gun.clip_shoot != null, "clip_shoot null");
+            gun.clip_reload = Resources.Load<AudioClip>("clip_"+gun.name+"_reload");
             Debug.Assert(gun.clip_reload != null, "clip_reload null");
+            gun.prefab_muzzleFlash = Resources.Load<GameObject>("p_muzzleFlash_"+(gun.muzzleFlashName == "" ? gun.ammoType : gun.muzzleFlashName));
             Debug.Assert(gun.prefab_muzzleFlash != null, "prefab_muzzleFlash null");
+            gun.mesh = Resources.Load<GameObject>("mesh_"+gun.name);
             Debug.Assert(gun.mesh != null, "mesh null");
 
+            gun.mesh.layer = Layers.PLAYER_ARMS;
+            for(int i=0; i<gun.mesh.transform.childCount; i++)
+            {
+                gun.mesh.transform.GetChild(i).gameObject.layer = Layers.PLAYER_ARMS;
+            }
+            gun.mesh.SetActive(false);
+
             gun.vec_barrelTip = new Vector3(gun.pos_barrelTip[0], gun.pos_barrelTip[1], gun.pos_barrelTip[2]);
-            gun.vec_offset = new Vector3(gun.pos_offset[0], gun.pos_offset[1], gun.pos_offset[2]);
 
             guns.Add(gun.name, gun);
         }
+
+        guns.Add("", null);
     }
 }
