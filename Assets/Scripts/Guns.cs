@@ -36,6 +36,18 @@ public class Guns
 {
     public static Dictionary<string, Gun> guns;
 
+    static void SetLayer(Transform transform, int depth)
+    {
+        transform.gameObject.layer = Layers.PLAYER_ARMS;
+        
+        if(depth <= 0) return;
+        
+        for(int i=0; i<transform.childCount; i++)
+        {
+            SetLayer(transform.GetChild(i), depth-1);
+        }
+    }
+
     public static void Init()
     {
         guns = new Dictionary<string, Gun>();
@@ -52,11 +64,12 @@ public class Guns
             gun.mesh = Resources.Load<GameObject>("mesh_"+gun.name);
             Debug.Assert(gun.mesh != null, "mesh null");
 
-            gun.mesh.layer = Layers.PLAYER_ARMS;
-            for(int i=0; i<gun.mesh.transform.childCount; i++)
-            {
-                gun.mesh.transform.GetChild(i).gameObject.layer = Layers.PLAYER_ARMS;
-            }
+            SetLayer(gun.mesh.transform, 4);
+            // gun.mesh.layer = Layers.PLAYER_ARMS;
+            // for(int i=0; i<gun.mesh.transform.childCount; i++)
+            // {
+            //     gun.mesh.transform.GetChild(i).gameObject.layer = Layers.PLAYER_ARMS;
+            // }
             gun.mesh.SetActive(false);
 
             gun.vec_barrelTip = new Vector3(gun.pos_barrelTip[0], gun.pos_barrelTip[1], gun.pos_barrelTip[2]);
