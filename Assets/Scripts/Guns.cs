@@ -22,7 +22,7 @@ public class Gun
 
     [System.NonSerialized()] public AudioClip    clip_shoot;
     [System.NonSerialized()] public AudioClip    clip_reload;
-    [System.NonSerialized()] public GameObject   mesh;
+    [System.NonSerialized()] public Transform    mesh;
     [System.NonSerialized()] public GameObject   prefab_muzzleFlash;
     [System.NonSerialized()] public Vector3      vec_barrelTip;
 }
@@ -32,7 +32,7 @@ public class GunsJson
     public Gun[] guns;
 }
 
-public class Guns
+public class Guns : MonoBehaviour
 {
     public static Dictionary<string, Gun> guns;
 
@@ -48,7 +48,7 @@ public class Guns
         }
     }
 
-    public static void Init()
+    public void Init()
     {
         guns = new Dictionary<string, Gun>();
 
@@ -61,7 +61,7 @@ public class Guns
             Debug.Assert(gun.clip_reload != null, "clip_reload null");
             gun.prefab_muzzleFlash = Resources.Load<GameObject>("p_muzzleFlash_"+(gun.muzzleFlashName == "" ? gun.ammoType : gun.muzzleFlashName));
             Debug.Assert(gun.prefab_muzzleFlash != null, "prefab_muzzleFlash null");
-            gun.mesh = Resources.Load<GameObject>("mesh_"+gun.name);
+            gun.mesh = transform.Find("mesh_"+gun.name);
             Debug.Assert(gun.mesh != null, "mesh null");
 
             SetLayer(gun.mesh.transform, 4);
@@ -70,7 +70,7 @@ public class Guns
             // {
             //     gun.mesh.transform.GetChild(i).gameObject.layer = Layers.PLAYER_ARMS;
             // }
-            gun.mesh.SetActive(false);
+            gun.mesh.gameObject.SetActive(false);
 
             gun.vec_barrelTip = new Vector3(gun.pos_barrelTip[0], gun.pos_barrelTip[1], gun.pos_barrelTip[2]);
 

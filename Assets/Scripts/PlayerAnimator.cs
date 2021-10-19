@@ -11,8 +11,10 @@ public class PlayerAnimator : MonoBehaviour
     public Transform gunPos;
     public Animator gunPosAnimator;
 
-    public static Dictionary<string, GameObject> guns;
+    public static Dictionary<string, Transform> guns;
     public static string activeGun="";
+    public static Transform ActiveGun { get { return guns[activeGun]; } }
+
     public enum State
     {
         RAISED,
@@ -27,12 +29,12 @@ public class PlayerAnimator : MonoBehaviour
         instance = this;
 
         state = LOWERED;
-        guns = new Dictionary<string, GameObject>();
+        guns = new Dictionary<string, Transform>();
 
         foreach(var pair in Guns.guns)
         {
-            guns.Add(pair.Key, pair.Value == null ? null : Instantiate(pair.Value.mesh, gunPos));
-            if(guns[pair.Key] != null) guns[pair.Key].SetActive(false);
+            guns.Add(pair.Key, pair.Value == null ? null : pair.Value.mesh);
+            if(guns[pair.Key] != null) guns[pair.Key].gameObject.SetActive(false);
         }
 
         AtLowest();
@@ -48,12 +50,12 @@ public class PlayerAnimator : MonoBehaviour
         state = LOWERED;
         if(activeGun != "")
         {
-            guns[activeGun].SetActive(false);
+            guns[activeGun].gameObject.SetActive(false);
         }
         activeGun = PlayerInventory.CurrentGunName;
         if(activeGun != "")
         {
-            guns[activeGun].SetActive(true);
+            guns[activeGun].gameObject.SetActive(true);
             gunPosAnimator.Play("Base Layer.Raising"); // raise
             state = SWAPPING;
         }

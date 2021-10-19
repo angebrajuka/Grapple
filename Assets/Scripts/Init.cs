@@ -3,6 +3,7 @@ using UnityEngine;
 public class Init : MonoBehaviour
 {
     // hierarchy
+    public Guns guns;
     public Transform player;
     public Transform canvas;
     public AudioManager audioManager;
@@ -16,7 +17,7 @@ public class Init : MonoBehaviour
         musicController.Init();
         player.GetComponent<PauseHandler>().Init();
 
-        Guns.Init();
+        guns.Init();
         PlayerInventory.Init();
 
         player.GetComponent<PlayerAnimator>().Init();
