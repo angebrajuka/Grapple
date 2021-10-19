@@ -3,7 +3,47 @@ guid: 9d5197a873aed5544b6270a9b008dc13
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: BarrelJoints
+    second: {fileID: 2100000, guid: e2aad3cf4934d804ca179444c3df6f76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Barrels
+    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Handle_Pump_Stock
+    second: {fileID: 2100000, guid: c8ec81d64d4d7a0409aa238c8b20eb8f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.004
+    second: {fileID: 2100000, guid: c8ec81d64d4d7a0409aa238c8b20eb8f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.005
+    second: {fileID: 2100000, guid: d40d4d337f9a5fd4eb85afd23b85df30, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.006
+    second: {fileID: 2100000, guid: a5e9cf73778fd00439a07e6c7d7cbaf2, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Material.007
+    second: {fileID: 2100000, guid: f6d934f025ea21a4590a10cf2310f23e, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Reciever
+    second: {fileID: 2100000, guid: f826fff431ad72f4ca5542835ad49769, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

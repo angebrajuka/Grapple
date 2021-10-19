@@ -4,7 +4,7 @@ public class GunAnimationEvents : MonoBehaviour
 {
     public void Raised()
     {
-        PlayerAnimator.instance.state = PlayerAnimator.State.RAISED;
+        PlayerAnimator.state = PlayerAnimator.State.RAISED;
     }
 
     public void Lowered()

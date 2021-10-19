@@ -21,6 +21,13 @@ public class PlayerShooting : MonoBehaviour
         // var euler = gunPosition.localEulerAngles;
         // euler.z = 0;
         // gunPosition.localEulerAngles = euler;
+
+        if(PlayerInventory.CurrentGun == null) return;
+
+        if(PlayerAnimator.CanShoot && PlayerInput.GetKeyDown("shoot"))
+        {
+            Shoot(PlayerInventory.CurrentGun);
+        }
     }
 
     public static bool ShootBullet(Gun gun)
@@ -40,8 +47,11 @@ public class PlayerShooting : MonoBehaviour
 
     public static bool Shoot(Gun gun)
     {
-        bool hit = false;
+        AudioManager.PlayClip(PlayerInventory.CurrentGun.clip_shoot);
+        PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformPoint(0, 0, -gun.recoil));
+        PlayerAnimator.instance.Recoil();
 
+        bool hit = false;
         for(int i=0; i<gun.pellets; i++)
         {
             hit = ShootBullet(gun) || hit;

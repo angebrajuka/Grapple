@@ -17,9 +17,10 @@ public class PlayerAnimator : MonoBehaviour
     {
         RAISED,
         SWAPPING,
-        LOWERED
+        LOWERED,
+        RECOIL
     }
-    public State state;
+    public static State state;
 
     public void Init()
     {
@@ -31,13 +32,13 @@ public class PlayerAnimator : MonoBehaviour
         foreach(var pair in Guns.guns)
         {
             guns.Add(pair.Key, pair.Value == null ? null : Instantiate(pair.Value.mesh, gunPos));
-            if(guns[pair.Key] != null) guns[pair.Key].SetActive(true);
+            if(guns[pair.Key] != null) guns[pair.Key].SetActive(false);
         }
 
         AtLowest();
     }
 
-    public bool CanShoot
+    public static bool CanShoot
     {
         get { return state == RAISED && PlayerInventory.CurrentGunName == activeGun; }
     }
@@ -53,9 +54,15 @@ public class PlayerAnimator : MonoBehaviour
         if(activeGun != "")
         {
             guns[activeGun].SetActive(true);
-            gunPosAnimator.SetInteger("state", 0);
+            gunPosAnimator.Play("Base Layer.Raising"); // raise
             state = SWAPPING;
         }
+    }
+
+    public void Recoil()
+    {
+        state = RECOIL;
+        gunPosAnimator.Play("Base Layer.Recoil");
     }
 
     public void UpdateGun()
@@ -65,7 +72,7 @@ public class PlayerAnimator : MonoBehaviour
             if(state == RAISED)
             {
                 state = SWAPPING;
-                gunPosAnimator.SetInteger("state", 1); // lower
+                gunPosAnimator.Play("Base Layer.Lowering"); // lower
             }
             else if(state == LOWERED)
             {
