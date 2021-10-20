@@ -21,7 +21,6 @@ public class Gun
     public string       muzzleFlashName;
 
     [System.NonSerialized()] public AudioClip    clip_shoot;
-    [System.NonSerialized()] public AudioClip    clip_reload;
     [System.NonSerialized()] public Transform    mesh;
     [System.NonSerialized()] public GameObject   prefab_muzzleFlash;
     [System.NonSerialized()] public Vector3      vec_barrelTip;
@@ -57,8 +56,6 @@ public class Guns : MonoBehaviour
         {
             gun.clip_shoot = Resources.Load<AudioClip>("clip_"+gun.name+"_shoot");
             Debug.Assert(gun.clip_shoot != null, "clip_shoot null");
-            gun.clip_reload = Resources.Load<AudioClip>("clip_"+gun.name+"_reload");
-            Debug.Assert(gun.clip_reload != null, "clip_reload null");
             gun.prefab_muzzleFlash = Resources.Load<GameObject>("p_muzzleFlash_"+(gun.muzzleFlashName == "" ? gun.ammoType : gun.muzzleFlashName));
             Debug.Assert(gun.prefab_muzzleFlash != null, "prefab_muzzleFlash null");
             gun.mesh = transform.Find("mesh_"+gun.name);

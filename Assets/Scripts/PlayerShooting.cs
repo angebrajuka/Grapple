@@ -6,32 +6,10 @@ public class PlayerShooting : MonoBehaviour
     public Transform gunPosition;
     public float moveSpeed;
 
-    void Update()
-    {
-        // var targetDirection = PlayerMovement.instance.t_camera.forward;
-
-        // RaycastHit hit;
-        // if(PlayerEyes.Raycast(out hit, Mathf.Infinity, Vector3.forward*2))
-        // {
-        //     targetDirection = (hit.point-gunPosition.position).normalized;
-        // }
-
-        // var newDirection = Vector3.MoveTowards(gunPosition.forward, targetDirection, moveSpeed*Time.deltaTime);
-        // gunPosition.LookAt(gunPosition.position+newDirection);
-        // var euler = gunPosition.localEulerAngles;
-        // euler.z = 0;
-        // gunPosition.localEulerAngles = euler;
-
-        if(PlayerInventory.CurrentGun == null) return;
-
-        if(PlayerAnimator.CanShoot && PlayerInput.GetKeyDown("shoot"))
-        {
-            Shoot(PlayerInventory.CurrentGun);
-        }
-    }
-
     public static bool ShootBullet(Gun gun)
     {
+        PlayerInventory.Ammo -= gun.ammoPerShot;
+
         var directionOffset = Vector3.zero;
 
         RaycastHit hit;
@@ -58,5 +36,34 @@ public class PlayerShooting : MonoBehaviour
         }
 
         return hit;
+    }
+
+    public static bool CanShoot
+    {
+        get { return PlayerAnimator.state == PlayerAnimator.State.RAISED && PlayerInventory.CurrentGunName == PlayerAnimator.activeGun && PlayerInventory.Ammo >= PlayerInventory.CurrentGun.ammoPerShot; }
+    }
+
+    void Update()
+    {
+        // var targetDirection = PlayerMovement.instance.t_camera.forward;
+
+        // RaycastHit hit;
+        // if(PlayerEyes.Raycast(out hit, Mathf.Infinity, Vector3.forward*2))
+        // {
+        //     targetDirection = (hit.point-gunPosition.position).normalized;
+        // }
+
+        // var newDirection = Vector3.MoveTowards(gunPosition.forward, targetDirection, moveSpeed*Time.deltaTime);
+        // gunPosition.LookAt(gunPosition.position+newDirection);
+        // var euler = gunPosition.localEulerAngles;
+        // euler.z = 0;
+        // gunPosition.localEulerAngles = euler;
+
+        if(PlayerInventory.CurrentGun == null) return;
+
+        if(CanShoot && PlayerInput.GetKeyDown("shoot"))
+        {
+            Shoot(PlayerInventory.CurrentGun);
+        }
     }
 }

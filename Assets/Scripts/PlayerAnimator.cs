@@ -40,11 +40,6 @@ public class PlayerAnimator : MonoBehaviour
         AtLowest();
     }
 
-    public static bool CanShoot
-    {
-        get { return state == RAISED && PlayerInventory.CurrentGunName == activeGun; }
-    }
-
     public void AtLowest()
     {
         state = LOWERED;
