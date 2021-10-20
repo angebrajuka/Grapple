@@ -33,7 +33,7 @@ public class PlayerAnimator : MonoBehaviour
 
         foreach(var pair in Guns.guns)
         {
-            guns.Add(pair.Key, pair.Value == null ? null : pair.Value.mesh);
+            guns.Add(pair.Key, pair.Value == null ? null : pair.Value.transform);
             if(guns[pair.Key] != null) guns[pair.Key].gameObject.SetActive(false);
         }
 

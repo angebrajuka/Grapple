@@ -12,6 +12,6 @@ public class ReloadAnimationEvents : MonoBehaviour
 
     public void Finish()
     {
-        PlayerInventory.Ammo = PlayerInventory.CurrentGun.magSize;
+        PlayerInventory.Ammo = PlayerInventory.CurrentGunStats.magSize;
     }
 }

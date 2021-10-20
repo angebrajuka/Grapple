@@ -6,7 +6,7 @@ public class PlayerShooting : MonoBehaviour
     public Transform gunPosition;
     public float moveSpeed;
 
-    public static bool ShootBullet(Gun gun)
+    public static bool ShootBullet(GunStats gun)
     {
         PlayerInventory.Ammo -= gun.ammoPerShot;
 
@@ -23,9 +23,9 @@ public class PlayerShooting : MonoBehaviour
         return false;
     }
 
-    public static bool Shoot(Gun gun)
+    public static bool Shoot(GunStats gun)
     {
-        AudioManager.PlayClip(PlayerInventory.CurrentGun.clip_shoot);
+        AudioManager.PlayClip(PlayerInventory.CurrentGunStats.clip_shoot);
         PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformPoint(0, 0, -gun.recoil));
         PlayerAnimator.instance.Recoil();
 
@@ -40,7 +40,7 @@ public class PlayerShooting : MonoBehaviour
 
     public static bool CanShoot
     {
-        get { return PlayerAnimator.state == PlayerAnimator.State.RAISED && PlayerInventory.CurrentGunName == PlayerAnimator.activeGun && PlayerInventory.Ammo >= PlayerInventory.CurrentGun.ammoPerShot; }
+        get { return PlayerAnimator.state == PlayerAnimator.State.RAISED && PlayerInventory.CurrentGunName == PlayerAnimator.activeGun && PlayerInventory.Ammo >= PlayerInventory.CurrentGunStats.ammoPerShot; }
     }
 
     void Update()
@@ -63,7 +63,7 @@ public class PlayerShooting : MonoBehaviour
 
         if(CanShoot && PlayerInput.GetKeyDown("shoot"))
         {
-            Shoot(PlayerInventory.CurrentGun);
+            Shoot(PlayerInventory.CurrentGunStats);
         }
     }
 }
