@@ -13,7 +13,7 @@ public class PlayerShooting : MonoBehaviour
         var directionOffset = Vector3.zero;
 
         RaycastHit hit;
-        if(PlayerEyes.Raycast(out hit, gun.range, gun.vec_barrelTip, directionOffset))
+        if(PlayerEyes.Raycast(out hit, gun.range, gun.barrelLength*Vector3.forward, directionOffset))
         {
             // gun logic here
 
