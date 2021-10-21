@@ -18,7 +18,7 @@ public class Gun
 public class PlayerInventory : MonoBehaviour
 {
     public static Gun[] guns;
-    private static int _currentGun;
+    public static int _currentGun;
     public static GunStats CurrentGunStats { get { return Guns.guns[guns[_currentGun].name]; } }
     public static Gun CurrentGun { get { return guns[_currentGun]; } }
     public static Dictionary<string, int> reserveAmmo;
@@ -45,22 +45,12 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public static int _CurrentGun
-    {
-        get { return _currentGun; }
-        set
-        {
-            _currentGun = value;
-            PlayerAnimator.instance.UpdateGun();
-        }
-    }
-
     public static string CurrentGunName { get { return CurrentGun.name; } }
 
     void Update()
     {
-        if(PlayerInput.GetKey("gun_switch_0")) _CurrentGun = 0;
-        if(PlayerInput.GetKey("gun_switch_1")) _CurrentGun = 1;
-        if(PlayerInput.GetKey("gun_switch_2")) _CurrentGun = 2;
+        if(PlayerInput.GetKey("gun_switch_0")) _currentGun = 0;
+        if(PlayerInput.GetKey("gun_switch_1")) _currentGun = 1;
+        if(PlayerInput.GetKey("gun_switch_2")) _currentGun = 2;
     }
 }

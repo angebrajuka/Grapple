@@ -5,10 +5,8 @@ public class GunAnimationEvents : MonoBehaviour
     public void Raised()
     {
         PlayerAnimator.state = PlayerAnimator.State.RAISED;
-        if(PlayerInventory.Ammo <= 0) // TODO
-        {
-            PlayerAnimator.ActiveGun.gameObject.GetComponent<Animation>().Play();
-        }
+        PlayerAnimator.instance.CheckReload();
+        PlayerAnimator.GunPosAnimator.enabled = false;
     }
 
     public void Lowered()

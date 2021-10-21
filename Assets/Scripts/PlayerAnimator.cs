@@ -10,6 +10,10 @@ public class PlayerAnimator : MonoBehaviour
     // hierarchy
     public Transform gunPos;
     public Animator gunPosAnimator;
+    public GunAnimationEvents gunAnimationEvents;
+    public float recoilSpeed_moveBack, recoilSpeed_rotateBack;
+    public float recoilSpeed_moveForward, recoilSpeed_rotateForward;
+    public Vector3 backPosition, backRotation;
 
     public static Dictionary<string, Transform> guns;
     public static string activeGun="";
@@ -19,16 +23,25 @@ public class PlayerAnimator : MonoBehaviour
     {
         RAISED,
         SWAPPING,
-        LOWERED,
-        RECOIL
+        RECOIL_BACK,
+        RECOIL_FORWARD
     }
     public static State state;
+
+    public static Animator GunPosAnimator
+    {
+        get
+        {
+            instance.gunPosAnimator.enabled = true;
+            return instance.gunPosAnimator;
+        }
+    }
 
     public void Init()
     {
         instance = this;
 
-        state = LOWERED;
+        state = SWAPPING;
         guns = new Dictionary<string, Transform>();
 
         foreach(var pair in Guns.guns)
@@ -40,9 +53,18 @@ public class PlayerAnimator : MonoBehaviour
         AtLowest();
     }
 
+    public void CheckReload()
+    {
+        var anim = PlayerAnimator.ActiveGun.gameObject.GetComponent<Animation>();
+        if(PlayerInventory.Ammo <= 0 && !anim.isPlaying) // TODO
+        {
+            anim.Rewind();
+            anim.Play();
+        }
+    }
+
     public void AtLowest()
     {
-        state = LOWERED;
         if(activeGun != "")
         {
             guns[activeGun].gameObject.SetActive(false);
@@ -51,30 +73,53 @@ public class PlayerAnimator : MonoBehaviour
         if(activeGun != "")
         {
             guns[activeGun].gameObject.SetActive(true);
-            gunPosAnimator.Play("Base Layer.Raising"); // raise
-            state = SWAPPING;
+            CheckReload();
         }
+        GunPosAnimator.Play("Base Layer.Raising"); // raise
     }
 
     public void Recoil()
     {
-        state = RECOIL;
-        gunPosAnimator.Play("Base Layer.Recoil");
+        state = RECOIL_BACK;
     }
 
-    public void UpdateGun()
+    void Update()
     {
-        if(activeGun != PlayerInventory.CurrentGunName)
+        var pos = gunPos.localPosition;
+        var rot = gunPos.localRotation;
+
+        switch(state)
         {
-            if(state == RAISED)
+        case RECOIL_BACK:
+            var backRotation = Quaternion.Euler(this.backRotation*PlayerInventory.CurrentGunStats.recoil);
+            Vector3 backPosition = PlayerInventory.CurrentGunStats.recoil*this.backPosition;
+            pos = Vector3.MoveTowards(pos, backPosition, Time.deltaTime*recoilSpeed_moveBack);
+            rot = Quaternion.RotateTowards(rot, backRotation, Time.deltaTime*recoilSpeed_rotateBack);
+            if(pos == backPosition) state = RECOIL_FORWARD;
+
+            break;
+        case RECOIL_FORWARD:
+            pos = Vector3.MoveTowards(pos, Vector3.zero, Time.deltaTime*recoilSpeed_moveForward);
+            rot = Quaternion.RotateTowards(rot, Quaternion.identity, Time.deltaTime*recoilSpeed_rotateForward);
+            if(pos == Vector3.zero) gunAnimationEvents.Raised();
+
+            break;
+        case RAISED:
+            if(activeGun != PlayerInventory.CurrentGunName)
             {
                 state = SWAPPING;
-                gunPosAnimator.Play("Base Layer.Lowering"); // lower
+                GunPosAnimator.Play("Base Layer.Lowering"); // lower
             }
-            else if(state == LOWERED)
+            else
             {
-                AtLowest();
+                gunAnimationEvents.Raised();
             }
+            break;
+        default:
+            break;
         }
+
+        gunPos.localPosition = pos;
+        gunPos.localRotation = rot;
     }
 }

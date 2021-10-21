@@ -2103,7 +2103,7 @@ MonoBehaviour:
   reloadTime: 0.3
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.5
-  vec_barrelTip: {x: 0, y: 0, z: 0}
+  barrelLength: 0
   prefab_muzzleFlash: {fileID: 0}
 --- !u!1 &1544373294
 GameObject:
@@ -2714,7 +2714,7 @@ MonoBehaviour:
   walkMaxSpeed: 12
   friction_normal: 0.9
   friction_slide: 1
-  jumpForce: 800
+  jumpForce: 600
   jumpTimeLeeway: 0.2
   slideForce: 800
   slideTime: 0.4
@@ -2860,6 +2860,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gunPos: {fileID: 1097735634}
   gunPosAnimator: {fileID: 1097735635}
+  gunAnimationEvents: {fileID: 1097735636}
+  recoilSpeed_moveBack: 20
+  recoilSpeed_rotateBack: 1000
+  recoilSpeed_moveForward: 2
+  recoilSpeed_rotateForward: 30
+  backPosition: {x: 0, y: 0, z: -0.0007}
+  backRotation: {x: -0.01, y: 0, z: 0}
 --- !u!114 &1887390195
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3498,7 +3505,7 @@ MonoBehaviour:
   reloadTime: 0.5
   clip_shoot: {fileID: 8300000, guid: ad8c9bbe444b5af40af023e559d0f623, type: 3}
   vol_shoot: 0.4
-  vec_barrelTip: {x: 0, y: 0, z: 0}
+  barrelLength: 0
   prefab_muzzleFlash: {fileID: 0}
 --- !u!1 &2109749372
 GameObject:
