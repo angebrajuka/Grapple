@@ -2,17 +2,17 @@ using UnityEngine;
 
 public class ReloadAnimationEvents : MonoBehaviour
 {
-    public Transform hand;
-    public AudioClip[] sounds;
-    public float[] volumes;
+    public Animator animator;
 
     public void Sound(int index)
     {
-        AudioManager.PlayClip(sounds[index], volumes[index]);
+        Debug.Log(index);
+        AudioManager.PlayClip(PlayerInventory.CurrentGunStats.clip_reloads[index], PlayerInventory.CurrentGunStats.volume_reloads[index]);
     }
 
     public void Finish()
     {
+        animator.SetInteger("state", -1);
         PlayerInventory.Ammo = PlayerInventory.CurrentGunStats.magSize;
     }
 

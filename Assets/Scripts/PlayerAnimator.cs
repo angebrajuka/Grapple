@@ -10,6 +10,7 @@ public class PlayerAnimator : MonoBehaviour
     // hierarchy
     public Transform gunPos;
     public Animator gunPosAnimator;
+    public Animator gunReloadAnimator;
     public GunAnimationEvents gunAnimationEvents;
     public float recoilSpeed_moveBack, recoilSpeed_rotateBack;
     public float recoilSpeed_moveForward, recoilSpeed_rotateForward;
@@ -53,11 +54,10 @@ public class PlayerAnimator : MonoBehaviour
 
     public void CheckReload()
     {
-        var anim = PlayerAnimator.ActiveGun.gameObject.GetComponent<Animation>();
-        if(PlayerInventory.Ammo <= 0 && !anim.isPlaying) // TODO
+        if(PlayerInventory.Ammo <= 0) // TODO
         {
-            anim.Rewind();
-            anim.Play();
+            Debug.Log("check reload " + PlayerInventory.CurrentGunStats.index);
+            gunReloadAnimator.SetInteger("state", PlayerInventory.CurrentGunStats.index);
         }
     }
 
@@ -106,6 +106,7 @@ public class PlayerAnimator : MonoBehaviour
             if(activeGun != PlayerInventory.CurrentGunName)
             {
                 state = SWAPPING;
+                gunReloadAnimator.SetInteger("state", -1);
                 GunPosAnimator.Play("Base Layer.Lowering"); // lower
             }
             else
