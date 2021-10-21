@@ -56,7 +56,6 @@ public class PlayerAnimator : MonoBehaviour
     {
         if(PlayerInventory.Ammo <= 0) // TODO
         {
-            Debug.Log("check reload " + PlayerInventory.CurrentGunStats.index);
             gunReloadAnimator.SetInteger("state", PlayerInventory.CurrentGunStats.index);
         }
     }

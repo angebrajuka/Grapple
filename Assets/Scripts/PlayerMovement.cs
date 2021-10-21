@@ -103,7 +103,6 @@ public class PlayerMovement : MonoBehaviour
     //         Vector3 cnormal = collision.contacts[i].normal;
     //         if(cnormal.y > normal.y) {
     //             normal = cnormal;
-    //             Debug.Log(cnormal);
     //         }
     //     }
 

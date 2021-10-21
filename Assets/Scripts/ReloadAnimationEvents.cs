@@ -6,7 +6,6 @@ public class ReloadAnimationEvents : MonoBehaviour
 
     public void Sound(int index)
     {
-        Debug.Log(index);
         AudioManager.PlayClip(PlayerInventory.CurrentGunStats.clip_reloads[index], PlayerInventory.CurrentGunStats.volume_reloads[index]);
     }
 
