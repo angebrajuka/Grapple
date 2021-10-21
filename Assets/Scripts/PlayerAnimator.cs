@@ -41,7 +41,7 @@ public class PlayerAnimator : MonoBehaviour
     {
         instance = this;
 
-        state = SWAPPING;
+        state = RAISED;
         guns = new Dictionary<string, Transform>();
 
         foreach(var pair in Guns.guns)
@@ -49,8 +49,6 @@ public class PlayerAnimator : MonoBehaviour
             guns.Add(pair.Key, pair.Value == null ? null : pair.Value.transform);
             if(guns[pair.Key] != null) guns[pair.Key].gameObject.SetActive(false);
         }
-
-        AtLowest();
     }
 
     public void CheckReload()

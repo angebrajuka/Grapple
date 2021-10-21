@@ -61,7 +61,7 @@ public class PlayerShooting : MonoBehaviour
 
         if(PlayerInventory.CurrentGun == null) return;
 
-        if(CanShoot && PlayerInput.GetKeyDown("shoot"))
+        if(CanShoot && PlayerInput.GetKey("shoot"))
         {
             Shoot(PlayerInventory.CurrentGunStats);
         }

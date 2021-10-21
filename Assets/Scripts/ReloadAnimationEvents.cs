@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ReloadAnimationEvents : MonoBehaviour
 {
+    public Transform hand;
     public AudioClip[] sounds;
     public float[] volumes;
 
@@ -13,5 +14,11 @@ public class ReloadAnimationEvents : MonoBehaviour
     public void Finish()
     {
         PlayerInventory.Ammo = PlayerInventory.CurrentGunStats.magSize;
+    }
+
+    public void Update()
+    {
+        // playerHand.position = hand.localPostion;
+        // playerHand.localEulerAngles = hand.localEulerAngles;
     }
 }

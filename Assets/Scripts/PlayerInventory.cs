@@ -34,8 +34,8 @@ public class PlayerInventory : MonoBehaviour
     {
         guns = new Gun[3]
         {
-            new Gun("DoubleBarrelShotgun"),
             new Gun("PumpActionShotgun"),
+            new Gun("DoubleBarrelShotgun"),
             new Gun()
         };
         reserveAmmo = new Dictionary<string, int>();
