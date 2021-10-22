@@ -11,7 +11,7 @@ public class ReloadAnimationEvents : MonoBehaviour
 
     public void Finish()
     {
-        animator.SetInteger("state", -1);
+        animator.SetBool("reloading", false);
         PlayerInventory.Ammo = PlayerInventory.CurrentGunStats.magSize;
     }
 
