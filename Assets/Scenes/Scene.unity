@@ -3013,7 +3013,7 @@ MonoBehaviour:
   fixedJointBreakForce: 2000
   shootForce: 1200
   autoRetractSpeedFast: 100
-  autoRetractSpeedSlow: 10
+  autoRetractSpeedSlow: 16
   recoilForce: 500
   minDistance: 3
   destroyDistance: 0.5

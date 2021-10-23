@@ -61,6 +61,7 @@ public class GrappleHook : MonoBehaviour
         {
             if(configJoint.linearLimit.limit > PlayerThreeDM.instance.minDistance || fixedJoint == null)
             {
+                configJoint.SetDistance();
                 var ll = configJoint.linearLimit;
                 ll.limit -= (fixedJoint == null ? PlayerThreeDM.instance.autoRetractSpeedFast : PlayerThreeDM.instance.autoRetractSpeedSlow)*Time.fixedDeltaTime;
                 configJoint.linearLimit = ll;
