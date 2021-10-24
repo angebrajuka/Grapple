@@ -56,7 +56,6 @@ public class PlayerAnimator : MonoBehaviour
     {
         if(PlayerInventory.Ammo <= 0) // TODO
         {
-            gunReloadAnimator.SetInteger("gun", PlayerInventory.CurrentGunStats.index);
             gunReloadAnimator.SetBool("reloading", true);
         }
     }
@@ -71,6 +70,7 @@ public class PlayerAnimator : MonoBehaviour
         if(activeGun != "")
         {
             guns[activeGun].gameObject.SetActive(true);
+            gunReloadAnimator.SetInteger("gun", PlayerInventory.CurrentGunStats.index);
             CheckReload();
         }
         GunPosAnimator.Play("Base Layer.Raising"); // raise
@@ -106,7 +106,7 @@ public class PlayerAnimator : MonoBehaviour
             if(activeGun != PlayerInventory.CurrentGunName)
             {
                 state = SWAPPING;
-                gunReloadAnimator.SetInteger("gun", -1);
+                // gunReloadAnimator.SetInteger("gun", -1);
                 gunReloadAnimator.SetBool("reloading", false);
                 GunPosAnimator.Play("Base Layer.Lowering"); // lower
             }
