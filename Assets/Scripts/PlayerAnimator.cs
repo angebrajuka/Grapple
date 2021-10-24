@@ -45,16 +45,16 @@ public class PlayerAnimator : MonoBehaviour
         state = RAISED;
         guns = new Dictionary<string, Transform>();
 
-        foreach(var pair in Guns.guns)
+        foreach(var gun in Guns.guns)
         {
-            guns.Add(pair.Key, pair.Value == null ? null : pair.Value.transform);
-            if(guns[pair.Key] != null) guns[pair.Key].gameObject.SetActive(false);
+            guns.Add(gun.name, gun.transform);
+            if(guns[gun.name] != null) guns[gun.name].gameObject.SetActive(false);
         }
     }
 
-    public void CheckReload()
+    public void CheckReload(bool force=false)
     {
-        if(PlayerInventory.Ammo <= 0) // TODO
+        if(PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)) // TODO
         {
             gunReloadAnimator.SetBool("reloading", true);
         }
@@ -70,7 +70,7 @@ public class PlayerAnimator : MonoBehaviour
         if(activeGun != "")
         {
             guns[activeGun].gameObject.SetActive(true);
-            gunReloadAnimator.SetInteger("gun", PlayerInventory.CurrentGunStats.index);
+            gunReloadAnimator.SetInteger("gun", PlayerInventory.CurrentGun.index);
             CheckReload();
         }
         GunPosAnimator.Play("Base Layer.Raising"); // raise
@@ -89,8 +89,8 @@ public class PlayerAnimator : MonoBehaviour
         switch(state)
         {
         case RECOIL_BACK:
-            var backRotation = Quaternion.Euler(this.backRotation*PlayerInventory.CurrentGunStats.recoil);
-            Vector3 backPosition = PlayerInventory.CurrentGunStats.recoil*this.backPosition;
+            var backRotation = Quaternion.Euler(this.backRotation*PlayerInventory.CurrentGun.recoil);
+            Vector3 backPosition = PlayerInventory.CurrentGun.recoil*this.backPosition;
             pos = Vector3.MoveTowards(pos, backPosition, Time.deltaTime*recoilSpeed_moveBack);
             rot = Quaternion.RotateTowards(rot, backRotation, Time.deltaTime*recoilSpeed_rotateBack);
             if(pos == backPosition) state = RECOIL_FORWARD;
@@ -106,7 +106,6 @@ public class PlayerAnimator : MonoBehaviour
             if(activeGun != PlayerInventory.CurrentGunName)
             {
                 state = SWAPPING;
-                // gunReloadAnimator.SetInteger("gun", -1);
                 gunReloadAnimator.SetBool("reloading", false);
                 GunPosAnimator.Play("Base Layer.Lowering"); // lower
             }

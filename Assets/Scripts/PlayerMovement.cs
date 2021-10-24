@@ -51,7 +51,6 @@ public class PlayerMovement : MonoBehaviour
         cameraPosDefault = t_camera.localPosition;
         cameraPosCrouch = cameraPosDefault - Vector3.up*slideHeightAdjust;
 
-        // normal = new Vector3(0, 0, 0);
         grounded = false;
         Crouching = false;
         input_move = new Vector3(0, 0);
@@ -87,27 +86,6 @@ public class PlayerMovement : MonoBehaviour
     {
         get { return Crouching && Time.time <= slideStartTime+slideTime; }
     }
-
-    // void OnCollisionExit()
-    // {
-    //     normal.Set(0, 0, 0);
-    //     grounded = false;
-    // }
-
-    // void OnCollisionStay(Collision collision)
-    // {
-    //     normal.Set(0, 0, 0);
-    //     grounded = false;
-
-    //     for(int i=0; i < collision.contactCount; i++) {
-    //         Vector3 cnormal = collision.contacts[i].normal;
-    //         if(cnormal.y > normal.y) {
-    //             normal = cnormal;
-    //         }
-    //     }
-
-    //     grounded = normal.y >= groundNormal && Mathf.Abs(m_rigidbody.velocity.y) <= 1f;
-    // }
 
     void Update()
     {

@@ -6,10 +6,8 @@ public class PlayerShooting : MonoBehaviour
     public Transform gunPosition;
     public float moveSpeed;
 
-    public static bool ShootBullet(GunStats gun)
+    public static bool ShootBullet(Gun gun)
     {
-        PlayerInventory.Ammo -= gun.ammoPerShot;
-
         var directionOffset = Vector3.zero;
 
         RaycastHit hit;
@@ -23,11 +21,13 @@ public class PlayerShooting : MonoBehaviour
         return false;
     }
 
-    public static bool Shoot(GunStats gun)
+    public static bool Shoot(Gun gun)
     {
-        AudioManager.PlayClip(PlayerInventory.CurrentGunStats.clip_shoot);
+        AudioManager.PlayClip(PlayerInventory.CurrentGun.clip_shoot);
         PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformPoint(0, 0, -gun.recoil));
         PlayerAnimator.instance.Recoil();
+        PlayerInventory.CurrentGun.timeLastShot = Time.time;
+        PlayerInventory.Ammo -= gun.ammoPerShot;
 
         bool hit = false;
         for(int i=0; i<gun.pellets; i++)
@@ -40,7 +40,11 @@ public class PlayerShooting : MonoBehaviour
 
     public static bool CanShoot
     {
-        get { return PlayerAnimator.state == PlayerAnimator.State.RAISED && PlayerInventory.CurrentGunName == PlayerAnimator.activeGun && PlayerInventory.Ammo >= PlayerInventory.CurrentGunStats.ammoPerShot; }
+        get { return PlayerAnimator.state != PlayerAnimator.State.SWAPPING && 
+            PlayerAnimator.instance.gunReloadAnimator.GetBool("reloading") == false && 
+            PlayerInventory.CurrentGunName == PlayerAnimator.activeGun && 
+            PlayerInventory.Ammo >= PlayerInventory.CurrentGun.ammoPerShot && 
+            Time.time > PlayerInventory.CurrentGun.timeLastShot+PlayerInventory.CurrentGun.timeBetweenShots; }
     }
 
     void Update()
@@ -63,7 +67,7 @@ public class PlayerShooting : MonoBehaviour
 
         if(CanShoot && PlayerInput.GetKey("shoot"))
         {
-            Shoot(PlayerInventory.CurrentGunStats);
+            Shoot(PlayerInventory.CurrentGun);
         }
     }
 }

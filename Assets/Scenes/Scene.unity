@@ -2181,15 +2181,15 @@ MonoBehaviour:
   _name: PumpActionShotgun
   ammoType: TwelveGauge
   damage: 50
-  rpm: 180
+  rpm: 100
   magSize: 1
   ammoPerShot: 1
   pellets: 16
   range: 20
   spread: 40
   recoil: 600
-  clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
-  vol_shoot: 0.5
+  clip_shoot: {fileID: 8300000, guid: ad8c9bbe444b5af40af023e559d0f623, type: 3}
+  vol_shoot: 0.4
   clip_reloads:
   - {fileID: 8300000, guid: 1a7ea523f4926d04aa7d504d15958305, type: 3}
   - {fileID: 8300000, guid: fc442235aa04dfe4ea336f9aa9f0dc60, type: 3}
@@ -2199,6 +2199,9 @@ MonoBehaviour:
   barrelLength: 0
   prefab_muzzleFlash: {fileID: 0}
   index: 0
+  timeBetweenShots: 0
+  ammo: 0
+  timeLastShot: 0
 --- !u!1 &1544373294
 GameObject:
   m_ObjectHideFlags: 0
@@ -3502,7 +3505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 99dec5a0dc35c47499f4ccc681b4fa01, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2766212503428324877, guid: 99dec5a0dc35c47499f4ccc681b4fa01, type: 3}
       propertyPath: m_Layer
@@ -3554,14 +3557,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: DoubleBarrelShotgun
   ammoType: TwelveGauge
-  damage: 120
-  rpm: 180
+  damage: 50
+  rpm: 300
   magSize: 2
-  ammoPerShot: 2
-  pellets: 32
+  ammoPerShot: 1
+  pellets: 16
   range: 20
   spread: 40
-  recoil: 1000
+  recoil: 600
   clip_shoot: {fileID: 8300000, guid: ad8c9bbe444b5af40af023e559d0f623, type: 3}
   vol_shoot: 0.4
   clip_reloads:
@@ -3575,6 +3578,9 @@ MonoBehaviour:
   barrelLength: 0
   prefab_muzzleFlash: {fileID: 0}
   index: 0
+  timeBetweenShots: 0
+  ammo: 0
+  timeLastShot: 0
 --- !u!1001 &2063952081
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3609,22 +3615,6 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
       propertyPath: m_LocalPosition.z
       value: -0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.7036965
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.7034509
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: -0.07061042
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: -0.07058577
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3761,22 +3751,6 @@ PrefabInstance:
       value: -0.8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.9843959
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.175968
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: -20.27
       objectReference: {fileID: 0}
@@ -3786,22 +3760,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7757824514879356397, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.97629607
-      objectReference: {fileID: 0}
-    - target: {fileID: -7757824514879356397, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.2164396
-      objectReference: {fileID: 0}
-    - target: {fileID: -7757824514879356397, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -7757824514879356397, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.z
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -7757824514879356397, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
@@ -3835,22 +3793,6 @@ PrefabInstance:
     - target: {fileID: -3445363511788396687, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
       propertyPath: m_Layer
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: -355821289552101654, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.54756325
-      objectReference: {fileID: 0}
-    - target: {fileID: -355821289552101654, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: -0.8367643
-      objectReference: {fileID: 0}
-    - target: {fileID: -355821289552101654, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: -355821289552101654, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -355821289552101654, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -3937,8 +3879,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2ae73854b1f41ae4fa87d69ad72d1ae6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: 323
-  code: 323
+  key: 114
+  code: 114
 --- !u!1 &2138677391
 GameObject:
   m_ObjectHideFlags: 0

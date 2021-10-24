@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GunStats : MonoBehaviour
+public class Gun : MonoBehaviour
 {
     public string       _name;
     public string       ammoType;
@@ -20,4 +20,12 @@ public class GunStats : MonoBehaviour
     public GameObject   prefab_muzzleFlash;
 
     [HideInInspector] public int index;
+    [HideInInspector] public float timeBetweenShots;
+    [HideInInspector] public int ammo;
+    [HideInInspector] public float timeLastShot;
+
+    void Start()
+    {
+        timeBetweenShots = 60f/rpm;
+    }
 }
