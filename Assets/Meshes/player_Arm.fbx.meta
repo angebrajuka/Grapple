@@ -6,9 +6,34 @@ ModelImporter:
   - first:
       74: 4781951162920444690
     second: Armature|ArmatureAction
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Bicep
+    second: {fileID: 2100000, guid: 122b8de66d214a641ae44f9ac22c2e52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Fingers
+    second: {fileID: 2100000, guid: 122b8de66d214a641ae44f9ac22c2e52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Forearm
+    second: {fileID: 2100000, guid: 122b8de66d214a641ae44f9ac22c2e52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Hand
+    second: {fileID: 2100000, guid: 122b8de66d214a641ae44f9ac22c2e52, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Wrist
+    second: {fileID: 2100000, guid: 122b8de66d214a641ae44f9ac22c2e52, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
