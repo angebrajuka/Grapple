@@ -17,6 +17,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Barrels.001
+    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Foregrip
     second: {fileID: 2100000, guid: 0466ed2261f015e4ba12c5dd02b75a4f, type: 2}
   - first:
@@ -27,12 +32,27 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Furniture.001
+    second: {fileID: 2100000, guid: 0466ed2261f015e4ba12c5dd02b75a4f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Handle
     second: {fileID: 2100000, guid: 0466ed2261f015e4ba12c5dd02b75a4f, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Handle.001
+    second: {fileID: 2100000, guid: 0466ed2261f015e4ba12c5dd02b75a4f, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Lever
+    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Lever.001
     second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
   - first:
       type: UnityEngine:Material
@@ -62,6 +82,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Pivot.001
+    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Reciever
     second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
   - first:
@@ -77,12 +102,52 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Reciever.003
+    second: {fileID: 2100000, guid: e2aad3cf4934d804ca179444c3df6f76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Reciever.004
+    second: {fileID: 2100000, guid: e2aad3cf4934d804ca179444c3df6f76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Reciever.005
+    second: {fileID: 2100000, guid: e2aad3cf4934d804ca179444c3df6f76, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ShellCap
+    second: {fileID: 2100000, guid: 23cd66b0478b048438b20d78e07673c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ShellPaper
+    second: {fileID: 2100000, guid: 134741b3747bf984db7e80e4bb4a5f71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shells
+    second: {fileID: 2100000, guid: 134741b3747bf984db7e80e4bb4a5f71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Trigger
     second: {fileID: 2100000, guid: e2aad3cf4934d804ca179444c3df6f76, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Trigger.001
+    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: TriggerGaurd
+    second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: TriggerGaurd.001
     second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
   materials:
     materialImportMode: 1
