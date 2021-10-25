@@ -848,7 +848,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 634ff915894ad444bab2aaaa686e89d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  doubleBarrelShells:
+  - {fileID: 1768340000}
+  - {fileID: 1933258450}
+  pumpActionShell: {fileID: 1755035578}
   animator: {fileID: 546853965}
+  prefab_shell: {fileID: 8391918072369556103, guid: 4fcfd1d91c46c284b8f5e7ec06d62259, type: 3}
 --- !u!1 &607889173
 GameObject:
   m_ObjectHideFlags: 0
@@ -2569,6 +2574,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -8928142258166665514, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2621,6 +2630,14 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: -1293520596441146163, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 55098163685641174, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
       propertyPath: m_Name
       value: mesh_PumpActionShotgun
@@ -2631,9 +2648,13 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1214824004972775095, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1706702263193740671, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
@@ -2649,6 +2670,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6603963441298845434, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.038
+      objectReference: {fileID: 0}
     - target: {fileID: 6619225641134156614, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -2661,12 +2686,26 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 9139105124645039653, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
 --- !u!4 &1755035577 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
   m_PrefabInstance: {fileID: 1755035576}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1755035578 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6603963441298845434, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
+  m_PrefabInstance: {fileID: 1755035576}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1768340000 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4771166482089587324, guid: 99dec5a0dc35c47499f4ccc681b4fa01, type: 3}
+  m_PrefabInstance: {fileID: 2038921326}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1854703077
 GameObject:
@@ -3283,6 +3322,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   prefab_splatter: {fileID: 0}
+--- !u!4 &1933258450 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -18976741724091244, guid: 99dec5a0dc35c47499f4ccc681b4fa01, type: 3}
+  m_PrefabInstance: {fileID: 2038921326}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1986755871
 GameObject:
   m_ObjectHideFlags: 0
@@ -3513,7 +3557,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 99dec5a0dc35c47499f4ccc681b4fa01, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2766212503428324877, guid: 99dec5a0dc35c47499f4ccc681b4fa01, type: 3}
       propertyPath: m_Layer

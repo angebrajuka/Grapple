@@ -1,79 +1,9 @@
 fileFormatVersion: 2
-guid: 9d5197a873aed5544b6270a9b008dc13
+guid: 4a91ad34919d9fb4db2ede74bd2076f9
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
   externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: BarrelJoints
-    second: {fileID: 2100000, guid: e2aad3cf4934d804ca179444c3df6f76, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: BarrelJoints.001
-    second: {fileID: 2100000, guid: e2aad3cf4934d804ca179444c3df6f76, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Barrels
-    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Barrels.001
-    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: EjectionPort
-    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Handle_Pump_Stock
-    second: {fileID: 2100000, guid: c8ec81d64d4d7a0409aa238c8b20eb8f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Handle_Pump_Stock.001
-    second: {fileID: 2100000, guid: c8ec81d64d4d7a0409aa238c8b20eb8f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.004
-    second: {fileID: 2100000, guid: c8ec81d64d4d7a0409aa238c8b20eb8f, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.005
-    second: {fileID: 2100000, guid: d40d4d337f9a5fd4eb85afd23b85df30, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.006
-    second: {fileID: 2100000, guid: a5e9cf73778fd00439a07e6c7d7cbaf2, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.007
-    second: {fileID: 2100000, guid: f6d934f025ea21a4590a10cf2310f23e, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Reciever
-    second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Reciever.001
-    second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: ReloadFlap
-    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -82,7 +12,27 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: ShellCap.001
+    second: {fileID: 2100000, guid: 23cd66b0478b048438b20d78e07673c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ShellCap.002
+    second: {fileID: 2100000, guid: 23cd66b0478b048438b20d78e07673c8, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: ShellPaper
+    second: {fileID: 2100000, guid: 134741b3747bf984db7e80e4bb4a5f71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ShellPaper.001
+    second: {fileID: 2100000, guid: 134741b3747bf984db7e80e4bb4a5f71, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ShellPaper.002
     second: {fileID: 2100000, guid: 134741b3747bf984db7e80e4bb4a5f71, type: 2}
   materials:
     materialImportMode: 1
