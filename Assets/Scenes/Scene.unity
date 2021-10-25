@@ -3327,6 +3327,10 @@ MonoBehaviour:
   crosshair_colorReloading: {r: 0, g: 0, b: 0, a: 0}
   ammo_reserveText: {fileID: 1217266430}
   ammo_magText: {fileID: 1048414544}
+  ammoImage: {fileID: 804608480}
+  ammoImages:
+  - ammoType: TwelveGauge
+    ammoImage: {fileID: 2800000, guid: 6217f9a845c9a744c961c810d9fda6c5, type: 3}
 --- !u!114 &1887390191
 MonoBehaviour:
   m_ObjectHideFlags: 0

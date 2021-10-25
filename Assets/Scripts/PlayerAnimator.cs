@@ -74,6 +74,7 @@ public class PlayerAnimator : MonoBehaviour
             CheckReload();
             PlayerHUD.UpdateAmmoMag();
             PlayerHUD.UpdateAmmoReserve();
+            PlayerHUD.UpdateAmmoImage();
         }
         GunPosAnimator.Play("Base Layer.Raising"); // raise
     }
