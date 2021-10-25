@@ -50,6 +50,8 @@ public class PlayerAnimator : MonoBehaviour
             guns.Add(gun.name, gun.transform);
             if(guns[gun.name] != null) guns[gun.name].gameObject.SetActive(false);
         }
+
+        AtLowest();
     }
 
     public void CheckReload(bool force=false)
@@ -57,6 +59,7 @@ public class PlayerAnimator : MonoBehaviour
         if(PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize))) // TODO
         {
             gunReloadAnimator.SetBool("reloading", true);
+            PlayerInventory.CurrentGun.timeLastShot = Time.time;
         }
     }
 
@@ -106,15 +109,15 @@ public class PlayerAnimator : MonoBehaviour
 
             break;
         case RAISED:
-            if(activeGun != PlayerInventory.CurrentGunName)
+            if(PlayerInventory.hasGun[PlayerInventory._nextGun] && PlayerInventory._nextGun != PlayerInventory._currentGun && gunReloadAnimator.GetBool("reloading") == false)
             {
+                PlayerInventory._currentGun = PlayerInventory._nextGun;
                 state = SWAPPING;
-                gunReloadAnimator.SetBool("reloading", false);
                 GunPosAnimator.Play("Base Layer.Lowering"); // lower
             }
             else
             {
-                gunAnimationEvents.Raised();
+                CheckReload();
             }
             break;
         default:

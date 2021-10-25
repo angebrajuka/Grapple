@@ -5,6 +5,7 @@ public class PlayerInventory : MonoBehaviour
 {
     public static bool[] hasGun;
     public static int _currentGun;
+    public static int _nextGun;
     public static Gun CurrentGun { get { return Guns.guns[_currentGun]; } }
     public static Dictionary<string, int> reserveAmmo;
     public static int Ammo
@@ -36,19 +37,18 @@ public class PlayerInventory : MonoBehaviour
         }
 
         reserveAmmo["TwelveGauge"] = 16;
+
+        _currentGun = 0;
+        _nextGun = 0;
     }
 
     public static string CurrentGunName { get { return CurrentGun.name; } }
 
     void Update()
     {
-        int switchTo = _currentGun;
-
-        if(PlayerInput.GetKey("gun_switch_0")) switchTo = 0;
-        if(PlayerInput.GetKey("gun_switch_1")) switchTo = 1;
-        if(PlayerInput.GetKey("gun_switch_2")) switchTo = 2;
-
-        if(hasGun[switchTo]) _currentGun = switchTo;
+        if(PlayerInput.GetKey("gun_switch_0")) _nextGun = 0;
+        if(PlayerInput.GetKey("gun_switch_1")) _nextGun = 1;
+        if(PlayerInput.GetKey("gun_switch_2")) _nextGun = 2;
 
         if(PlayerInput.GetKey("reload")) PlayerAnimator.instance.CheckReload(true);
     }

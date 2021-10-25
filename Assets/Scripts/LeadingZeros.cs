@@ -8,13 +8,10 @@ public class LeadingZeros : MonoBehaviour
 
     Text text;
 
-    void Start()
-    {
-        text = GetComponent<Text>();
-    }
-
     public void Check()
     {
+        if(text == null) text = GetComponent<Text>();
+
         if(text.text.Length < numDigits)
         {
             text.text = new string('0', numDigits-text.text.Length)+text.text;
