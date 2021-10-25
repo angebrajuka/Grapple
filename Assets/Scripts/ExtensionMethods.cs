@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public static class ExtensionMethods
 {
@@ -34,5 +35,11 @@ public static class ExtensionMethods
     public static Vector3 RelativeVelocity(this Rigidbody rb)
     {
         return rb.transform.InverseTransformDirection(rb.velocity);
+    }
+
+    public static void SetText(this Text textElement, string text)
+    {
+        textElement.text = text;
+        textElement.gameObject.GetComponent<LeadingZeros>().Check();
     }
 }

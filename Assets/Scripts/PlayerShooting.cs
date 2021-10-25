@@ -1,5 +1,7 @@
 using UnityEngine;
 
+using static PlayerInventory;
+
 public class PlayerShooting : MonoBehaviour
 {
     // hierarchy
@@ -23,11 +25,11 @@ public class PlayerShooting : MonoBehaviour
 
     public static bool Shoot(Gun gun)
     {
-        AudioManager.PlayClip(PlayerInventory.CurrentGun.clip_shoot);
+        AudioManager.PlayClip(CurrentGun.clip_shoot);
         PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformPoint(0, 0, -gun.recoil));
         PlayerAnimator.instance.Recoil();
-        PlayerInventory.CurrentGun.timeLastShot = Time.time;
-        PlayerInventory.Ammo -= gun.ammoPerShot;
+        CurrentGun.timeLastShot = Time.time;
+        Ammo -= gun.ammoPerShot;
 
         bool hit = false;
         for(int i=0; i<gun.pellets; i++)
@@ -42,9 +44,28 @@ public class PlayerShooting : MonoBehaviour
     {
         get { return PlayerAnimator.state != PlayerAnimator.State.SWAPPING && 
             PlayerAnimator.instance.gunReloadAnimator.GetBool("reloading") == false && 
-            PlayerInventory.CurrentGunName == PlayerAnimator.activeGun && 
-            PlayerInventory.Ammo >= PlayerInventory.CurrentGun.ammoPerShot && 
-            Time.time > PlayerInventory.CurrentGun.timeLastShot+PlayerInventory.CurrentGun.timeBetweenShots; }
+            CurrentGunName == PlayerAnimator.activeGun && 
+            Ammo >= CurrentGun.ammoPerShot && 
+            Time.time > CurrentGun.timeLastShot+CurrentGun.timeBetweenShots; }
+    }
+
+    public static void FinishReload()
+    {
+        int _ammo = ReserveAmmo/CurrentGun.ammoPerShot;
+        int _clip = CurrentGun.ammo/CurrentGun.ammoPerShot;
+        int _clipSize = CurrentGun.magSize/CurrentGun.ammoPerShot;
+        
+        if(_ammo > _clipSize - _clip)
+        {
+            ReserveAmmo -= (_clipSize - _clip)*CurrentGun.ammoPerShot;
+            Ammo = CurrentGun.magSize;
+        }
+        else if(_ammo > 0)
+        {
+            int num = _ammo*CurrentGun.ammoPerShot;
+            Ammo += num;
+            ReserveAmmo -= num;
+        }
     }
 
     void Update()
@@ -63,11 +84,11 @@ public class PlayerShooting : MonoBehaviour
         // euler.z = 0;
         // gunPosition.localEulerAngles = euler;
 
-        if(PlayerInventory.CurrentGun == null) return;
+        if(CurrentGun == null) return;
 
         if(CanShoot && PlayerInput.GetKey("shoot"))
         {
-            Shoot(PlayerInventory.CurrentGun);
+            Shoot(CurrentGun);
         }
     }
 }

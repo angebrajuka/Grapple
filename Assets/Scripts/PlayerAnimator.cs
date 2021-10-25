@@ -54,7 +54,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void CheckReload(bool force=false)
     {
-        if(PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)) // TODO
+        if(PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize))) // TODO
         {
             gunReloadAnimator.SetBool("reloading", true);
         }
@@ -72,6 +72,8 @@ public class PlayerAnimator : MonoBehaviour
             guns[activeGun].gameObject.SetActive(true);
             gunReloadAnimator.SetInteger("gun", PlayerInventory.CurrentGun.index);
             CheckReload();
+            PlayerHUD.UpdateAmmoMag();
+            PlayerHUD.UpdateAmmoReserve();
         }
         GunPosAnimator.Play("Base Layer.Raising"); // raise
     }

@@ -36,6 +36,6 @@ public class ReloadAnimationEvents : MonoBehaviour
     public void Finish()
     {
         animator.SetBool("reloading", false);
-        PlayerInventory.Ammo = PlayerInventory.CurrentGun.magSize;
+        PlayerShooting.FinishReload();
     }
 }

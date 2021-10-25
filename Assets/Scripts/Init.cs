@@ -16,6 +16,7 @@ public class Init : MonoBehaviour
         audioManager.Init();
         musicController.Init();
         player.GetComponent<PauseHandler>().Init();
+        player.GetComponent<PlayerHUD>().Init();
 
         guns.Init();
         PlayerInventory.Init();

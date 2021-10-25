@@ -9,11 +9,22 @@ public class PlayerInventory : MonoBehaviour
     public static Dictionary<string, int> reserveAmmo;
     public static int Ammo
     {
-        get { return Guns.guns[_currentGun].ammo; }
-        set { Guns.guns[_currentGun].ammo = value; }
+        get { return CurrentGun.ammo; }
+        set
+        {
+            CurrentGun.ammo = value;
+            PlayerHUD.UpdateAmmoMag();
+        }
     }
-    public static int ReserveAmmo { get { return reserveAmmo[Guns.guns[_currentGun].ammoType]; } }
-    public static float Time_LastShot { get { return Guns.guns[_currentGun].timeLastShot; } }
+    public static int ReserveAmmo
+    {
+        get { return reserveAmmo[CurrentGun.ammoType]; }
+        set
+        {
+            reserveAmmo[CurrentGun.ammoType] = value;
+            PlayerHUD.UpdateAmmoReserve();
+        }
+    }
 
     public static void Init()
     {
@@ -23,6 +34,8 @@ public class PlayerInventory : MonoBehaviour
         {
             if(!reserveAmmo.ContainsKey(gun.ammoType)) reserveAmmo.Add(gun.ammoType, 0);
         }
+
+        reserveAmmo["TwelveGauge"] = 16;
     }
 
     public static string CurrentGunName { get { return CurrentGun.name; } }
