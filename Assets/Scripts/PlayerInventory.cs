@@ -29,7 +29,7 @@ public class PlayerInventory : MonoBehaviour
 
     public static void Init()
     {
-        hasGun = new bool[]{true, true, false};
+        hasGun = new bool[]{true, true, true};
         reserveAmmo = new Dictionary<string, int>();
         foreach(var gun in Guns.guns)
         {
