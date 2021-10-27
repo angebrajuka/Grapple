@@ -20,18 +20,33 @@ public class PlayerThreeDM : MonoBehaviour
     public float minDistance;
     public float destroyDistance;
     public float reloadTime;
+    public float ammo;
 
     GrappleHook hook;
     public float returnTime;
 
+    static float p_compressedAir;
+    public static float CompressedAir
+    {
+        get { return p_compressedAir; }
+        set
+        {
+            p_compressedAir = value;
+            PlayerHUD.UpdateCompressedAir();
+        }
+    }
+    static float airPerShot;
+
     public void Init()
     {
         instance = this;
+        CompressedAir = 1;
+        airPerShot = 1f/ammo;
     }
 
     public bool CanShoot
     {
-        get { return Time.time - returnTime > reloadTime; }
+        get { return Time.time - returnTime > reloadTime && CompressedAir >= airPerShot-0.001f; }
     }
 
     public void ShootHook()
@@ -49,6 +64,7 @@ public class PlayerThreeDM : MonoBehaviour
         hook.configJoint.connectedBody = PlayerMovement.m_rigidbody;
         rb.AddForce(direction*shootForce);
         PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);
+        CompressedAir -= airPerShot;
     }
 
     void Update()

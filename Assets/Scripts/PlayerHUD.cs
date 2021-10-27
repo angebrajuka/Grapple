@@ -21,6 +21,8 @@ public class PlayerHUD : MonoBehaviour
     public Text ammo_reserveText, ammo_magText;
     public RawImage ammoImage;
     public StringTexturePair[] ammoImages;
+    public Transform compressedAir_needle;
+    public float compressedAir_minAngle, compressedAir_maxAngle;
 
     Dictionary<string, Texture2D> dict_ammoImages;
 
@@ -46,5 +48,12 @@ public class PlayerHUD : MonoBehaviour
     public static void UpdateAmmoMag()
     {
         instance.ammo_magText.text = PlayerInventory.Ammo+"";
+    }
+
+    public static void UpdateCompressedAir()
+    {
+        var eulers = instance.compressedAir_needle.localEulerAngles;
+        eulers.z = Math.Remap(PlayerThreeDM.CompressedAir, 0, 1, instance.compressedAir_minAngle, instance.compressedAir_maxAngle);
+        instance.compressedAir_needle.localEulerAngles = eulers;
     }
 }
