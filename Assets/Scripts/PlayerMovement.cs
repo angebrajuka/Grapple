@@ -73,11 +73,15 @@ public class PlayerMovement : MonoBehaviour
             colliderCrouch.enabled = Crouching;
             cameraPosTarget = Crouching ? cameraPosCrouch : cameraPosDefault;
 
-            var zvel = m_rigidbody.RelativeVelocity().z;
-            if(grounded && Crouching && zvel >= walkMaxSpeed*slideStartThreshhold && zvel < slideMaxSpeed)
+            float threshhold = walkMaxSpeed*slideStartThreshhold;
+            if(m_rigidbody.velocity.magnitude >= threshhold)
             {
-                m_rigidbody.AddRelativeForce(0, 0, slideForce);
                 slideStartTime = Time.time;
+                float zvel = m_rigidbody.RelativeVelocity().z;
+                if(grounded && Crouching && zvel >= threshhold && zvel < slideMaxSpeed)
+                {
+                    m_rigidbody.AddRelativeForce(0, 0, slideForce);
+                }
             }
         }
     }

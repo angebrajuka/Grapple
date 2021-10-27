@@ -22,9 +22,14 @@ public class PlayerHUD : MonoBehaviour
     public RawImage ammoImage;
     public StringTexturePair[] ammoImages;
     public Transform compressedAir_needle;
+    public Transform grappleRecharge_needle;
     public float compressedAir_minAngle, compressedAir_maxAngle;
+    public float speed_grappleRechargeDecrease, speed_grappleRechargeIncrease, compressedAir_speed;
 
     Dictionary<string, Texture2D> dict_ammoImages;
+    float grappleRechargeAngle;
+    float compressedAirAngle;  // store angles because of Unity auto convert to positive, fucks up my logic
+    float compressedAirTarget;
 
     public void Init()
     {
@@ -35,6 +40,10 @@ public class PlayerHUD : MonoBehaviour
         {
             dict_ammoImages.Add(pair.ammoType, pair.ammoImage);
         }
+
+        compressedAirAngle = compressedAir_needle.localEulerAngles.z;
+        compressedAirTarget = compressedAirAngle;
+        grappleRechargeAngle = grappleRecharge_needle.localEulerAngles.z;
     }
 
     public static void UpdateAmmoImage()
@@ -52,8 +61,24 @@ public class PlayerHUD : MonoBehaviour
 
     public static void UpdateCompressedAir()
     {
+        instance.compressedAirTarget = Math.Remap(PlayerThreeDM.CompressedAir, 0, 1, instance.compressedAir_minAngle, instance.compressedAir_maxAngle);
+    }
+
+
+    void Update()
+    {
+        // compressedAir
         var eulers = instance.compressedAir_needle.localEulerAngles;
-        eulers.z = Math.Remap(PlayerThreeDM.CompressedAir, 0, 1, instance.compressedAir_minAngle, instance.compressedAir_maxAngle);
+        compressedAirAngle = Mathf.Lerp(compressedAirAngle, compressedAirTarget, Time.deltaTime*compressedAir_speed);
+        eulers.z = compressedAirAngle;
         instance.compressedAir_needle.localEulerAngles = eulers;
+
+        // grapple recharge
+        eulers = instance.grappleRecharge_needle.localEulerAngles;
+        grappleRechargeAngle = (PlayerThreeDM.IsReloading || PlayerThreeDM.IsLoaded ? 
+            Mathf.Lerp(grappleRechargeAngle, instance.compressedAir_maxAngle, Time.deltaTime*speed_grappleRechargeIncrease) : 
+            Mathf.Lerp(grappleRechargeAngle, instance.compressedAir_minAngle, Time.deltaTime*speed_grappleRechargeDecrease));
+        eulers.z = grappleRechargeAngle;
+        instance.grappleRecharge_needle.localEulerAngles = eulers;
     }
 }

@@ -10,6 +10,8 @@ public class PlayerThreeDM : MonoBehaviour
     public Transform t_threeDM;
     public GameObject prefab_hook;
     public AudioClip clip_shoot;
+    public AudioClip clip_return;
+    public AudioClip clip_reload;
     public float volume_shoot;
     public AudioSource source_cableSpinning;
     public float fixedJointBreakForce;
@@ -22,8 +24,8 @@ public class PlayerThreeDM : MonoBehaviour
     public float reloadTime;
     public float ammo;
 
-    GrappleHook hook;
-    public float returnTime;
+    public GrappleHook hook;
+    public float reloadStartTime;
 
     static float p_compressedAir;
     public static float CompressedAir
@@ -32,6 +34,7 @@ public class PlayerThreeDM : MonoBehaviour
         set
         {
             p_compressedAir = value;
+            instance.CheckReload();
             PlayerHUD.UpdateCompressedAir();
         }
     }
@@ -44,9 +47,20 @@ public class PlayerThreeDM : MonoBehaviour
         airPerShot = 1f/ammo;
     }
 
-    public bool CanShoot
+
+    public static bool IsLoaded { get { return Time.time > instance.reloadStartTime + instance.reloadTime && instance.hook == null; } }
+    public static bool IsReloading { get { return Time.time > instance.reloadStartTime && Time.time <= instance.reloadStartTime + instance.reloadTime; } }
+    public static bool HasGas { get { return CompressedAir >= airPerShot-0.001f; } }
+    public static bool IsGrappling { get { return instance.hook != null; } }
+    public static bool CanShoot { get { return IsLoaded && HasGas; } }
+
+    public void CheckReload()
     {
-        get { return Time.time - returnTime > reloadTime && CompressedAir >= airPerShot-0.001f; }
+        if(!IsGrappling && HasGas && !IsLoaded && !IsReloading)
+        {
+            AudioManager.PlayClip(clip_reload);
+            instance.reloadStartTime = Time.time;
+        }
     }
 
     public void ShootHook()
@@ -65,20 +79,21 @@ public class PlayerThreeDM : MonoBehaviour
         rb.AddForce(direction*shootForce);
         PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);
         CompressedAir -= airPerShot;
+        reloadStartTime = Mathf.Infinity;
     }
 
     void Update()
     {
-        if(GetKey("grapple_shoot") && hook == null && CanShoot)
+        if(GetKey("grapple_shoot") && !IsGrappling && CanShoot)
         {
             ShootHook();
             AudioManager.PlayClip(clip_shoot, volume_shoot);
         }
-        else if(GetKeyUp("grapple_shoot") && hook != null)
+        else if(GetKeyUp("grapple_shoot") && IsGrappling)
         {
             hook.Retract();
         }
-        else if(hook != null && GetKeyDown("grapple_shoot"))
+        else if(IsGrappling && GetKeyDown("grapple_shoot"))
         {
             Destroy(hook.fixedJoint);
             hook.Retract();

@@ -4,7 +4,6 @@ using static GrappleHook.State;
 public class GrappleHook : MonoBehaviour
 {
     // hierarchy
-    public AudioClip clip_reload;
     public ConfigurableJoint configJoint;
     public Rigidbody m_rigidbody;
     public LineRenderer m_lineRenderer;
@@ -92,10 +91,11 @@ public class GrappleHook : MonoBehaviour
 
         if(state == RETRACTING && fixedJoint == null && Vector3.Distance(configJoint.GetStart(), configJoint.GetEnd()) < PlayerThreeDM.instance.destroyDistance)
         {
-            AudioManager.PlayClip(clip_reload);
-            PlayerThreeDM.instance.returnTime = Time.time;
             PlayerThreeDM.instance.source_cableSpinning.Stop();
+            AudioManager.PlayClip(PlayerThreeDM.instance.clip_return);
             Destroy(gameObject);
+            PlayerThreeDM.instance.hook = null; // not destroyed on this frame, manually set null
+            PlayerThreeDM.instance.CheckReload();
         }
     }
 
