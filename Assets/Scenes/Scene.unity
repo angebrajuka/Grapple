@@ -1205,7 +1205,10 @@ MonoBehaviour:
   ammoType: Grenade
   damage: 120
   rpm: 120
+  animateBetweenShots: 1
+  animatePostReload: 0
   magSize: 4
+  shotgunReload: 1
   ammoPerShot: 1
   pellets: 1
   range: 20
@@ -3269,8 +3272,11 @@ MonoBehaviour:
   _name: PumpActionShotgun
   ammoType: TwelveGauge
   damage: 50
-  rpm: 200
+  rpm: 96
+  animateBetweenShots: 1
+  animatePostReload: 1
   magSize: 8
+  shotgunReload: 1
   ammoPerShot: 1
   pellets: 16
   range: 20
@@ -3436,7 +3442,7 @@ MonoBehaviour:
   prefab_ammoTick: {fileID: 8461587881109100480, guid: 07aef13fb8b873a4e97efc689d833a07, type: 3}
   mag: 0
   spacing: 7
-  color: {r: 1, g: 1, b: 1, a: 0.28235295}
+  color: {r: 0.33490568, g: 1, b: 0.51226413, a: 0.28235295}
 --- !u!1 &1680117751
 GameObject:
   m_ObjectHideFlags: 0
@@ -5135,7 +5141,10 @@ MonoBehaviour:
   ammoType: TwelveGauge
   damage: 120
   rpm: 600
+  animateBetweenShots: 0
+  animatePostReload: 0
   magSize: 2
+  shotgunReload: 0
   ammoPerShot: 2
   pellets: 32
   range: 20

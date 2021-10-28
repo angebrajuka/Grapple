@@ -6,6 +6,7 @@ public class GunAnimationEvents : MonoBehaviour
     {
         PlayerAnimator.state = PlayerAnimator.State.RAISED;
         PlayerAnimator.GunPosAnimator.enabled = false;
+        PlayerAnimator.justRaised = true;
     }
 
     public void Lowered()

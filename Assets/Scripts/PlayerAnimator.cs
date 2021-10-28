@@ -19,6 +19,7 @@ public class PlayerAnimator : MonoBehaviour
     public static Dictionary<string, Transform> guns;
     public static string activeGun="";
     public static Transform ActiveGun { get { return guns[activeGun]; } }
+    public static bool justRaised=false;
 
     public enum State
     {
@@ -38,6 +39,9 @@ public class PlayerAnimator : MonoBehaviour
         }
     }
 
+    public static bool IsReloading { get { return instance.gunReloadAnimator.GetInteger("state") == 1; } }
+    public static bool IsIdle { get { return instance.gunReloadAnimator.GetInteger("state") == 0; } }
+
     public void Init()
     {
         instance = this;
@@ -56,10 +60,9 @@ public class PlayerAnimator : MonoBehaviour
 
     public void CheckReload(bool force=false)
     {
-        if(PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize))) // TODO
+        if(PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)))
         {
-            gunReloadAnimator.SetBool("reloading", true);
-            PlayerInventory.CurrentGun.timeLastShot = Time.time;
+            gunReloadAnimator.SetInteger("state", 1); // reloading
         }
     }
 
@@ -105,19 +108,26 @@ public class PlayerAnimator : MonoBehaviour
         case RECOIL_FORWARD:
             pos = Vector3.MoveTowards(pos, Vector3.zero, Time.deltaTime*recoilSpeed_moveForward);
             rot = Quaternion.RotateTowards(rot, Quaternion.identity, Time.deltaTime*recoilSpeed_rotateForward);
-            if(pos == Vector3.zero) gunAnimationEvents.Raised();
+            if(pos == Vector3.zero)
+            {
+                gunAnimationEvents.Raised();
+            }
 
             break;
         case RAISED:
-            if(PlayerInventory.hasGun[PlayerInventory._nextGun] && PlayerInventory._nextGun != PlayerInventory._currentGun && gunReloadAnimator.GetBool("reloading") == false)
+            if(PlayerInventory.hasGun[PlayerInventory._nextGun] && PlayerInventory._nextGun != PlayerInventory._currentGun && !IsReloading)
             {
                 PlayerInventory._currentGun = PlayerInventory._nextGun;
                 state = SWAPPING;
                 GunPosAnimator.Play("Base Layer.Lowering"); // lower
             }
-            else
+            else if(IsIdle)
             {
                 CheckReload();
+                if(justRaised && !IsReloading && PlayerInventory.CurrentGun.animateBetweenShots)
+                {
+                    gunReloadAnimator.SetInteger("state", 2);
+                }
             }
             break;
         default:

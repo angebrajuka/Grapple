@@ -6,7 +6,10 @@ public class Gun : MonoBehaviour
     public string       ammoType;
     public int          damage;
     public int          rpm;
+    public bool         animateBetweenShots;
+    public bool         animatePostReload;
     public int          magSize;
+    public bool         shotgunReload;
     public int          ammoPerShot;
     public int          pellets;
     public int          range;
@@ -22,7 +25,7 @@ public class Gun : MonoBehaviour
     [HideInInspector] public int index;
     [HideInInspector] public float timeBetweenShots;
     [HideInInspector] public int ammo;
-    [HideInInspector] public float timeLastShot;
+    [HideInInspector] public float timeLastShot=0;
 
     void Start()
     {

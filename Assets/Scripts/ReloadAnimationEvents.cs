@@ -34,9 +34,26 @@ public class ReloadAnimationEvents : MonoBehaviour
         ShellEject(prefab_shell, pumpActionShell, Vector3.right*force);
     }
 
+    public void Idle()
+    {
+        animator.SetInteger("state", 0);
+    }
+
     public void Finish()
     {
-        animator.SetBool("reloading", false);
         PlayerShooting.FinishReload();
+        if(PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
+        {
+            PlayerAnimator.instance.CheckReload(true);
+            return;
+        }
+        // if(PlayerInventory.CurrentGun.animateBetweenShots && PlayerInventory.CurrentGun.animatePostReload)
+        // {
+        //     animator.SetInteger("state", 2);
+        // }
+        // else
+        // {
+            animator.SetInteger("state", 0);
+        // }
     }
 }
