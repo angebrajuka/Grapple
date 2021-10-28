@@ -31,6 +31,7 @@ public class PlayerShooting : MonoBehaviour
         PlayerAnimator.instance.Recoil();
         CurrentGun.timeLastShot = Time.time;
         Ammo -= gun.ammoPerShot;
+        CurrentGun.primed = false;
 
         bool hit = false;
         for(int i=0; i<gun.pellets; i++)
@@ -44,9 +45,9 @@ public class PlayerShooting : MonoBehaviour
     public static bool CanShoot
     {
         get { return PlayerAnimator.state != PlayerAnimator.State.SWAPPING && 
-            (!PlayerAnimator.IsReloading || CurrentGun.shotgunReload) && 
             (PlayerAnimator.IsIdle || CurrentGun.shotgunReload) && 
             CurrentGunName == PlayerAnimator.activeGun && 
+            (CurrentGun.primed || !CurrentGun.animateBetweenShots) &&
             Ammo >= CurrentGun.ammoPerShot && 
             Time.time > CurrentGun.timeLastShot+CurrentGun.timeBetweenShots; }
     }

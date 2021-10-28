@@ -36,24 +36,20 @@ public class ReloadAnimationEvents : MonoBehaviour
 
     public void Idle()
     {
+        PlayerInventory.CurrentGun.primed = true;
         animator.SetInteger("state", 0);
     }
 
     public void Finish()
     {
+        if(!PlayerAnimator.IsReloading) return;
+
         PlayerShooting.FinishReload();
-        if(PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
+        if(PlayerInventory._nextGun == PlayerInventory._currentGun && PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
         {
             PlayerAnimator.instance.CheckReload(true);
             return;
         }
-        // if(PlayerInventory.CurrentGun.animateBetweenShots && PlayerInventory.CurrentGun.animatePostReload)
-        // {
-        //     animator.SetInteger("state", 2);
-        // }
-        // else
-        // {
-            animator.SetInteger("state", 0);
-        // }
+        animator.SetInteger("state", 0);
     }
 }

@@ -3285,9 +3285,11 @@ MonoBehaviour:
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.4
   clip_reloads:
+  - {fileID: 8300000, guid: 44f40fb490796a14699faf419d78c29a, type: 3}
   - {fileID: 8300000, guid: 1a7ea523f4926d04aa7d504d15958305, type: 3}
   - {fileID: 8300000, guid: fc442235aa04dfe4ea336f9aa9f0dc60, type: 3}
   volume_reloads:
+  - 1
   - 0.5
   - 0.5
   barrelLength: 0

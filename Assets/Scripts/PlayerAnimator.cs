@@ -19,7 +19,6 @@ public class PlayerAnimator : MonoBehaviour
     public static Dictionary<string, Transform> guns;
     public static string activeGun="";
     public static Transform ActiveGun { get { return guns[activeGun]; } }
-    public static bool justRaised=false;
 
     public enum State
     {
@@ -119,12 +118,13 @@ public class PlayerAnimator : MonoBehaviour
             {
                 PlayerInventory._currentGun = PlayerInventory._nextGun;
                 state = SWAPPING;
+                gunReloadAnimator.SetInteger("state", 0);
                 GunPosAnimator.Play("Base Layer.Lowering"); // lower
             }
             else if(IsIdle)
             {
                 CheckReload();
-                if(justRaised && !IsReloading && PlayerInventory.CurrentGun.animateBetweenShots)
+                if(!PlayerInventory.CurrentGun.primed && !IsReloading && PlayerInventory.CurrentGun.animateBetweenShots)
                 {
                     gunReloadAnimator.SetInteger("state", 2);
                 }

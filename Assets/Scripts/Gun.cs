@@ -26,6 +26,7 @@ public class Gun : MonoBehaviour
     [HideInInspector] public float timeBetweenShots;
     [HideInInspector] public int ammo;
     [HideInInspector] public float timeLastShot=0;
+    [HideInInspector] public bool primed=false;
 
     void Start()
     {
