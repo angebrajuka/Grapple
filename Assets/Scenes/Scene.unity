@@ -1159,7 +1159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: dfbb0c5e080b3584680ec210e865261f, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1214824004972775095, guid: dfbb0c5e080b3584680ec210e865261f, type: 3}
       propertyPath: m_Layer
@@ -1202,7 +1202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: GrenadeLauncher
-  ammoType: Grenade
+  ammoType: TwelveGauge
   damage: 120
   rpm: 120
   animateBetweenShots: 1
@@ -1214,7 +1214,7 @@ MonoBehaviour:
   range: 20
   spread: 0
   recoil: 200
-  clip_shoot: {fileID: 8300000, guid: ad8c9bbe444b5af40af023e559d0f623, type: 3}
+  clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.5
   clip_reloads: []
   volume_reloads: []
@@ -1224,6 +1224,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
+  primed: 0
 --- !u!1 &647306504
 GameObject:
   m_ObjectHideFlags: 0
@@ -3298,6 +3299,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
+  primed: 0
 --- !u!1 &1544373294
 GameObject:
   m_ObjectHideFlags: 0
@@ -3953,7 +3955,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1214824004972775095, guid: 9d5197a873aed5544b6270a9b008dc13, type: 3}
       propertyPath: m_Layer
@@ -5152,8 +5154,8 @@ MonoBehaviour:
   range: 20
   spread: 40
   recoil: 1000
-  clip_shoot: {fileID: 8300000, guid: ad8c9bbe444b5af40af023e559d0f623, type: 3}
-  vol_shoot: 0.5
+  clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
+  vol_shoot: 0.6
   clip_reloads:
   - {fileID: 8300000, guid: 62cb0394921c585459dd54ec31725a1c, type: 3}
   - {fileID: 8300000, guid: 8f2dd5504b8b1594eb9b2afcf3ae2927, type: 3}
@@ -5168,6 +5170,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
+  primed: 0
 --- !u!1001 &2063952081
 PrefabInstance:
   m_ObjectHideFlags: 0

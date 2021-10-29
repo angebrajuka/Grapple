@@ -44,12 +44,14 @@ public class PlayerShooting : MonoBehaviour
 
     public static bool CanShoot
     {
-        get { return PlayerAnimator.state != PlayerAnimator.State.SWAPPING && 
+        get {
+            return PlayerAnimator.state != PlayerAnimator.State.SWAPPING && 
             (PlayerAnimator.IsIdle || CurrentGun.shotgunReload) && 
             CurrentGunName == PlayerAnimator.activeGun && 
             (CurrentGun.primed || !CurrentGun.animateBetweenShots) &&
             Ammo >= CurrentGun.ammoPerShot && 
-            Time.time > CurrentGun.timeLastShot+CurrentGun.timeBetweenShots; }
+            Time.time > CurrentGun.timeLastShot+CurrentGun.timeBetweenShots;
+        }
     }
 
     public static void FinishReload()

@@ -59,7 +59,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void CheckReload(bool force=false)
     {
-        if(PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)))
+        if(IsIdle && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)))
         {
             gunReloadAnimator.SetInteger("state", 1); // reloading
         }
@@ -119,15 +119,15 @@ public class PlayerAnimator : MonoBehaviour
                 PlayerInventory._currentGun = PlayerInventory._nextGun;
                 state = SWAPPING;
                 gunReloadAnimator.SetInteger("state", 0);
-                GunPosAnimator.Play("Base Layer.Lowering"); // lower
+                GunPosAnimator.Play("Base Layer.Lowering");
             }
             else if(IsIdle)
             {
-                CheckReload();
                 if(!PlayerInventory.CurrentGun.primed && !IsReloading && PlayerInventory.CurrentGun.animateBetweenShots)
                 {
                     gunReloadAnimator.SetInteger("state", 2);
                 }
+                CheckReload();
             }
             break;
         default:

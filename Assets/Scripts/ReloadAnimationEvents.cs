@@ -48,8 +48,14 @@ public class ReloadAnimationEvents : MonoBehaviour
         if(PlayerInventory._nextGun == PlayerInventory._currentGun && PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
         {
             PlayerAnimator.instance.CheckReload(true);
-            return;
         }
-        animator.SetInteger("state", 0);
+        else if(PlayerInventory.CurrentGun.animateBetweenShots)
+        {
+            animator.SetInteger("state", 2);
+        }
+        else
+        {
+            animator.SetInteger("state", 0);
+        }
     }
 }

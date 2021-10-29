@@ -25,11 +25,14 @@ public class Gun : MonoBehaviour
     [HideInInspector] public int index;
     [HideInInspector] public float timeBetweenShots;
     [HideInInspector] public int ammo;
-    [HideInInspector] public float timeLastShot=0;
-    [HideInInspector] public bool primed=false;
+    [HideInInspector] public float timeLastShot;
+    [HideInInspector] public bool primed;
 
     void Start()
     {
         timeBetweenShots = 60f/rpm;
+        ammo = 0;
+        timeLastShot = 0;
+        primed = true;
     }
 }
