@@ -1,0 +1,49 @@
+using UnityEngine;
+using UnityEngine.UI;
+using UnityEditor;
+
+[ExecuteInEditMode]
+public class UIColorLink : MonoBehaviour
+{
+    public Color color;
+
+    UIColorLink parentColor;
+    Image image;
+    RawImage rawImage;
+    Text text;
+    UIAmmoGraphic ammoGraphic;
+
+    void CheckParent(Transform t)
+    {
+        if(t == null) return;
+
+        parentColor = t.GetComponent<UIColorLink>();
+        if(parentColor == null) CheckParent(t.parent);
+    }
+
+    void Start()
+    {
+        if(EditorApplication.isPlaying)
+        {
+            Destroy(this);
+            return;
+        }
+
+        CheckParent(transform.parent);
+        image = GetComponent<Image>();
+        rawImage = GetComponent<RawImage>();
+        text = GetComponent<Text>();
+        ammoGraphic = GetComponent<UIAmmoGraphic>();
+    }
+
+    void Update()
+    {
+        if(parentColor == null) return;
+
+        color = parentColor.color;
+        if(image != null)       image.color = color;
+        if(rawImage != null)    rawImage.color = color;
+        if(text != null)        text.color = color;
+        if(ammoGraphic != null) ammoGraphic.color = color;
+    }
+}
