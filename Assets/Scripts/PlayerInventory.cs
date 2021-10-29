@@ -14,7 +14,6 @@ public class PlayerInventory : MonoBehaviour
         set
         {
             CurrentGun.ammo = value;
-            PlayerHUD.UpdateAmmoMag();
         }
     }
     public static int ReserveAmmo

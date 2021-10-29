@@ -18,7 +18,7 @@ public class PlayerHUD : MonoBehaviour
     public RawImage crosshair_image;
     public Color crosshair_colorReady;
     public Color crosshair_colorReloading;
-    public Text ammo_reserveText, ammo_magText;
+    public Text ammo_reserveText;
     public RawImage ammoImage;
     public StringTexturePair[] ammoImages;
     public Transform compressedAir_needle;
@@ -53,10 +53,6 @@ public class PlayerHUD : MonoBehaviour
     public static void UpdateAmmoReserve()
     {
         instance.ammo_reserveText.SetText(PlayerInventory.ReserveAmmo+"");
-    }
-    public static void UpdateAmmoMag()
-    {
-        instance.ammo_magText.text = PlayerInventory.Ammo+"";
     }
 
     public static void UpdateCompressedAir()

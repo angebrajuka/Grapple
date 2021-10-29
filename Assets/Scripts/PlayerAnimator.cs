@@ -77,7 +77,6 @@ public class PlayerAnimator : MonoBehaviour
             guns[activeGun].gameObject.SetActive(true);
             gunReloadAnimator.SetInteger("gun", PlayerInventory.CurrentGun.index);
             CheckReload();
-            PlayerHUD.UpdateAmmoMag();
             PlayerHUD.UpdateAmmoReserve();
             PlayerHUD.UpdateAmmoImage();
         }
