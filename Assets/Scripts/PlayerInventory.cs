@@ -36,6 +36,7 @@ public class PlayerInventory : MonoBehaviour
         }
 
         reserveAmmo["TwelveGauge"] = 16;
+        reserveAmmo["Grenade"] = 16;
 
         _currentGun = 0;
         _nextGun = 0;

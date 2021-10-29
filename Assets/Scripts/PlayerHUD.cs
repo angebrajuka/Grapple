@@ -2,12 +2,12 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-[System.Serializable]
-public class StringTexturePair
-{
-    public string ammoType;
-    public Texture2D ammoImage;
-}
+// [System.Serializable]
+// public class StringTexturePair
+// {
+//     public string ammoType;
+//     public Texture2D ammoImage;
+// }
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -20,13 +20,13 @@ public class PlayerHUD : MonoBehaviour
     public Color crosshair_colorReloading;
     public Text ammo_reserveText;
     public RawImage ammoImage;
-    public StringTexturePair[] ammoImages;
+    // public StringTexturePair[] ammoImages;
     public Transform compressedAir_needle;
     public Transform grappleRecharge_needle;
     public float compressedAir_minAngle, compressedAir_maxAngle;
     public float speed_grappleRechargeDecrease, speed_grappleRechargeIncrease, compressedAir_speed;
 
-    Dictionary<string, Texture2D> dict_ammoImages;
+    Dictionary<string, Texture2D> ammoImages;
     float grappleRechargeAngle;
     float compressedAirAngle;  // store angles because of Unity auto convert to positive, fucks up my logic
     float compressedAirTarget;
@@ -35,10 +35,13 @@ public class PlayerHUD : MonoBehaviour
     {
         instance = this;
 
-        dict_ammoImages = new Dictionary<string, Texture2D>();
-        foreach(var pair in ammoImages)
+        ammoImages = new Dictionary<string, Texture2D>();
+        foreach(var gun in Guns.guns)
         {
-            dict_ammoImages.Add(pair.ammoType, pair.ammoImage);
+            if(!ammoImages.ContainsKey(gun.ammoType))
+            {
+                ammoImages.Add(gun.ammoType, Resources.Load<Texture2D>("ammo_"+gun.ammoType));
+            }
         }
 
         compressedAirAngle = compressedAir_needle.localEulerAngles.z;
@@ -48,7 +51,7 @@ public class PlayerHUD : MonoBehaviour
 
     public static void UpdateAmmoImage()
     {
-        instance.ammoImage.texture = instance.dict_ammoImages[PlayerInventory.CurrentGun.ammoType];
+        instance.ammoImage.texture = instance.ammoImages[PlayerInventory.CurrentGun.ammoType];
     }
     public static void UpdateAmmoReserve()
     {
