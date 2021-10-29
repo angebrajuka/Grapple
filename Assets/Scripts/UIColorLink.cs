@@ -5,6 +5,7 @@ using UnityEditor;
 [ExecuteInEditMode]
 public class UIColorLink : MonoBehaviour
 {
+#if(UNITY_EDITOR)
     public Color color;
 
     UIColorLink parentColor;
@@ -23,12 +24,6 @@ public class UIColorLink : MonoBehaviour
 
     void Start()
     {
-        if(EditorApplication.isPlaying)
-        {
-            Destroy(this);
-            return;
-        }
-
         CheckParent(transform.parent);
         image = GetComponent<Image>();
         rawImage = GetComponent<RawImage>();
@@ -46,4 +41,5 @@ public class UIColorLink : MonoBehaviour
         if(text != null)        text.color = color;
         if(ammoGraphic != null) ammoGraphic.color = color;
     }
+#endif
 }
