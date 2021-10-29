@@ -60,6 +60,7 @@ public class PlayerShooting : MonoBehaviour
         {
             ReserveAmmo --;
             Ammo ++;
+            CurrentGun.primed = true;
         }
         else
         {

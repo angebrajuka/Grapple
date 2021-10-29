@@ -59,7 +59,7 @@ public class PlayerAnimator : MonoBehaviour
 
     public void CheckReload(bool force=false)
     {
-        if(IsIdle && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)))
+        if(IsIdle && PlayerInventory.CurrentGun.primed && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)))
         {
             gunReloadAnimator.SetInteger("state", 1); // reloading
         }
