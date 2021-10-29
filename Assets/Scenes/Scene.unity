@@ -5030,12 +5030,12 @@ MonoBehaviour:
   _name: DoubleBarrelShotgun
   ammoType: TwelveGauge
   damage: 120
-  rpm: 600
+  rpm: 140
   animateBetweenShots: 0
   animatePostReload: 0
   magSize: 2
   shotgunReload: 0
-  ammoPerShot: 2
+  ammoPerShot: 1
   pellets: 32
   range: 20
   spread: 40
