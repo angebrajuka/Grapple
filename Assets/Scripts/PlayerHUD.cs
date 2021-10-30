@@ -2,13 +2,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
 
-// [System.Serializable]
-// public class StringTexturePair
-// {
-//     public string ammoType;
-//     public Texture2D ammoImage;
-// }
-
 public class PlayerHUD : MonoBehaviour
 {
     public static PlayerHUD instance;
@@ -19,7 +12,6 @@ public class PlayerHUD : MonoBehaviour
     public Color crosshair_colorReady;
     public Color crosshair_colorReloading;
     public Text ammo_reserveText;
-    // public RawImage ammoImage;
     public Transform compressedAir_needle;
     public Transform grappleRecharge_needle;
     public float compressedAir_minAngle, compressedAir_maxAngle;
@@ -48,10 +40,6 @@ public class PlayerHUD : MonoBehaviour
         grappleRechargeAngle = grappleRecharge_needle.localEulerAngles.z;
     }
 
-    // public static void UpdateAmmoImage()
-    // {
-    //     instance.ammoImage.texture = ammoImages[PlayerInventory.CurrentGun.ammoType];
-    // }
     public static void UpdateAmmoReserve()
     {
         instance.ammo_reserveText.SetText(PlayerInventory.ReserveAmmo+"");

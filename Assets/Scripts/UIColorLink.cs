@@ -7,6 +7,7 @@ public class UIColorLink : MonoBehaviour
 {
 #if(UNITY_EDITOR)
     public Color color;
+    public bool ignoreAlpha;
 
     UIColorLink parentColor;
     Image image;
@@ -35,7 +36,9 @@ public class UIColorLink : MonoBehaviour
     {
         if(parentColor == null) return;
 
+        float alpha = color.a;
         color = parentColor.color;
+        if(ignoreAlpha) color.a = alpha;
         if(image != null)       image.color = color;
         if(rawImage != null)    rawImage.color = color;
         if(text != null)        text.color = color;
