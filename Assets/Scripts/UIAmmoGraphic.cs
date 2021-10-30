@@ -10,9 +10,20 @@ public class UIAmmoGraphic : MonoBehaviour
     public Color color;
 
     int ammo=0;
+    string ammoType;
 
     void Update()
     {
+        string pAmmoType = PlayerInventory.CurrentGun.ammoType;
+        if(pAmmoType != ammoType)
+        {
+            ammoType = pAmmoType;
+            for(int i=0; i<transform.childCount; i++)
+            {
+                transform.GetChild(i).GetComponent<RawImage>().texture = PlayerHUD.ammoImages[ammoType];
+            }
+        }
+
         int pAmmo = mag ? PlayerInventory.CurrentGun.magSize : PlayerInventory.Ammo;
         if(pAmmo != ammo)
         {
@@ -25,6 +36,7 @@ public class UIAmmoGraphic : MonoBehaviour
             {
                 var go = Instantiate(prefab_ammoTick, transform.position+Vector3.right*(transform.childCount)*spacing, Quaternion.identity, transform);
                 go.GetComponent<RawImage>().color = color;
+                go.GetComponent<RawImage>().texture = PlayerHUD.ammoImages[ammoType];
             }
         }
     }
