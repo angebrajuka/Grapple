@@ -6758,9 +6758,9 @@ AnimationClip:
   - time: 0.06666667
     functionName: Sound
     data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 1
+    objectReferenceParameter: {fileID: 8300000, guid: 1a7ea523f4926d04aa7d504d15958305, type: 3}
+    floatParameter: 0.5
+    intParameter: 0
     messageOptions: 0
   - time: 0.15
     functionName: ShellEjectPA
@@ -6772,9 +6772,9 @@ AnimationClip:
   - time: 0.16666667
     functionName: Sound
     data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 2
+    objectReferenceParameter: {fileID: 8300000, guid: fc442235aa04dfe4ea336f9aa9f0dc60, type: 3}
+    floatParameter: 0.5
+    intParameter: 0
     messageOptions: 0
   - time: 0.26666668
     functionName: Idle

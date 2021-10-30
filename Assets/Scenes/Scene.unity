@@ -1206,7 +1206,7 @@ MonoBehaviour:
   range: 20
   spread: 0
   recoil: 200
-  clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
+  clip_shoot: {fileID: 8300000, guid: db9be5e9ea9a1b5498df626fccadd5f7, type: 3}
   vol_shoot: 0.5
   clip_reloads: []
   volume_reloads: []

@@ -8,9 +8,9 @@ public class ReloadAnimationEvents : MonoBehaviour
     public Animator animator;
     public GameObject prefab_shell;
 
-    public void Sound(int index)
+    public void Sound(AnimationEvent e)
     {
-        AudioManager.PlayClip(PlayerInventory.CurrentGun.clip_reloads[index], PlayerInventory.CurrentGun.volume_reloads[index]);
+        AudioManager.PlayClip((AudioClip)e.objectReferenceParameter, e.floatParameter);
     }
 
     public void ShellEject(GameObject go, Transform origin, Vector3 velocity)

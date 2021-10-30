@@ -19118,8 +19118,8 @@ AnimationClip:
   - time: 0
     functionName: Sound
     data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
+    objectReferenceParameter: {fileID: 8300000, guid: 62cb0394921c585459dd54ec31725a1c, type: 3}
+    floatParameter: 0.8
     intParameter: 0
     messageOptions: 0
   - time: 0.033333335
@@ -19132,16 +19132,16 @@ AnimationClip:
   - time: 0.25
     functionName: Sound
     data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 1
+    objectReferenceParameter: {fileID: 8300000, guid: 8f2dd5504b8b1594eb9b2afcf3ae2927, type: 3}
+    floatParameter: 0.8
+    intParameter: 0
     messageOptions: 0
   - time: 0.46666667
     functionName: Sound
     data: 
-    objectReferenceParameter: {fileID: 0}
-    floatParameter: 0
-    intParameter: 2
+    objectReferenceParameter: {fileID: 8300000, guid: 8f1ccc9d50092f24ab91fdb61b6397a9, type: 3}
+    floatParameter: 0.8
+    intParameter: 0
     messageOptions: 0
   - time: 0.55
     functionName: Finish
