@@ -12,6 +12,7 @@ public class ReloadAnimationEvents : MonoBehaviour
 
     public void Sound(AnimationEvent e)
     {
+        // if(e.stringParameter == "true" && animator.GetInteger("state") != e.intParameter) return;
         AudioManager.PlayClip((AudioClip)e.objectReferenceParameter, e.floatParameter);
     }
 
