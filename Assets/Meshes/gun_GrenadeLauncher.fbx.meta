@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Barrel
-    second: {fileID: 2100000, guid: e03a58a0ac78adb4aa52fb64fa09854d, type: 2}
+    second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -18,7 +18,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Cylinder
-    second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
+    second: {fileID: 2100000, guid: f826fff431ad72f4ca5542835ad49769, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -44,6 +44,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Reciever
     second: {fileID: 2100000, guid: c937cb429a0e967499a0252d0d9409c5, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shells
+    second: {fileID: 2100000, guid: 23cd66b0478b048438b20d78e07673c8, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule

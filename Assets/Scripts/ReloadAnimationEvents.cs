@@ -5,8 +5,10 @@ public class ReloadAnimationEvents : MonoBehaviour
     // hierarchy
     public Transform[] doubleBarrelShells;
     public Transform pumpActionShell;
+    public Transform[] grenadeLauncherShell;
     public Animator animator;
     public GameObject prefab_shell;
+    public GameObject prefab_shell_grenade;
 
     public void Sound(AnimationEvent e)
     {
@@ -32,6 +34,11 @@ public class ReloadAnimationEvents : MonoBehaviour
     public void ShellEjectPA(float force)
     {
         ShellEject(prefab_shell, pumpActionShell, Vector3.right*force);
+    }
+
+    public void ShellEjectGrenadeLauncher(float force)
+    {
+        // ShellEject(prefab_shell_grenade, grenadeLauncherShell, Vector3.up*force);
     }
 
     public void Idle()
