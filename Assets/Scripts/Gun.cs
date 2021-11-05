@@ -44,8 +44,8 @@ public class Gun : MonoBehaviour
         {
             var go = Instantiate(prefab_projectile, transform.position+(transform.forward*barrelLength), Quaternion.identity, null);
             var rb = go.GetComponent<Rigidbody>();
+            rb.velocity += PlayerMovement.m_rigidbody.velocity*0.7f;
             rb.AddForce(transform.forward*projectileForce);
-            rb.AddTorque(Random.onUnitSphere*(projectileForce/50f));
         }
         else
         {
