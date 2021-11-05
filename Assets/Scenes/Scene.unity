@@ -1352,8 +1352,10 @@ MonoBehaviour:
   recoil: 200
   clip_shoot: {fileID: 8300000, guid: db9be5e9ea9a1b5498df626fccadd5f7, type: 3}
   vol_shoot: 0.5
-  barrelLength: 0
+  barrelLength: 1
   prefab_muzzleFlash: {fileID: 0}
+  prefab_projectile: {fileID: 4461108514495309114, guid: 07654feb56cc95740a409922e6fdfcfa, type: 3}
+  projectileForce: 500
   index: 0
   timeBetweenShots: 0
   ammo: 0
@@ -3336,6 +3338,8 @@ MonoBehaviour:
   vol_shoot: 0.4
   barrelLength: 0
   prefab_muzzleFlash: {fileID: 0}
+  prefab_projectile: {fileID: 0}
+  projectileForce: 0
   index: 0
   timeBetweenShots: 0
   ammo: 0
@@ -5229,6 +5233,8 @@ MonoBehaviour:
   vol_shoot: 0.6
   barrelLength: 0
   prefab_muzzleFlash: {fileID: 0}
+  prefab_projectile: {fileID: 0}
+  projectileForce: 0
   index: 0
   timeBetweenShots: 0
   ammo: 0

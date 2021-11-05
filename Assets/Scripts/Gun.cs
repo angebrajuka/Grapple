@@ -20,6 +20,7 @@ public class Gun : MonoBehaviour
     public float        barrelLength; // relative to 0,0,0 in the .fbx file, which is always in line with the barrel, hence only need length
     public GameObject   prefab_muzzleFlash;
     public GameObject   prefab_projectile;
+    public float        projectileForce;
 
     [HideInInspector] public int index;
     [HideInInspector] public float timeBetweenShots;
@@ -41,7 +42,10 @@ public class Gun : MonoBehaviour
 
         if(prefab_projectile != null)
         {
-
+            var go = Instantiate(prefab_projectile, transform.position+(transform.forward*barrelLength), Quaternion.identity, null);
+            var rb = go.GetComponent<Rigidbody>();
+            rb.AddForce(transform.forward*projectileForce);
+            rb.AddTorque(Random.onUnitSphere*(projectileForce/50f));
         }
         else
         {
