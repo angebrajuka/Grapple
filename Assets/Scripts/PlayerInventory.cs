@@ -44,6 +44,46 @@ public class PlayerInventory : MonoBehaviour
 
     public static string CurrentGunName { get { return CurrentGun.name; } }
 
+    public static bool CanShoot
+    {
+        get {
+            return PlayerAnimator.state != PlayerAnimator.State.SWAPPING && 
+            (PlayerAnimator.IsIdle || CurrentGun.shotgunReload) && 
+            CurrentGunName == PlayerAnimator.activeGun && 
+            (CurrentGun.primed || !CurrentGun.animateBetweenShots) &&
+            Ammo >= CurrentGun.ammoPerShot && 
+            Time.time > CurrentGun.timeLastShot+CurrentGun.timeBetweenShots;
+        }
+    }
+
+    public static void FinishReload()
+    {
+        if(CurrentGun.shotgunReload)
+        {
+            ReserveAmmo --;
+            Ammo ++;
+            CurrentGun.primed = true;
+        }
+        else
+        {
+            int _ammo = ReserveAmmo/CurrentGun.ammoPerShot;
+            int _clip = CurrentGun.ammo/CurrentGun.ammoPerShot;
+            int _clipSize = CurrentGun.magSize/CurrentGun.ammoPerShot;
+            
+            if(_ammo > _clipSize - _clip)
+            {
+                ReserveAmmo -= (_clipSize - _clip)*CurrentGun.ammoPerShot;
+                Ammo = CurrentGun.magSize;
+            }
+            else if(_ammo > 0)
+            {
+                int num = _ammo*CurrentGun.ammoPerShot;
+                Ammo += num;
+                ReserveAmmo -= num;
+            }
+        }
+    }
+
     void Update()
     {
         if(PlayerInput.GetKey("gun_switch_0")) _nextGun = 0;
@@ -51,5 +91,10 @@ public class PlayerInventory : MonoBehaviour
         if(PlayerInput.GetKey("gun_switch_2")) _nextGun = 2;
 
         if(PlayerInput.GetKey("reload")) PlayerAnimator.instance.CheckReload(true);
+
+        if(CanShoot && PlayerInput.GetKey("shoot"))
+        {
+            CurrentGun.Shoot();
+        }
     }
 }

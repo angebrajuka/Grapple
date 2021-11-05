@@ -26,6 +26,8 @@ public class GrenadeLauncherShells : MonoBehaviour
 
     void Update()
     {
+        var eulers = cylinder.localEulerAngles;
+
         int pAmmo = gun.ammo;
         if(ammo < pAmmo)
         {
@@ -35,13 +37,13 @@ public class GrenadeLauncherShells : MonoBehaviour
         }
         else if(ammo > pAmmo)
         {
+            eulers.y = targetRotation%360;
             shells[Mathf.Abs(top%4)].SetActive(false);
             targetRotation -= 90;
             top += 1;
         }
         ammo = pAmmo;
 
-        var eulers = cylinder.localEulerAngles;
         eulers.y = Mathf.LerpAngle(eulers.y, targetRotation%360, Time.deltaTime*rotateSpeed);
         cylinder.localEulerAngles = eulers;
     }

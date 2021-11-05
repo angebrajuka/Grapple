@@ -19,6 +19,7 @@ public class Gun : MonoBehaviour
     public float        vol_shoot; 
     public float        barrelLength; // relative to 0,0,0 in the .fbx file, which is always in line with the barrel, hence only need length
     public GameObject   prefab_muzzleFlash;
+    public GameObject   prefab_projectile;
 
     [HideInInspector] public int index;
     [HideInInspector] public float timeBetweenShots;
@@ -32,5 +33,39 @@ public class Gun : MonoBehaviour
         ammo = 0;
         timeLastShot = 0;
         primed = true;
+    }
+
+    void ShootBullet()
+    {
+        var directionOffset = Vector3.zero;
+
+        if(prefab_projectile != null)
+        {
+
+        }
+        else
+        {
+            RaycastHit hit;
+            if(PlayerEyes.Raycast(out hit, range, barrelLength*Vector3.forward, directionOffset))
+            {
+                
+            }
+        }
+    }
+
+    public void Shoot()
+    {
+        PlayerAnimator.instance.gunReloadAnimator.SetInteger("state", 0);
+        AudioManager.PlayClip(clip_shoot);
+        PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformPoint(0, 0, -recoil));
+        PlayerAnimator.instance.Recoil();
+        timeLastShot = Time.time;
+        ammo -= ammoPerShot;
+        primed = false;
+
+        for(int i=0; i<pellets; i++)
+        {
+            ShootBullet();
+        }
     }
 }

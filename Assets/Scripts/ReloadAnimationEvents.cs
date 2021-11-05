@@ -52,7 +52,7 @@ public class ReloadAnimationEvents : MonoBehaviour
     {
         if(!PlayerAnimator.IsReloading) return;
 
-        PlayerShooting.FinishReload();
+        PlayerInventory.FinishReload();
         if(PlayerInventory._nextGun == PlayerInventory._currentGun && PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
         {
             PlayerAnimator.instance.CheckReload(true);
