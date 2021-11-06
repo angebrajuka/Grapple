@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
             var target = hit.transform.gameObject.GetComponent<Target>();
             if(target != null)
             {
-                target.Damage(damage);
+                target.Damage(damage, transform.forward);
             }
 
             Destroy(gameObject);

@@ -15,7 +15,7 @@ public class Target : MonoBehaviour
         var rb = GetComponent<Rigidbody>();
         if(rb != null)
         {
-            rb.AddForce(direction*damage/10f);
+            rb.AddForce(direction*damage*50f);
         }
     }
 
