@@ -57,9 +57,12 @@ public class PlayerAnimator : MonoBehaviour
         AtLowest();
     }
 
+    bool CanReload { get { return IsIdle && (PlayerInventory.CurrentGun.primed || !PlayerInventory.CurrentGun.animateBetweenShots) && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize; } }
+    bool ShotgunAutoReload { get { return Time.time > PlayerInventory.CurrentGun.timeLastShot+PlayerInventory.CurrentGun.timeBetweenShots*2 && PlayerInventory.CurrentGun.shotgunReload; } }
+
     public void CheckReload(bool force=false)
     {
-        if(IsIdle && (PlayerInventory.CurrentGun.primed || !PlayerInventory.CurrentGun.animateBetweenShots) && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && (PlayerInventory.Ammo <= 0 || (force && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize)))
+        if(CanReload && (PlayerInventory.Ammo <= 0 || ShotgunAutoReload || force))
         {
             gunReloadAnimator.SetInteger("state", 1); // reloading
         }
