@@ -3,6 +3,7 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public float range;
+    public float damage;
     public float distancePerTick;
     public LayerMask layermask;
 
@@ -18,6 +19,12 @@ public class Bullet : MonoBehaviour
         RaycastHit hit;
         if(Physics.Raycast(transform.position, transform.forward, out hit, distancePerTick, ~layermask))
         {
+            var target = hit.transform.gameObject.GetComponent<Target>();
+            if(target != null)
+            {
+                target.Damage(damage);
+            }
+
             Destroy(gameObject);
         }
         transform.position += transform.forward*distancePerTick;

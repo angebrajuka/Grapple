@@ -5,36 +5,45 @@ using UnityEngine;
 
 public class Target : MonoBehaviour
 {
-    public float maxHealth = 100;
-    public float health = 100;
-    public bool damageable = false;
-    public bool dead = false;
+    public float maxHealth;
+    public float health;
+    public bool damageable;
+    public bool dead;
 
-    // public static bool DefaultHeal(float f) { return false; }
-    // public static bool DefaultDmgK(float f1, float f2) {
-    //     Debug.Log("default damage");
-    //     return false;
-    // }
+    public void OnDamage(float damage, Vector3 direction)
+    {
+        var rb = GetComponent<Rigidbody>();
+        if(rb != null)
+        {
+            rb.AddForce(direction*damage/10f);
+        }
+    }
 
-    public Func<float, float, bool> OnDamage;
-    public Func<float, float, bool> OnKill;
-    public Func<float, bool> OnHeal;
-    
-    public bool Damage(float damage, float angle=0)
+    public void OnKill(float damage, Vector3 direction)
+    {
+        Destroy(gameObject);
+    }
+
+    public void OnHeal(float health)
+    {
+
+    }
+
+    public bool Damage(float damage, Vector3 direction=default(Vector3))
     {
         if(damageable && !dead)
         {
             health -= damage;
-            if(OnDamage != null) OnDamage(damage, angle);
-            
+            OnDamage(damage, direction);
+
             if(health <= 0)
             {
                 dead = true;
-                if(OnKill != null) OnKill(damage, angle);
+                OnKill(damage, direction);
             }
             return true;
         }
-        if(OnDamage != null) OnDamage(0, angle);
+        OnDamage(0, direction);
         return false;
     }
 
@@ -43,7 +52,7 @@ public class Target : MonoBehaviour
         if(damageable)
         {
             health += heal;
-            if(OnHeal != null) OnHeal(heal);
+            OnHeal(heal);
             if(health > maxHealth)
             {
                 health = maxHealth;

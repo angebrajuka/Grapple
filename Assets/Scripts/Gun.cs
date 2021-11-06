@@ -4,7 +4,7 @@ public class Gun : MonoBehaviour
 {
     public string       _name;
     public string       ammoType;
-    public int          damage;
+    public float        damage;
     public int          rpm;
     public bool         animateBetweenShots;
     public bool         animatePostReload;
@@ -17,7 +17,6 @@ public class Gun : MonoBehaviour
     public float        recoil;
     public AudioClip    clip_shoot;
     public float        vol_shoot; 
-    public float        barrelLength; // relative to 0,0,0 in the .fbx file, which is always in line with the barrel, hence only need length
     public GameObject   prefab_muzzleFlash;
     public GameObject   prefab_projectile;
     public float        projectileForce;
@@ -43,7 +42,7 @@ public class Gun : MonoBehaviour
         float vertSpread = spread-Mathf.Abs(horzSpread);
         var eulerOffset = new Vector3(Random.Range(-vertSpread, vertSpread), horzSpread, 0);
 
-        var go = Instantiate(prefab_projectile, transform.position+(transform.forward*barrelLength), transform.rotation, null);
+        var go = Instantiate(prefab_projectile, transform.position-transform.forward*0.5f, transform.rotation, null);
         go.transform.eulerAngles += eulerOffset;
         var rb = go.GetComponent<Rigidbody>();
         if(rb != null)
@@ -55,7 +54,7 @@ public class Gun : MonoBehaviour
         if(bullet != null)
         {
             bullet.range = range;
-
+            bullet.damage = (float)damage / (float)pellets;
         }
     }
 
