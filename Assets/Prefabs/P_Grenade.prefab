@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3847252896295845006}
   - component: {fileID: -1761935792982117912}
   - component: {fileID: 1185943801272762870}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: P_Grenade
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 1388227701454684173}
   - component: {fileID: 8833255809624131306}
   - component: {fileID: 4237834060423590115}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
