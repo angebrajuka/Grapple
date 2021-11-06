@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   range: 0
-  distancePerTick: 3
+  distancePerTick: 2
   layermask:
     serializedVersion: 2
     m_Bits: 200

@@ -3331,8 +3331,8 @@ MonoBehaviour:
   shotgunReload: 1
   ammoPerShot: 1
   pellets: 16
-  range: 20
-  spread: 15
+  range: 100
+  spread: 10
   recoil: 600
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.4
@@ -5226,8 +5226,8 @@ MonoBehaviour:
   shotgunReload: 0
   ammoPerShot: 1
   pellets: 16
-  range: 20
-  spread: 15
+  range: 100
+  spread: 10
   recoil: 600
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.6

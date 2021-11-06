@@ -36,14 +36,15 @@ public class Gun : MonoBehaviour
         primed = true;
     }
 
-    void ShootBullet()
+    void ShootBullet(int pellet)
     {
+        float spread = this.spread * ((float)pellet / pellets);
         float horzSpread = Random.Range(-spread, spread);
-        float vertSpread = spread-horzSpread;
+        float vertSpread = spread-Mathf.Abs(horzSpread);
         var eulerOffset = new Vector3(Random.Range(-vertSpread, vertSpread), horzSpread, 0);
 
         var go = Instantiate(prefab_projectile, transform.position+(transform.forward*barrelLength), transform.rotation, null);
-        go.transform.localEulerAngles += eulerOffset;
+        go.transform.eulerAngles += eulerOffset;
         var rb = go.GetComponent<Rigidbody>();
         if(rb != null)
         {
@@ -70,7 +71,7 @@ public class Gun : MonoBehaviour
 
         for(int i=0; i<pellets; i++)
         {
-            ShootBullet();
+            ShootBullet(i);
         }
     }
 }
