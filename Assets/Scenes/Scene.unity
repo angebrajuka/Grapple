@@ -1340,7 +1340,7 @@ MonoBehaviour:
   _name: GrenadeLauncher
   ammoType: Grenade
   damage: 120
-  rpm: 120
+  rpm: 220
   animateBetweenShots: 1
   animatePostReload: 0
   magSize: 4
