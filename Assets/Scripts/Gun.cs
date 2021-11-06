@@ -38,22 +38,23 @@ public class Gun : MonoBehaviour
 
     void ShootBullet()
     {
-        var directionOffset = Vector3.zero;
+        float horzSpread = Random.Range(-spread, spread);
+        float vertSpread = spread-horzSpread;
+        var eulerOffset = new Vector3(Random.Range(-vertSpread, vertSpread), horzSpread, 0);
 
-        if(prefab_projectile != null)
+        var go = Instantiate(prefab_projectile, transform.position+(transform.forward*barrelLength), transform.rotation, null);
+        go.transform.localEulerAngles += eulerOffset;
+        var rb = go.GetComponent<Rigidbody>();
+        if(rb != null)
         {
-            var go = Instantiate(prefab_projectile, transform.position+(transform.forward*barrelLength), transform.rotation, null);
-            var rb = go.GetComponent<Rigidbody>();
             rb.velocity += PlayerMovement.m_rigidbody.velocity*0.7f;
             rb.AddForce(transform.forward*projectileForce);
         }
-        else
+        var bullet = go.GetComponent<Bullet>();
+        if(bullet != null)
         {
-            RaycastHit hit;
-            if(PlayerEyes.Raycast(out hit, range, barrelLength*Vector3.forward, directionOffset))
-            {
-                
-            }
+            bullet.range = range;
+
         }
     }
 
