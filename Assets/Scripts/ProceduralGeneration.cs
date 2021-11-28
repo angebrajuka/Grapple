@@ -10,16 +10,26 @@ public class ProceduralGeneration : MonoBehaviour
     public void Init()
     {
         instance = this;
+
+        RandomSeed();
     }
 
-    public static void RandomSeed()
+    public static float RandomSeed()
     {
         seed = Random.value*4586+Random.value;
+        SetRelativeSeeds();
+        return seed;
     }
 
-    public static void RelativeSeeds()
+    public static void SetRelativeSeeds()
     {
 
+    }
+
+    static float Perlin(float seed, float x, float z, float chunkX, float chunkZ, float scale=1)
+    {
+        const int perlinOffset = 34546; // prevents mirroring
+        return Mathf.PerlinNoise((perlinOffset+seed+x+DynamicLoading.CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+DynamicLoading.CHUNK_SIZE*chunkZ)*scale);
     }
 
     public static void LoadChunk(int chunkX, int chunkZ, GameObject chunk)
@@ -34,7 +44,7 @@ public class ProceduralGeneration : MonoBehaviour
         int i=0;
         for(int x=0; x<=DynamicLoading.CHUNK_SIZE; ++x) for(int z=0; z<=DynamicLoading.CHUNK_SIZE; ++z)
         {
-            vertices[(DynamicLoading.CHUNK_SIZE+1)*x+z] = new Vector3(x, Random.value/2f, z);
+            vertices[(DynamicLoading.CHUNK_SIZE+1)*x+z] = new Vector3(x, Perlin(seed, x, z, chunkX, chunkZ, 0.2f), z);
             if(x<DynamicLoading.CHUNK_SIZE && z<DynamicLoading.CHUNK_SIZE)
             {
                 triangles[6*i]   = (DynamicLoading.CHUNK_SIZE+1)*x+z;
