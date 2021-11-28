@@ -25,12 +25,12 @@ public class DynamicLoading : MonoBehaviour
         currPos = new Vector3Int(0, 0, 0);
     }
 
-
-    public GameObject Load(int x, int z)
+    public void Load(int x, int z)
     {
-        if(loadedChunks.ContainsKey((x, z))) return loadedChunks[(x, z)];
+        if(loadedChunks.ContainsKey((x, z))) return;
 
         GameObject chunk = unloadedChunks.Count == 0 ? Instantiate(prefab_chunk, transform_chunks) : unloadedChunks.Dequeue();
+        loadedChunks.Add((x, z), chunk);
         chunk.SetActive(true);
 
         Vector3 pos = chunk.transform.position;
@@ -38,9 +38,7 @@ public class DynamicLoading : MonoBehaviour
         pos.z = z*CHUNK_SIZE;
         chunk.transform.position = pos;
 
-        loadedChunks.Add((x, z), chunk);
-
-        return chunk;
+        ProceduralGeneration.LoadChunk(x, z, chunk);
     }
 
     public void Unload(int x, int z)
