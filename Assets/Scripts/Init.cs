@@ -3,11 +3,12 @@ using UnityEngine;
 public class Init : MonoBehaviour
 {
     // hierarchy
-    public Guns guns;
-    public Transform player;
-    public Transform canvas;
     public AudioManager audioManager;
     public MusicController musicController;
+    public Transform proceduralGeneration;
+    public Transform player;
+    public Guns guns;
+    public Transform canvas;
     public MenuHandler menuHandler;
     public bool load;
 
@@ -15,6 +16,9 @@ public class Init : MonoBehaviour
     {
         audioManager.Init();
         musicController.Init();
+        proceduralGeneration.GetComponent<ProceduralGeneration>().Init();
+        proceduralGeneration.GetComponent<DynamicLoading>().Init();
+
         player.GetComponent<PauseHandler>().Init();
 
         guns.Init();
