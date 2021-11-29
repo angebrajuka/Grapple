@@ -4712,7 +4712,7 @@ MonoBehaviour:
   walkMaxSpeed: 12
   friction_normal: 0.9
   friction_slide: 1
-  jumpForce: 600
+  jumpForce: 750
   jumpTimeLeeway: 0.2
   slideForce: 800
   slideTime: 0.4
