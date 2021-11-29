@@ -26,33 +26,36 @@ public class ProceduralGeneration : MonoBehaviour
 
     }
 
-    static float Perlin(float seed, float x, float z, float chunkX, float chunkZ, float scale=1)
+    static float Perlin(float seed, float x, float z, float chunkX, float chunkZ, float min=0, float max=1, float scale=1)
     {
         const int perlinOffset = 34546; // prevents mirroring
-        return Mathf.PerlinNoise((perlinOffset+seed+x+DynamicLoading.CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+DynamicLoading.CHUNK_SIZE*chunkZ)*scale);
+        return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+DynamicLoading.CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+DynamicLoading.CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
     }
 
     public static void LoadChunk(int chunkX, int chunkZ, GameObject chunk)
     {
+        const int density = 2;
+        const int chunkSize = DynamicLoading.CHUNK_SIZE*density;
+
         var meshFilter = chunk.GetComponent<MeshFilter>();
         var meshCollider = chunk.GetComponent<MeshCollider>();
 
         var mesh = new Mesh();
-        Vector3[] vertices = new Vector3[(int)Math.Sqr(DynamicLoading.CHUNK_SIZE+1)];
-        int[] triangles = new int[(int)Math.Sqr(DynamicLoading.CHUNK_SIZE)*6];
+        Vector3[] vertices = new Vector3[(int)Math.Sqr(chunkSize+1)];
+        int[] triangles = new int[(int)Math.Sqr(chunkSize)*6];
 
         int i=0;
-        for(int x=0; x<=DynamicLoading.CHUNK_SIZE; ++x) for(int z=0; z<=DynamicLoading.CHUNK_SIZE; ++z)
+        for(int x=0; x<=chunkSize; ++x) for(int z=0; z<=chunkSize; ++z)
         {
-            vertices[(DynamicLoading.CHUNK_SIZE+1)*x+z] = new Vector3(x, Perlin(seed, x, z, chunkX, chunkZ, 0.2f), z);
-            if(x<DynamicLoading.CHUNK_SIZE && z<DynamicLoading.CHUNK_SIZE)
+            vertices[(chunkSize+1)*x+z] = new Vector3((float)x/(float)density, Perlin(seed, (float)x/(float)density, (float)z/(float)density, chunkX, chunkZ, 0, 0.5f, 0.2f), (float)z/(float)density);
+            if(x<chunkSize && z<chunkSize)
             {
-                triangles[6*i]   = (DynamicLoading.CHUNK_SIZE+1)*x+z;
-                triangles[6*i+1] = (DynamicLoading.CHUNK_SIZE+1)*x+z+1;
-                triangles[6*i+2] = (DynamicLoading.CHUNK_SIZE+1)*(x+1)+z;
-                triangles[6*i+3] = (DynamicLoading.CHUNK_SIZE+1)*(x+1)+z;
-                triangles[6*i+4] = (DynamicLoading.CHUNK_SIZE+1)*x+z+1;
-                triangles[6*i+5] = (DynamicLoading.CHUNK_SIZE+1)*(x+1)+z+1;
+                triangles[6*i]   = (chunkSize+1)*x+z;
+                triangles[6*i+1] = (chunkSize+1)*x+z+1;
+                triangles[6*i+2] = (chunkSize+1)*(x+1)+z;
+                triangles[6*i+3] = (chunkSize+1)*(x+1)+z;
+                triangles[6*i+4] = (chunkSize+1)*x+z+1;
+                triangles[6*i+5] = (chunkSize+1)*(x+1)+z+1;
                 ++i;
             }
         }

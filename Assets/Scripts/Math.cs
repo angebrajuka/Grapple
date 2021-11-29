@@ -76,9 +76,9 @@ public static class Math
         return new Vector2(vec.x, vec.y);
     }
 
-    public static float Remap(float value, float from1, float to1, float from2, float to2)
+    public static float Remap(float value, float oldMin, float oldMax, float newMin, float newMax)
     {
-        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
+        return (value - oldMin) / (oldMax - oldMin) * (newMax - newMin) + newMin;
     }
 
     public static bool Ish(float value1, float value2, float range=0.05f)
