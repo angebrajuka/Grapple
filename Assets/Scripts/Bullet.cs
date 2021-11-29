@@ -9,7 +9,9 @@ public class Bullet : MonoBehaviour
 
     float distanceTravelled;
 
-    void Start()
+    public ObjectPool pool;
+
+    void OnEnable()
     {
         distanceTravelled = 0;
     }
@@ -25,13 +27,13 @@ public class Bullet : MonoBehaviour
                 target.Damage(damage, transform.forward);
             }
 
-            Destroy(gameObject);
+            pool.Return(gameObject);
         }
         transform.position += transform.forward*distancePerTick;
         distanceTravelled += distancePerTick;
         if(distanceTravelled >= range)
         {
-            Destroy(gameObject);
+            pool.Return(gameObject);
         }
     }
 }

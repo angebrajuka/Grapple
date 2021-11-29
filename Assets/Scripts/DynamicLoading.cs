@@ -10,7 +10,7 @@ public class DynamicLoading : MonoBehaviour
     public Transform transform_chunks;
     public int renderDistance;
 
-    public static Queue<GameObject> unloadedChunks;
+    public static ObjectPool pool_chunks;
     public static Dictionary<(int x, int z), GameObject> loadedChunks;
     public static Vector3Int prevPos, currPos;
 
@@ -18,7 +18,7 @@ public class DynamicLoading : MonoBehaviour
     {
         instance = this;
 
-        unloadedChunks = new Queue<GameObject>();
+        pool_chunks = new ObjectPool(prefab_chunk, transform_chunks);
         loadedChunks = new Dictionary<(int x, int z), GameObject>();
         prevPos = new Vector3Int(0, 0, 0);
         currPos = new Vector3Int(0, 0, 0);
@@ -28,14 +28,9 @@ public class DynamicLoading : MonoBehaviour
     {
         if(loadedChunks.ContainsKey((x, z))) return;
 
-        var chunk = unloadedChunks.Count == 0 ? Instantiate(instance.prefab_chunk, instance.transform_chunks) : unloadedChunks.Dequeue();
+        var chunk = pool_chunks.Get(new Vector3(x*ProceduralGeneration.CHUNK_SIZE, 0, z*ProceduralGeneration.CHUNK_SIZE), Quaternion.identity);
         loadedChunks.Add((x, z), chunk);
         chunk.SetActive(true);
-
-        Vector3 pos = chunk.transform.position;
-        pos.x = x*ProceduralGeneration.CHUNK_SIZE;
-        pos.z = z*ProceduralGeneration.CHUNK_SIZE;
-        chunk.transform.position = pos;
 
         ProceduralGeneration.LoadChunk(x, z, chunk);
     }
@@ -45,9 +40,8 @@ public class DynamicLoading : MonoBehaviour
         if(!loadedChunks.ContainsKey((x, z))) return;
 
         GameObject chunk = loadedChunks[(x, z)];
-        unloadedChunks.Enqueue(chunk);
-        chunk.gameObject.SetActive(false);
         loadedChunks.Remove((x, z));
+        pool_chunks.Return(chunk);
     }
 
     void UnloadTooFar()

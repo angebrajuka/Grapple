@@ -27,12 +27,15 @@ public class Gun : MonoBehaviour
     [HideInInspector] public float timeLastShot;
     [HideInInspector] public bool primed;
 
+    ObjectPool pool_bullets;
+
     void Start()
     {
         timeBetweenShots = 60f/rpm;
         ammo = 0;
         timeLastShot = 0;
         primed = true;
+        pool_bullets = new ObjectPool(prefab_projectile, null);
     }
 
     void ShootBullet(int pellet)
@@ -42,7 +45,7 @@ public class Gun : MonoBehaviour
         float vertSpread = spread-Mathf.Abs(horzSpread);
         var eulerOffset = new Vector3(Random.Range(-vertSpread, vertSpread), horzSpread, 0);
 
-        var go = Instantiate(prefab_projectile, transform.position-transform.forward*0.5f, transform.rotation, null);
+        var go = pool_bullets.Get(transform.position-transform.forward*0.5f, transform.rotation);
         go.transform.eulerAngles += eulerOffset;
         var rb = go.GetComponent<Rigidbody>();
         if(rb != null)
@@ -53,6 +56,7 @@ public class Gun : MonoBehaviour
         var bullet = go.GetComponent<Bullet>();
         if(bullet != null)
         {
+            bullet.pool = pool_bullets;
             bullet.range = range;
             bullet.damage = (float)damage / (float)pellets;
         }
