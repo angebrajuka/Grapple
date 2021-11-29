@@ -112,6 +112,6 @@ public class GrappleHook : MonoBehaviour
         }
 
         m_lineRenderer.SetPosition(0, m_rigidbody.position+configJoint.anchor);
-        m_lineRenderer.SetPosition(m_lineRenderer.positionCount-1, PlayerThreeDM.instance.t_threeDM.position);
+        m_lineRenderer.SetPosition(1, PlayerThreeDM.instance.t_threeDM.position);
     }
 }

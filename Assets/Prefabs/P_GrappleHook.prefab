@@ -64,7 +64,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 177983cda53adc046b51ae6f998a27d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  clip_reload: {fileID: 8300000, guid: 00e5b2d85936d7e489e31755dd94821d, type: 3}
   configJoint: {fileID: -7658063650059081547}
   m_rigidbody: {fileID: 5952125858084161473}
   m_lineRenderer: {fileID: 2024707212064137224}
@@ -230,8 +229,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.07142857
-        value: 0.08208954
+        time: 0.081667215
+        value: 0.0662204
         inSlope: 0
         outSlope: 0
         tangentMode: 0
