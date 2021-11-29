@@ -147,7 +147,7 @@ public class PlayerMovement : MonoBehaviour
         var halfHeight = Vector3.up*(colliderDefault.height/2);
         var point0 = center + halfHeight;
         var point1 = center; // dont subtract half height for ignoring floor
-        if((!input_crouch || !grounded) && Physics.OverlapCapsule(point0, point1, colliderDefault.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length == 0)
+        if((!input_crouch) && Physics.OverlapCapsule(point0, point1, colliderDefault.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length == 0)
         {
             Crouching = false;
         }

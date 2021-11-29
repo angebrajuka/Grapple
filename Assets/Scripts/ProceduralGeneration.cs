@@ -1,9 +1,10 @@
 using UnityEngine;
 
-
 public class ProceduralGeneration : MonoBehaviour
 {
     public static ProceduralGeneration instance;
+
+    public const int CHUNK_SIZE = 40;
 
     static float seed;
 
@@ -29,18 +30,18 @@ public class ProceduralGeneration : MonoBehaviour
     static float Perlin(float seed, float x, float z, float chunkX, float chunkZ, float min=0, float max=1, float scale=1)
     {
         const int perlinOffset = 34546; // prevents mirroring
-        return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+DynamicLoading.CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+DynamicLoading.CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
+        return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
     }
 
     public static void LoadChunk(int chunkX, int chunkZ, GameObject chunk)
     {
         const int density = 2;
-        const int chunkSize = DynamicLoading.CHUNK_SIZE*density;
+        const int chunkSize = CHUNK_SIZE*density;
 
         var meshFilter = chunk.GetComponent<MeshFilter>();
         var meshCollider = chunk.GetComponent<MeshCollider>();
 
-        var mesh = new Mesh();
+        var mesh = meshFilter.mesh == null ? new Mesh() : meshFilter.mesh;
         Vector3[] vertices = new Vector3[(int)Math.Sqr(chunkSize+1)];
         int[] triangles = new int[(int)Math.Sqr(chunkSize)*6];
 

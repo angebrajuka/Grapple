@@ -12,7 +12,6 @@ public class DynamicLoading : MonoBehaviour
 
     public static Queue<GameObject> unloadedChunks;
     public static Dictionary<(int x, int z), GameObject> loadedChunks;
-    public const int CHUNK_SIZE = 40;
     public static Vector3Int prevPos, currPos;
 
     public void Init()
@@ -25,23 +24,23 @@ public class DynamicLoading : MonoBehaviour
         currPos = new Vector3Int(0, 0, 0);
     }
 
-    public void Load(int x, int z)
+    void Load(int x, int z)
     {
         if(loadedChunks.ContainsKey((x, z))) return;
 
-        GameObject chunk = unloadedChunks.Count == 0 ? Instantiate(prefab_chunk, transform_chunks) : unloadedChunks.Dequeue();
+        var chunk = unloadedChunks.Count == 0 ? Instantiate(instance.prefab_chunk, instance.transform_chunks) : unloadedChunks.Dequeue();
         loadedChunks.Add((x, z), chunk);
         chunk.SetActive(true);
 
         Vector3 pos = chunk.transform.position;
-        pos.x = x*CHUNK_SIZE;
-        pos.z = z*CHUNK_SIZE;
+        pos.x = x*ProceduralGeneration.CHUNK_SIZE;
+        pos.z = z*ProceduralGeneration.CHUNK_SIZE;
         chunk.transform.position = pos;
 
         ProceduralGeneration.LoadChunk(x, z, chunk);
     }
 
-    public void Unload(int x, int z)
+    void Unload(int x, int z)
     {
         if(!loadedChunks.ContainsKey((x, z))) return;
 
@@ -51,7 +50,7 @@ public class DynamicLoading : MonoBehaviour
         loadedChunks.Remove((x, z));
     }
 
-    public void UnloadTooFar()
+    void UnloadTooFar()
     {
         var toUnload = new LinkedList<(int x, int z)>();
         foreach(var chunk in loadedChunks)
@@ -70,7 +69,7 @@ public class DynamicLoading : MonoBehaviour
     void Update()
     {
         Vector3 p = PlayerMovement.m_rigidbody.position;
-        currPos.Set((int)Mathf.Floor(p.x/CHUNK_SIZE), 0, (int)Mathf.Floor(p.z/CHUNK_SIZE));
+        currPos.Set((int)Mathf.Floor(p.x/ProceduralGeneration.CHUNK_SIZE), 0, (int)Mathf.Floor(p.z/ProceduralGeneration.CHUNK_SIZE));
 
         if(currPos != prevPos || loadedChunks.Count == 0)
         {
