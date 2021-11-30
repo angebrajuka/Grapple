@@ -17,7 +17,6 @@ public class Init : MonoBehaviour
         audioManager.Init();
         musicController.Init();
         proceduralGeneration.GetComponent<ProceduralGeneration>().Init();
-        proceduralGeneration.GetComponent<DynamicLoading>().Init();
 
         player.GetComponent<PauseHandler>().Init();
 
