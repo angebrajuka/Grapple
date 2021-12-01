@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Gun : MonoBehaviour
 {
@@ -27,7 +28,7 @@ public class Gun : MonoBehaviour
     [HideInInspector] public float timeLastShot;
     [HideInInspector] public bool primed;
 
-    ObjectPool pool_bullets;
+    ObjectPool<Bullet> pool_bullets;
 
     void Start()
     {
@@ -35,7 +36,27 @@ public class Gun : MonoBehaviour
         ammo = 0;
         timeLastShot = 0;
         primed = true;
-        pool_bullets = new ObjectPool(prefab_projectile, null);
+        pool_bullets = new ObjectPool<Bullet>(
+            () => {
+                // on create
+                var bullet = Instantiate(prefab_projectile).GetComponent<Bullet>();
+
+                return bullet;
+            },
+            (bullet) => {
+                // on get
+                bullet.gameObject.SetActive(true);
+            },
+            (bullet) => {
+                // on return
+                bullet.gameObject.SetActive(false);
+            },
+            (bullet) => {
+                // on destroy
+                Destroy(bullet.gameObject);
+            },
+            false, 50, 50
+        );
     }
 
     void ShootBullet(int pellet)
@@ -45,21 +66,18 @@ public class Gun : MonoBehaviour
         float vertSpread = spread-Mathf.Abs(horzSpread);
         var eulerOffset = new Vector3(Random.Range(-vertSpread, vertSpread), horzSpread, 0);
 
-        var go = pool_bullets.Get(transform.position-transform.forward*0.5f, transform.rotation);
-        go.transform.eulerAngles += eulerOffset;
-        var rb = go.GetComponent<Rigidbody>();
+        var bullet = pool_bullets.Get();
+        bullet.transform.SetPositionAndRotation(transform.position-transform.forward*0.5f, transform.rotation);
+        bullet.transform.eulerAngles += eulerOffset;
+        var rb = bullet.GetComponent<Rigidbody>();
         if(rb != null)
         {
             rb.velocity += PlayerMovement.m_rigidbody.velocity*0.7f;
             rb.AddForce(transform.forward*projectileForce);
         }
-        var bullet = go.GetComponent<Bullet>();
-        if(bullet != null)
-        {
-            bullet.pool = pool_bullets;
-            bullet.range = range;
-            bullet.damage = (float)damage / (float)pellets;
-        }
+        bullet.pool = pool_bullets;
+        bullet.range = range;
+        bullet.damage = (float)damage / (float)pellets;
     }
 
     public void Shoot()

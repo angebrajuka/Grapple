@@ -1,7 +1,11 @@
 using UnityEngine;
+using UnityEngine.Pool;
 
 public class Bullet : MonoBehaviour
 {
+    // hierarchy
+    public bool grenade;
+
     public float range;
     public float damage;
     public float distancePerTick;
@@ -9,7 +13,7 @@ public class Bullet : MonoBehaviour
 
     float distanceTravelled;
 
-    public ObjectPool pool;
+    public ObjectPool<Bullet> pool;
 
     void OnEnable()
     {
@@ -27,13 +31,13 @@ public class Bullet : MonoBehaviour
                 target.Damage(damage, transform.forward);
             }
 
-            pool.Return(gameObject);
+            pool.Release(this);
         }
         transform.position += transform.forward*distancePerTick;
         distanceTravelled += distancePerTick;
         if(distanceTravelled >= range)
         {
-            pool.Return(gameObject);
+            pool.Release(this);
         }
     }
 }

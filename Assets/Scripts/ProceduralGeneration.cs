@@ -1,22 +1,25 @@
 using UnityEngine;
 using System.Collections.Generic;
+using UnityEngine.Pool;
 
 public class ProceduralGeneration : MonoBehaviour
 {
     public static ProceduralGeneration instance;
 
     // hierarchy
-    public GameObject prefab_chunk;
     public Transform transform_chunks;
+    public Material chunkMaterial;
     public int renderDistance;
 
     public const int CHUNK_SIZE = 40;
+    public const int DENSITY = 2;
+    public const int CHUNK_VERTECIES = DENSITY*CHUNK_SIZE+1;
 
     static float seed;
 
 
-    public static ObjectPool pool_chunks;
-    public static Dictionary<(int x, int z), GameObject> loadedChunks;
+    public static ObjectPool<Chunk> pool_chunks;
+    public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
 
     public void Init()
@@ -26,8 +29,37 @@ public class ProceduralGeneration : MonoBehaviour
         RandomSeed();
 
 
-        pool_chunks = new ObjectPool(prefab_chunk, transform_chunks);
-        loadedChunks = new Dictionary<(int x, int z), GameObject>();
+        pool_chunks = new ObjectPool<Chunk>(
+            () => {
+                // on create
+                var go = new GameObject("chunk", typeof(Chunk), typeof(MeshFilter), typeof(MeshCollider), typeof(MeshRenderer));
+                go.transform.SetParent(transform_chunks);
+                var chunk = go.GetComponent<Chunk>();
+                chunk.meshFilter = chunk.gameObject.GetComponent<MeshFilter>();
+                chunk.meshCollider = chunk.gameObject.GetComponent<MeshCollider>();
+                chunk.meshRenderer = chunk.gameObject.GetComponent<MeshRenderer>();
+                chunk.meshRenderer.material = chunkMaterial;
+                chunk.meshFilter.mesh = new Mesh();
+                chunk.meshFilter.mesh.vertices = new Vector3[(int)Math.Sqr(CHUNK_VERTECIES)];
+                chunk.meshFilter.mesh.triangles = new int[(int)Math.Sqr(CHUNK_VERTECIES-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
+
+                return chunk;
+            },
+            (chunk) => {
+                // on get
+                chunk.gameObject.SetActive(true);
+            },
+            (chunk) => {
+                // on return
+                chunk.gameObject.SetActive(false);
+            },
+            (chunk) => {
+                // on destroy
+                Destroy(chunk.gameObject);
+            },
+            false, (int)Math.Sqr(renderDistance*2), (int)Math.Sqr(renderDistance*2)
+        );
+        loadedChunks = new Dictionary<(int x, int z), Chunk>();
         prevPos = new Vector3Int(0, 0, 0);
         currPos = new Vector3Int(0, 0, 0);
     }
@@ -50,17 +82,17 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
     }
 
-    public static void LoadChunk(int chunkX, int chunkZ, GameObject chunk)
+    public static void LoadChunk(int chunkX, int chunkZ, Chunk chunk)
     {
         const int density = 2;
         const int chunkSize = CHUNK_SIZE*density;
 
-        var meshFilter = chunk.GetComponent<MeshFilter>();
-        var meshCollider = chunk.GetComponent<MeshCollider>();
+        var meshFilter = chunk.meshFilter;
+        var meshCollider = chunk.meshCollider;
 
-        var mesh = meshFilter.mesh == null ? new Mesh() : meshFilter.mesh;
-        Vector3[] vertices = new Vector3[(int)Math.Sqr(chunkSize+1)];
-        int[] triangles = new int[(int)Math.Sqr(chunkSize)*6];
+        var mesh = meshFilter.mesh;
+        Vector3[] vertices = mesh.vertices;
+        int[] triangles = mesh.triangles;
 
         int i=0;
         for(int x=0; x<=chunkSize; ++x) for(int z=0; z<=chunkSize; ++z)
@@ -80,6 +112,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.RecalculateBounds();
 
         meshFilter.mesh = mesh;
         meshCollider.sharedMesh = mesh;
@@ -91,9 +124,9 @@ public class ProceduralGeneration : MonoBehaviour
     {
         if(loadedChunks.ContainsKey((x, z))) return;
 
-        var chunk = pool_chunks.Get(new Vector3(x*CHUNK_SIZE, 0, z*CHUNK_SIZE), Quaternion.identity);
+        var chunk = pool_chunks.Get();
+        chunk.transform.SetPositionAndRotation(new Vector3(x*CHUNK_SIZE, 0, z*CHUNK_SIZE), Quaternion.identity);
         loadedChunks.Add((x, z), chunk);
-        chunk.SetActive(true);
 
         LoadChunk(x, z, chunk);
     }
@@ -102,9 +135,9 @@ public class ProceduralGeneration : MonoBehaviour
     {
         if(!loadedChunks.ContainsKey((x, z))) return;
 
-        GameObject chunk = loadedChunks[(x, z)];
+        var chunk = loadedChunks[(x, z)];
         loadedChunks.Remove((x, z));
-        pool_chunks.Return(chunk);
+        pool_chunks.Release(chunk);
     }
 
     void UnloadTooFar()
