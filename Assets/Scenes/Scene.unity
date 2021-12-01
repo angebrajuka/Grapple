@@ -570,7 +570,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform_chunks: {fileID: 311379121}
   chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
-  renderDistance: 10
+  renderDistance: 2
 --- !u!1 &386210565
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,6 +1,8 @@
 using UnityEngine;
+using Unity.Collections;
 using System.Collections.Generic;
 using UnityEngine.Pool;
+using Unity.Jobs;
 
 public class ProceduralGeneration : MonoBehaviour
 {
@@ -82,30 +84,53 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
     }
 
-    public static void LoadChunk(int chunkX, int chunkZ, Chunk chunk)
+    struct ChunkLoader : IJob
     {
-        const int density = 2;
-        const int chunkSize = CHUNK_SIZE*density;
+        public NativeArray<Vector3> vertices;
+        public NativeArray<int> triangles;
+
+        public ChunkLoader(Mesh mesh)
+        {
+            vertices = new NativeArray<Vector3>(mesh.vertices, Unity.Collections.Allocator.TempJob);
+            triangles = new NativeArray<int>(mesh.triangles, Unity.Collections.Allocator.TempJob);
+        }
+
+        public void Execute()
+        {
+
+        }
+    }
+
+
+    void Load(int chunkX, int chunkZ)
+    {
+        if(loadedChunks.ContainsKey((chunkX, chunkZ))) return;
+
+        var chunk = pool_chunks.Get();
+        chunk.transform.SetPositionAndRotation(new Vector3(chunkX*CHUNK_SIZE, 0, chunkZ*CHUNK_SIZE), Quaternion.identity);
+        loadedChunks.Add((chunkX, chunkZ), chunk);
 
         var meshFilter = chunk.meshFilter;
         var meshCollider = chunk.meshCollider;
+
+        // jobs here ish
 
         var mesh = meshFilter.mesh;
         Vector3[] vertices = mesh.vertices;
         int[] triangles = mesh.triangles;
 
         int i=0;
-        for(int x=0; x<=chunkSize; ++x) for(int z=0; z<=chunkSize; ++z)
+        for(int x=0; x<CHUNK_VERTECIES; ++x) for(int z=0; z<CHUNK_VERTECIES; ++z)
         {
-            vertices[(chunkSize+1)*x+z].Set((float)x/(float)density, Perlin(seed, (float)x/(float)density, (float)z/(float)density, chunkX, chunkZ, 0, 0.5f, 0.2f)+Perlin(seed, (float)x/(float)density, (float)z/(float)density, chunkX, chunkZ, 0, 20, 0.04f), (float)z/(float)density);
-            if(x<chunkSize && z<chunkSize)
+            vertices[CHUNK_VERTECIES*x+z].Set((float)x/(float)DENSITY, Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 0.5f, 0.2f)+Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 20, 0.04f), (float)z/(float)DENSITY);
+            if(x<CHUNK_VERTECIES-1 && z<CHUNK_VERTECIES-1)
             {
-                triangles[6*i]   = (chunkSize+1)*x+z;
-                triangles[6*i+1] = (chunkSize+1)*x+z+1;
-                triangles[6*i+2] = (chunkSize+1)*(x+1)+z;
-                triangles[6*i+3] = (chunkSize+1)*(x+1)+z;
-                triangles[6*i+4] = (chunkSize+1)*x+z+1;
-                triangles[6*i+5] = (chunkSize+1)*(x+1)+z+1;
+                triangles[6*i]   = CHUNK_VERTECIES*x+z;
+                triangles[6*i+1] = CHUNK_VERTECIES*x+z+1;
+                triangles[6*i+2] = CHUNK_VERTECIES*(x+1)+z;
+                triangles[6*i+3] = CHUNK_VERTECIES*(x+1)+z;
+                triangles[6*i+4] = CHUNK_VERTECIES*x+z+1;
+                triangles[6*i+5] = CHUNK_VERTECIES*(x+1)+z+1;
                 ++i;
             }
         }
@@ -116,19 +141,6 @@ public class ProceduralGeneration : MonoBehaviour
 
         meshFilter.mesh = mesh;
         meshCollider.sharedMesh = mesh;
-    }
-
-
-
-    void Load(int x, int z)
-    {
-        if(loadedChunks.ContainsKey((x, z))) return;
-
-        var chunk = pool_chunks.Get();
-        chunk.transform.SetPositionAndRotation(new Vector3(x*CHUNK_SIZE, 0, z*CHUNK_SIZE), Quaternion.identity);
-        loadedChunks.Add((x, z), chunk);
-
-        LoadChunk(x, z, chunk);
     }
 
     void Unload(int x, int z)
