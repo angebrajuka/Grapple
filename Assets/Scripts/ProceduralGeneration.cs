@@ -20,9 +20,27 @@ public class ProceduralGeneration : MonoBehaviour
     static float seed;
 
 
+    static Queue<ChunkLoader> chunkLoaders;
     public static ObjectPool<Chunk> pool_chunks;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
+
+    struct ChunkLoader : IJob
+    {
+        public NativeArray<Vector3> vertices;
+        public NativeArray<int> triangles;
+
+        public ChunkLoader(Mesh mesh)
+        {
+            vertices = new NativeArray<Vector3>(mesh.vertices, Unity.Collections.Allocator.TempJob);
+            triangles = new NativeArray<int>(mesh.triangles, Unity.Collections.Allocator.TempJob);
+        }
+
+        public void Execute()
+        {
+
+        }
+    }
 
     public void Init()
     {
@@ -30,6 +48,8 @@ public class ProceduralGeneration : MonoBehaviour
 
         RandomSeed();
 
+
+        chunkLoaders = new Queue<ChunkLoader>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
@@ -82,23 +102,6 @@ public class ProceduralGeneration : MonoBehaviour
     {
         const int perlinOffset = 34546; // prevents mirroring
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
-    }
-
-    struct ChunkLoader : IJob
-    {
-        public NativeArray<Vector3> vertices;
-        public NativeArray<int> triangles;
-
-        public ChunkLoader(Mesh mesh)
-        {
-            vertices = new NativeArray<Vector3>(mesh.vertices, Unity.Collections.Allocator.TempJob);
-            triangles = new NativeArray<int>(mesh.triangles, Unity.Collections.Allocator.TempJob);
-        }
-
-        public void Execute()
-        {
-
-        }
     }
 
 
@@ -183,5 +186,11 @@ public class ProceduralGeneration : MonoBehaviour
         }
 
         prevPos.Set(currPos.x, 0, currPos.z);
+
+        if(chunkLoaders.Count > 0)
+        {
+            var loader = chunkLoaders.Dequeue();
+            // stuff
+        }
     }
 }
