@@ -2,7 +2,7 @@ using UnityEngine;
 using Unity.Collections;
 using System.Collections.Generic;
 using UnityEngine.Pool;
-using Unity.Jobs;
+using System.Threading.Tasks;
 
 public class ProceduralGeneration : MonoBehaviour
 {
@@ -19,28 +19,10 @@ public class ProceduralGeneration : MonoBehaviour
 
     static float seed;
 
-
-    static Queue<ChunkLoader> chunkLoaders;
+    static Queue<(Mesh mesh, MeshCollider collider)> chunkLoaders;
     public static ObjectPool<Chunk> pool_chunks;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
-
-    struct ChunkLoader : IJob
-    {
-        public NativeArray<Vector3> vertices;
-        public NativeArray<int> triangles;
-
-        public ChunkLoader(Mesh mesh)
-        {
-            vertices = new NativeArray<Vector3>(mesh.vertices, Unity.Collections.Allocator.TempJob);
-            triangles = new NativeArray<int>(mesh.triangles, Unity.Collections.Allocator.TempJob);
-        }
-
-        public void Execute()
-        {
-
-        }
-    }
 
     public void Init()
     {
@@ -49,7 +31,7 @@ public class ProceduralGeneration : MonoBehaviour
         RandomSeed();
 
 
-        chunkLoaders = new Queue<ChunkLoader>();
+        chunkLoaders = new Queue<(Mesh, MeshCollider)>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
@@ -105,7 +87,7 @@ public class ProceduralGeneration : MonoBehaviour
     }
 
 
-    void Load(int chunkX, int chunkZ)
+    async void Load(int chunkX, int chunkZ)
     {
         if(loadedChunks.ContainsKey((chunkX, chunkZ))) return;
 
@@ -116,34 +98,36 @@ public class ProceduralGeneration : MonoBehaviour
         var meshFilter = chunk.meshFilter;
         var meshCollider = chunk.meshCollider;
 
-        // jobs here ish
-
         var mesh = meshFilter.mesh;
         Vector3[] vertices = mesh.vertices;
         int[] triangles = mesh.triangles;
 
-        int i=0;
-        for(int x=0; x<CHUNK_VERTECIES; ++x) for(int z=0; z<CHUNK_VERTECIES; ++z)
-        {
-            vertices[CHUNK_VERTECIES*x+z].Set((float)x/(float)DENSITY, Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 0.5f, 0.2f)+Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 20, 0.04f), (float)z/(float)DENSITY);
-            if(x<CHUNK_VERTECIES-1 && z<CHUNK_VERTECIES-1)
+        await Task.Run(() => {
+            int i=0;
+            for(int x=0; x<CHUNK_VERTECIES; ++x) for(int z=0; z<CHUNK_VERTECIES; ++z)
             {
-                triangles[6*i]   = CHUNK_VERTECIES*x+z;
-                triangles[6*i+1] = CHUNK_VERTECIES*x+z+1;
-                triangles[6*i+2] = CHUNK_VERTECIES*(x+1)+z;
-                triangles[6*i+3] = CHUNK_VERTECIES*(x+1)+z;
-                triangles[6*i+4] = CHUNK_VERTECIES*x+z+1;
-                triangles[6*i+5] = CHUNK_VERTECIES*(x+1)+z+1;
-                ++i;
+                vertices[CHUNK_VERTECIES*x+z].Set(
+                    (float)x/(float)DENSITY, 
+                    Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 0.5f, 0.2f)
+                        +Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 20, 0.04f), 
+                    (float)z/(float)DENSITY);
+                if(x<CHUNK_VERTECIES-1 && z<CHUNK_VERTECIES-1)
+                {
+                    triangles[6*i]   = CHUNK_VERTECIES*x+z;
+                    triangles[6*i+1] = CHUNK_VERTECIES*x+z+1;
+                    triangles[6*i+2] = CHUNK_VERTECIES*(x+1)+z;
+                    triangles[6*i+3] = CHUNK_VERTECIES*(x+1)+z;
+                    triangles[6*i+4] = CHUNK_VERTECIES*x+z+1;
+                    triangles[6*i+5] = CHUNK_VERTECIES*(x+1)+z+1;
+                    ++i;
+                }
             }
-        }
+        });
 
         mesh.vertices = vertices;
         mesh.triangles = triangles;
-        mesh.RecalculateBounds();
 
-        meshFilter.mesh = mesh;
-        meshCollider.sharedMesh = mesh;
+        chunkLoaders.Enqueue((mesh, meshCollider));
     }
 
     void Unload(int x, int z)
@@ -171,26 +155,39 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
+    void LoadChunksZ(int x)
+    {
+        for(int z=0; z<=renderDistance; ++z)
+        {
+            Load(currPos.x+x, currPos.z+z);
+        }
+        for(int z=-1; z>=-renderDistance; --z)
+        {
+            Load(currPos.x+x, currPos.z+z);
+        }
+    }
+
+    bool everyOther=false;
     void Update()
     {
+        everyOther = !everyOther;
         Vector3 p = PlayerMovement.m_rigidbody.position;
         currPos.Set((int)Mathf.Floor(p.x/CHUNK_SIZE), 0, (int)Mathf.Floor(p.z/CHUNK_SIZE));
 
         if(currPos != prevPos || loadedChunks.Count == 0)
         {
             UnloadTooFar();
-            for(int x=-renderDistance; x<=renderDistance; ++x) for(int z=-renderDistance; z<=renderDistance; ++z)
-            {
-                Load(currPos.x+x, currPos.z+z);
-            }
+            for(int x=0; x<=renderDistance; ++x) LoadChunksZ(x);
+            for(int x=-1; x>=-renderDistance; --x) LoadChunksZ(x);
         }
 
         prevPos.Set(currPos.x, 0, currPos.z);
 
-        if(chunkLoaders.Count > 0)
+        if(everyOther && chunkLoaders.Count > 0)
         {
-            var loader = chunkLoaders.Dequeue();
-            // stuff
+            var chunkLoader = chunkLoaders.Dequeue();
+            chunkLoader.mesh.RecalculateBounds();
+            chunkLoader.collider.sharedMesh = chunkLoader.mesh;
         }
     }
 }
