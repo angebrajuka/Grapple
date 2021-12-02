@@ -167,10 +167,8 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
-    bool everyOther=false;
     void Update()
     {
-        everyOther = !everyOther;
         Vector3 p = PlayerMovement.m_rigidbody.position;
         currPos.Set((int)Mathf.Floor(p.x/CHUNK_SIZE), 0, (int)Mathf.Floor(p.z/CHUNK_SIZE));
 
@@ -182,8 +180,11 @@ public class ProceduralGeneration : MonoBehaviour
         }
 
         prevPos.Set(currPos.x, 0, currPos.z);
+    }
 
-        if(everyOther && chunkLoaders.Count > 0)
+    void FixedUpdate()
+    {
+        if(chunkLoaders.Count > 0)
         {
             var chunkLoader = chunkLoaders.Dequeue();
             chunkLoader.mesh.RecalculateBounds();
