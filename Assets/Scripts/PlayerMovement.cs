@@ -85,6 +85,7 @@ public class PlayerMovement : MonoBehaviour
 
     void FixedUpdate()
     {
+        bool wasGrounded = grounded;
         grounded = Physics.OverlapSphere(colliderGrounded.center+m_rigidbody.position, colliderGrounded.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length > 0;
 
         // accelerate
@@ -111,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
             cameraPosTarget = cameraPosCrouch;
 
             float zvel = m_rigidbody.RelativeVelocity().z;
-            if(!wasCrouching && grounded && zvel >= threshhold && zvel < slideMaxSpeed)
+            if((!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
             {
                 m_rigidbody.AddRelativeForce(0, 0, slideForce);
             }
