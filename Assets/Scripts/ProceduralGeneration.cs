@@ -14,7 +14,7 @@ public class ProceduralGeneration : MonoBehaviour
     public int renderDistance;
 
     public const int CHUNK_SIZE = 40;
-    public const int DENSITY = 2;
+    public const int DENSITY = 1;
     public const int CHUNK_VERTECIES = DENSITY*CHUNK_SIZE+1;
 
     static float seed;
