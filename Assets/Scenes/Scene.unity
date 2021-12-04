@@ -4835,7 +4835,7 @@ MonoBehaviour:
   colliderCrouch: {fileID: 1887390189}
   colliderGrounded: {fileID: 1887390192}
   walkAccelDefault: 24000
-  walkAccelCrouch: 8000
+  walkAccelCrouch: 1000
   walkAccelAir: 1000
   walkMaxSpeed: 12
   friction_normal: 0.9
@@ -4843,7 +4843,6 @@ MonoBehaviour:
   jumpForce: 750
   jumpTimeLeeway: 0.2
   slideForce: 800
-  slideTime: 0.4
   slideStartThreshhold: 0.1
   slideMaxSpeed: 20
   cameraHeightAdjustSpeed: 12
