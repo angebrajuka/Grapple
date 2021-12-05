@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public float friction_slide;
     public float jumpForce;
     public float jumpTimeLeeway;
+    public float timeBetweenJumps;
     public float slideForce;
     public float slideStartThreshhold;
     public float slideMaxSpeed;
@@ -32,10 +33,12 @@ public class PlayerMovement : MonoBehaviour
     float slideHeightAdjust;
     bool grounded;
     bool crouching;
+    bool crouchKeyDown;
     Vector3 input_move;
     Vector2 input_look;
     bool input_crouch;
     float jumpInputTime;
+    float timeLastJumped;
 
     public void Init()
     {
@@ -54,7 +57,9 @@ public class PlayerMovement : MonoBehaviour
         input_move = new Vector3(0, 0);
         input_look = new Vector2(0, 0);
         input_crouch = false;
+        crouchKeyDown = false;
         jumpInputTime = -1000;
+        timeLastJumped = -1000;
     }
 
     void Update()
@@ -72,11 +77,13 @@ public class PlayerMovement : MonoBehaviour
         {
             jumpInputTime = Time.time;
         }
-        if(Time.time <= jumpInputTime+jumpTimeLeeway)
+        if(Time.time <= jumpInputTime+jumpTimeLeeway && Time.time >= timeLastJumped+timeBetweenJumps)
         {
             input_move.y ++;
+            timeLastJumped = Time.time;
         }
 
+        crouchKeyDown = GetKeyDown("slide") || crouchKeyDown;
         input_crouch = GetKey("slide");
 
         input_look.x = Input.GetAxis("Mouse X") * speed_look.x;
@@ -112,9 +119,10 @@ public class PlayerMovement : MonoBehaviour
             cameraPosTarget = cameraPosCrouch;
 
             float zvel = m_rigidbody.RelativeVelocity().z;
-            if((!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
+            if(crouchKeyDown && (!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
             {
                 m_rigidbody.AddRelativeForce(0, 0, slideForce);
+                crouchKeyDown = false;
             }
         }
         else if(Physics.OverlapCapsule(point0, point1, colliderDefault.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length == 0)

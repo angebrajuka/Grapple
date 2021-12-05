@@ -4904,6 +4904,7 @@ MonoBehaviour:
   friction_slide: 1
   jumpForce: 1000
   jumpTimeLeeway: 0.2
+  timeBetweenJumps: 0.05
   slideForce: 800
   slideStartThreshhold: 0.1
   slideMaxSpeed: 20
