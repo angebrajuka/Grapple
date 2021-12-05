@@ -12,6 +12,7 @@ public class ProceduralGeneration : MonoBehaviour
     public Transform transform_chunks;
     public Material chunkMaterial;
     public int renderDistance;
+    public Texture2D rainTempMap;
 
     public const int CHUNK_SIZE = 40;
     public const int DENSITY = 1;
@@ -23,6 +24,8 @@ public class ProceduralGeneration : MonoBehaviour
     public static ObjectPool<Chunk> pool_chunks;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
+    static int rain_temp_map_width;
+    static byte[,] rain_temp_map;
 
     public void Init()
     {
@@ -71,13 +74,7 @@ public class ProceduralGeneration : MonoBehaviour
     public static float RandomSeed()
     {
         seed = Random.value*4586+Random.value;
-        SetRelativeSeeds();
         return seed;
-    }
-
-    public static void SetRelativeSeeds()
-    {
-
     }
 
     static float Perlin(float seed, float x, float z, float chunkX, float chunkZ, float min=0, float max=1, float scale=1)
@@ -90,6 +87,33 @@ public class ProceduralGeneration : MonoBehaviour
     {
         return Perlin(seed, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
                 +Perlin(seed, x, z, chunkX, chunkZ, 0, 20, 0.04f);
+    }
+
+    public static byte MapClamped(byte[,] map, int x, int y)
+    {
+        return map[Mathf.Clamp(x, 0, map.GetLength(0)-1), Mathf.Clamp(y, 0, map.GetLength(1)-1)];
+    }
+
+    public static float Biome(float x, float z, float chunkX=0, float chunkZ=0)
+    {
+        const float rainSeedOffset = 21674253.165235f;
+        const float tempSeedOffset = 3567567.6345678f;
+
+        const float perlinScaleRain = 0.003f;
+        const float perlinScaleTemp = 0.003f;
+
+        float perlinValRain = Perlin(seed+rainSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
+        float perlinValTemp = Perlin(seed+tempSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
+
+        float perlinScaleFine = 0.1f;
+        float fineNoise = Perlin(seed, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
+
+        perlinValTemp -= fineNoise;
+        perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
+        perlinValRain -= fineNoise;
+        perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
+
+        return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
     }
 
     async void Load(int chunkX, int chunkZ)
