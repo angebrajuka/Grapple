@@ -8,6 +8,7 @@ public class Init : MonoBehaviour
     public Transform proceduralGeneration;
     public Transform player;
     public Guns guns;
+    public EnemySpawning enemySpawning;
     public Transform canvas;
     public MenuHandler menuHandler;
     public bool load;
@@ -28,6 +29,8 @@ public class Init : MonoBehaviour
         player.GetComponent<PlayerInput>().Init();
         player.GetComponent<PlayerMovement>().Init();
         player.GetComponent<PlayerThreeDM>().Init();
+
+        enemySpawning.Init();
 
         canvas.GetComponent<PlayerBloodUI>().Init();
 

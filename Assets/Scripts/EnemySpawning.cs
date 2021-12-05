@@ -1,80 +1,78 @@
-// using UnityEngine;
-// using System.Collections.Generic;
+using UnityEngine;
+using System.Collections.Generic;
 
-// public class EnemySpawning : MonoBehaviour
-// {
-//     public static EnemySpawning instance;
+[System.Serializable]
+public class EnemyFrequency
+{
+    public float frequency;
+    public GameObject prefab;
+}
 
-//     // hierarchy
-//     public Transform transform_enemies;
-//     public GameObject[] prefabs_enemies;
-//     public float minDistance, maxDistance;
-//     public float minDelay, maxDelay;
-//     public float timer; // also initial delay
+public class EnemySpawning : MonoBehaviour
+{
+    public static EnemySpawning instance;
 
-//     public Dictionary<int, GameObject> dict_prefabs_enemies_spawnable;
-//     public Dictionary<int, GameObject> dict_prefabs_enemies;
-//     public static SaveData.S_Enemy[] enemies
-//     {
-//         get
-//         {
-//             var e = new SaveData.S_Enemy[instance.transform_enemies.childCount];
-//             for(int i=0; i<e.Length; i++)
-//             {
-//                 var t = instance.transform_enemies.GetChild(i);
-//                 e[i] = new SaveData.S_Enemy(t.position, t.gameObject.GetComponent<EnemySpawningData>().index);
-//             }
-//             return e;
-//         }
-//     }
+    // hierarchy
+    public EnemyFrequency[] naturalEnemies;
+    float[] frequencies;
+    GameObject[] prefabs_natural;
+    public GameObject[] prefabs_bosses;
+    public float minDistance, maxDistance;
+    public float minDelay, maxDelay;
+    [Tooltip("time until next spawn, also initial delay before enemies start spawning")]
+    public float timer;
 
-//     public void Init()
-//     {
-//         instance = this;
+    public void Init()
+    {
+        instance = this;
+        frequencies = new float[naturalEnemies.Length];
+        frequencies[0] = naturalEnemies[0].frequency;
+        prefabs_natural = new GameObject[naturalEnemies.Length];
+        for(int i=0; i<frequencies.Length; i++)
+        {
+            prefabs_natural[i] = naturalEnemies[i].prefab;
+            if(i == 0) continue;
+            frequencies[i] += frequencies[i-1];
+        }
+    }
 
-//         dict_prefabs_enemies = new Dictionary<int, GameObject>();
-//         dict_prefabs_enemies_spawnable = new Dictionary<int, GameObject>();
-//         foreach(var prefab in prefabs_enemies)
-//         {
-//             var data = prefab.GetComponent<EnemySpawningData>();
-//             dict_prefabs_enemies.Add(data.index, prefab);
-//             if(data.spawnable)
-//                 dict_prefabs_enemies_spawnable.Add(data.index, prefab);
-//         }
-//     }
+    Vector3 GetPosition()
+    {
+        var pos2D = Random.insideUnitCircle;
+        if(pos2D == Vector2.zero) pos2D = Vector2.right;
 
-//     Vector3 GetPosition()
-//     {
-//         Vector3 position = DynamicLoading.currPos;
-//         position += DynamicLoading.neighborPositions[Random.Range(0, DynamicLoading.neighborPositions.Length)];
-//         position.x += 0.5f;
-//         position.z += 0.5f;
-//         position *= DynamicLoading.CHUNK_SIZE;
+        var min = pos2D.normalized*minDistance;
+        var max = pos2D.normalized*maxDistance;
+        pos2D = (max-min)*pos2D.magnitude+min;
 
-//         return position;
-//     }
+        pos2D.x += PlayerMovement.m_rigidbody.position.x;
+        pos2D.y += PlayerMovement.m_rigidbody.position.z;
 
-//     public void Spawn(Vector3 position, int index)
-//     {
-//         Instantiate(dict_prefabs_enemies[index], position, Quaternion.identity, transform_enemies);
-//     }
+        return new Vector3(pos2D.x, ProceduralGeneration.Height(pos2D.x, pos2D.y)+5, pos2D.y);
+    }
 
-//     void Update()
-//     {
-//         timer -= Time.deltaTime;
-//         if(timer <= 0)
-//         {
-//             timer = Random.Range(minDelay, maxDelay);
-//             int i = 0;
-//             int target = Random.Range(0, dict_prefabs_enemies_spawnable.Count);
-//             foreach(var enemy in dict_prefabs_enemies_spawnable)
-//             {
-//                 if(i == target)
-//                 {
-//                     Spawn(GetPosition(), enemy.Value.GetComponent<EnemySpawningData>().index);
-//                 }
-//                 i++;
-//             }
-//         }
-//     }
-// }
+    public void Spawn(float frequency, Vector3 position=default(Vector3))
+    {
+        if(position == default(Vector3))
+        {
+            position = GetPosition();
+        }
+
+        int index = System.Array.BinarySearch(frequencies, frequency);
+
+        if(index < 0) index = ~index;
+        if(index >= frequencies.Length) index = frequencies.Length-1;
+
+        Instantiate(prefabs_natural[index], position, Quaternion.identity, transform);
+    }
+
+    void Update()
+    {
+        timer -= Time.deltaTime;
+        if(timer <= 0)
+        {
+            timer = Random.Range(minDelay, maxDelay);
+            Spawn(Random.Range(0, frequencies[frequencies.Length-1])/*, Vector3.up*20*/);
+        }
+    }
+}

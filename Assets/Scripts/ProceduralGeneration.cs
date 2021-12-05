@@ -86,6 +86,11 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
     }
 
+    public static float Height(float x, float z, float chunkX=0, float chunkZ=0)
+    {
+        return Perlin(seed, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
+                +Perlin(seed, x, z, chunkX, chunkZ, 0, 20, 0.04f);
+    }
 
     async void Load(int chunkX, int chunkZ)
     {
@@ -108,8 +113,7 @@ public class ProceduralGeneration : MonoBehaviour
             {
                 vertices[CHUNK_VERTECIES*x+z].Set(
                     (float)x/(float)DENSITY, 
-                    Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 0.5f, 0.2f)
-                        +Perlin(seed, (float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ, 0, 20, 0.04f), 
+                    Height((float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ), 
                     (float)z/(float)DENSITY);
                 if(x<CHUNK_VERTECIES-1 && z<CHUNK_VERTECIES-1)
                 {
