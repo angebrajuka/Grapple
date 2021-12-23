@@ -5,6 +5,8 @@ public class Bullet : MonoBehaviour
 {
     // hierarchy
     public bool grenade;
+    public GameObject mesh;
+    public GameObject trail;
 
     public float range;
     public float damage;
@@ -18,6 +20,8 @@ public class Bullet : MonoBehaviour
     void OnEnable()
     {
         distanceTravelled = 0;
+        mesh.SetActive(false);
+        trail.SetActive(false);
     }
 
     void FixedUpdate()
@@ -35,6 +39,8 @@ public class Bullet : MonoBehaviour
         }
         transform.position += transform.forward*distancePerTick;
         distanceTravelled += distancePerTick;
+        mesh.SetActive(true);
+        trail.SetActive(true);
         if(distanceTravelled >= range)
         {
             pool.Release(this);

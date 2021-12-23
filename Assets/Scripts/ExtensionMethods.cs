@@ -42,4 +42,12 @@ public static class ExtensionMethods
         textElement.text = text;
         textElement.gameObject.GetComponent<LeadingZeros>().Check();
     }
+
+    public static void Set(this ref Color col, float r, float g, float b, float a=1)
+    {
+        col.r = r;
+        col.g = g;
+        col.b = b;
+        col.a = a;
+    }
 }

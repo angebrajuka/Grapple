@@ -77,7 +77,7 @@ public class PlayerThreeDM : MonoBehaviour
         hook = obj.GetComponent<GrappleHook>();
         hook.configJoint.connectedBody = PlayerMovement.m_rigidbody;
         rb.AddForce(direction*shootForce);
-        PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);
+        // PlayerMovement.m_rigidbody.AddRelativeForce(0, 0, -recoilForce);
         CompressedAir -= airPerShot;
         reloadStartTime = Mathf.Infinity;
     }

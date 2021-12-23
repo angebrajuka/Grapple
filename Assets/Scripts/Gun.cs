@@ -39,7 +39,7 @@ public class Gun : MonoBehaviour
         pool_bullets = new ObjectPool<Bullet>(
             () => {
                 // on create
-                var bullet = Instantiate(prefab_projectile).GetComponent<Bullet>();
+                var bullet = Instantiate(prefab_projectile, transform).GetComponent<Bullet>();
 
                 return bullet;
             },
@@ -68,7 +68,8 @@ public class Gun : MonoBehaviour
 
         var bullet = pool_bullets.Get();
         bullet.transform.SetPositionAndRotation(transform.position-transform.forward*0.5f, transform.rotation);
-        bullet.transform.eulerAngles += eulerOffset;
+        bullet.transform.localEulerAngles += eulerOffset;
+        bullet.transform.parent = null;
         var rb = bullet.GetComponent<Rigidbody>();
         if(rb != null)
         {
@@ -84,7 +85,7 @@ public class Gun : MonoBehaviour
     {
         PlayerAnimator.instance.gunReloadAnimator.SetInteger("state", 0);
         AudioManager.PlayClip(clip_shoot);
-        PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformPoint(0, 0, -recoil));
+        PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformDirection(0, 0, -recoil));
         PlayerAnimator.instance.Recoil();
         timeLastShot = Time.time;
         ammo -= ammoPerShot;

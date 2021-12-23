@@ -4,6 +4,23 @@ using System.Collections.Generic;
 using UnityEngine.Pool;
 using System.Threading.Tasks;
 
+struct ChunkLoader
+{
+    public int chunkX, chunkZ;
+    public Mesh mesh;
+    public MeshCollider collider;
+    public Color[] cols;
+
+    public ChunkLoader(int chunkX, int chunkZ, Mesh mesh, MeshCollider collider, Color[] cols)
+    {
+        this.chunkX = chunkX;
+        this.chunkZ = chunkZ;
+        this.mesh = mesh;
+        this.collider = collider;
+        this.cols = cols;
+    }
+}
+
 public class ProceduralGeneration : MonoBehaviour
 {
     public static ProceduralGeneration instance;
@@ -17,13 +34,19 @@ public class ProceduralGeneration : MonoBehaviour
     public const int CHUNK_SIZE = 40;
     public const int DENSITY = 1;
     public const int CHUNK_VERTECIES = DENSITY*CHUNK_SIZE+1;
+    const int RESOLUTION = 32;
+    static int diameter { get { return instance.renderDistance*2+1; } }
+    static int maxChunks { get { return (int)Math.Sqr(diameter); } }
 
     static float seed;
 
-    static Queue<(Mesh mesh, MeshCollider collider)> chunkLoaders;
+    static Queue<ChunkLoader> chunkLoaders;
     public static ObjectPool<Chunk> pool_chunks;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
+    static Texture2D groundTexture;
+    static int scrollX { get { return currPos.x; } }
+    static int scrollZ { get { return currPos.z; } }
     static int rain_temp_map_width;
     static byte[,] rain_temp_map;
 
@@ -34,7 +57,10 @@ public class ProceduralGeneration : MonoBehaviour
         RandomSeed();
 
 
-        chunkLoaders = new Queue<(Mesh, MeshCollider)>();
+        groundTexture = new Texture2D(RESOLUTION*diameter, RESOLUTION*diameter);
+        chunkMaterial.mainTexture = groundTexture;
+
+        chunkLoaders = new Queue<ChunkLoader>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
@@ -45,10 +71,11 @@ public class ProceduralGeneration : MonoBehaviour
                 chunk.meshFilter = chunk.gameObject.GetComponent<MeshFilter>();
                 chunk.meshCollider = chunk.gameObject.GetComponent<MeshCollider>();
                 chunk.meshRenderer = chunk.gameObject.GetComponent<MeshRenderer>();
+                var mesh = new Mesh();
+                mesh.vertices = new Vector3[(int)Math.Sqr(CHUNK_VERTECIES)];
+                mesh.triangles = new int[(int)Math.Sqr(CHUNK_VERTECIES-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
+                chunk.meshFilter.mesh = mesh;
                 chunk.meshRenderer.material = chunkMaterial;
-                chunk.meshFilter.mesh = new Mesh();
-                chunk.meshFilter.mesh.vertices = new Vector3[(int)Math.Sqr(CHUNK_VERTECIES)];
-                chunk.meshFilter.mesh.triangles = new int[(int)Math.Sqr(CHUNK_VERTECIES-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
 
                 return chunk;
             },
@@ -64,7 +91,7 @@ public class ProceduralGeneration : MonoBehaviour
                 // on destroy
                 Destroy(chunk.gameObject);
             },
-            false, (int)Math.Sqr(renderDistance*2), (int)Math.Sqr(renderDistance*2)
+            false, maxChunks, maxChunks
         );
         loadedChunks = new Dictionary<(int x, int z), Chunk>();
         prevPos = new Vector3Int(0, 0, 0);
@@ -116,6 +143,14 @@ public class ProceduralGeneration : MonoBehaviour
         return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
     }
 
+    void SetColor(ref Color c, float r, float g, float b, float a=1)
+    {
+        c.r = r;
+        c.g = g;
+        c.b = b;
+        c.a = a;
+    }
+
     async void Load(int chunkX, int chunkZ)
     {
         if(loadedChunks.ContainsKey((chunkX, chunkZ))) return;
@@ -126,10 +161,12 @@ public class ProceduralGeneration : MonoBehaviour
 
         var meshFilter = chunk.meshFilter;
         var meshCollider = chunk.meshCollider;
+        var meshRenderer = chunk.meshRenderer;
 
         var mesh = meshFilter.mesh;
         Vector3[] vertices = mesh.vertices;
         int[] triangles = mesh.triangles;
+        Color[] cols = new Color[RESOLUTION*RESOLUTION];
 
         await Task.Run(() => {
             int i=0;
@@ -150,12 +187,17 @@ public class ProceduralGeneration : MonoBehaviour
                     ++i;
                 }
             }
+
+            for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
+            {
+                cols[x*RESOLUTION+z].Set(0, Perlin(seed, x, z, chunkX, chunkZ), 0);
+            }
         });
 
         mesh.vertices = vertices;
         mesh.triangles = triangles;
 
-        chunkLoaders.Enqueue((mesh, meshCollider));
+        chunkLoaders.Enqueue(new ChunkLoader(chunkX, chunkZ, mesh, meshCollider, cols));
     }
 
     void Unload(int x, int z)
@@ -187,11 +229,11 @@ public class ProceduralGeneration : MonoBehaviour
     {
         for(int z=0; z<=renderDistance; ++z)
         {
-            Load(currPos.x+x, currPos.z+z);
+            Load(x, currPos.z+z);
         }
         for(int z=-1; z>=-renderDistance; --z)
         {
-            Load(currPos.x+x, currPos.z+z);
+            Load(x, currPos.z+z);
         }
     }
 
@@ -203,8 +245,8 @@ public class ProceduralGeneration : MonoBehaviour
         if(currPos != prevPos || loadedChunks.Count == 0)
         {
             UnloadTooFar();
-            for(int x=0; x<=renderDistance; ++x) LoadChunksZ(x);
-            for(int x=-1; x>=-renderDistance; --x) LoadChunksZ(x);
+            for(int x=0; x<=renderDistance; ++x) LoadChunksZ(currPos.x+x);
+            for(int x=-1; x>=-renderDistance; --x) LoadChunksZ(currPos.x+x);
         }
 
         prevPos.Set(currPos.x, 0, currPos.z);
@@ -217,6 +259,13 @@ public class ProceduralGeneration : MonoBehaviour
             var chunkLoader = chunkLoaders.Dequeue();
             chunkLoader.mesh.RecalculateBounds();
             chunkLoader.collider.sharedMesh = chunkLoader.mesh;
+            int beginX = (chunkLoader.chunkX%diameter)*RESOLUTION;
+            int beginZ = (chunkLoader.chunkZ%diameter)*RESOLUTION;
+            for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
+            {
+                groundTexture.SetPixel(beginX+x, beginZ+z, chunkLoader.cols[x*RESOLUTION+z]);
+            }
+            groundTexture.Apply();
         }
     }
 }
