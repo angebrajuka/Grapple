@@ -58,6 +58,9 @@ public class ProceduralGeneration : MonoBehaviour
 
 
         groundTexture = new Texture2D(RESOLUTION*diameter, RESOLUTION*diameter);
+        groundTexture.wrapMode = TextureWrapMode.Clamp;
+        // chunkMaterial.SetFloat("Width", CHUNK_SIZE*diameter);
+        // chunkMaterial.SetFloat("Scale", (float)RESOLUTION/CHUNK_SIZE/diameter);
         chunkMaterial.mainTexture = groundTexture;
 
         chunkLoaders = new Queue<ChunkLoader>();
@@ -123,24 +126,26 @@ public class ProceduralGeneration : MonoBehaviour
 
     public static float Biome(float x, float z, float chunkX=0, float chunkZ=0)
     {
-        const float rainSeedOffset = 21674253.165235f;
-        const float tempSeedOffset = 3567567.6345678f;
+        // const float rainSeedOffset = 21674253.165235f;
+        // const float tempSeedOffset = 3567567.6345678f;
 
-        const float perlinScaleRain = 0.003f;
-        const float perlinScaleTemp = 0.003f;
+        // const float perlinScaleRain = 0.003f;
+        // const float perlinScaleTemp = 0.003f;
 
-        float perlinValRain = Perlin(seed+rainSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
-        float perlinValTemp = Perlin(seed+tempSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
+        // float perlinValRain = Perlin(seed+rainSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
+        // float perlinValTemp = Perlin(seed+tempSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
 
-        float perlinScaleFine = 0.1f;
-        float fineNoise = Perlin(seed, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
+        // float perlinScaleFine = 0.1f;
+        // float fineNoise = Perlin(seed, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
-        perlinValTemp -= fineNoise;
-        perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
-        perlinValRain -= fineNoise;
-        perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
+        // perlinValTemp -= fineNoise;
+        // perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
+        // perlinValRain -= fineNoise;
+        // perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
 
-        return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
+        // return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
+
+        return Perlin(seed, x, z, chunkX, chunkZ, 0, 1, 0.1f);
     }
 
     void SetColor(ref Color c, float r, float g, float b, float a=1)
@@ -150,6 +155,9 @@ public class ProceduralGeneration : MonoBehaviour
         c.b = b;
         c.a = a;
     }
+
+    readonly Color sand = new Color(0.76f, 0.69f, 0.5f);
+    readonly Color grass = new Color(0, 0.6f, 0.1f);
 
     async void Load(int chunkX, int chunkZ)
     {
@@ -190,7 +198,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
             {
-                cols[x*RESOLUTION+z].Set(0, Perlin(seed, x, z, chunkX, chunkZ), 0);
+                cols[x*RESOLUTION+z] = Biome(x, z, chunkX, chunkZ) > 0.5 ? grass : sand;
             }
         });
 
