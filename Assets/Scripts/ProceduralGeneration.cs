@@ -59,8 +59,8 @@ public class ProceduralGeneration : MonoBehaviour
 
         groundTexture = new Texture2D(RESOLUTION*diameter, RESOLUTION*diameter);
         groundTexture.wrapMode = TextureWrapMode.Clamp;
-        // chunkMaterial.SetFloat("Width", CHUNK_SIZE*diameter);
-        // chunkMaterial.SetFloat("Scale", (float)RESOLUTION/CHUNK_SIZE/diameter);
+        chunkMaterial.SetFloat("_Width", CHUNK_SIZE*diameter);
+        chunkMaterial.SetFloat("_Scale", (float)1/groundTexture.width);
         chunkMaterial.mainTexture = groundTexture;
 
         chunkLoaders = new Queue<ChunkLoader>();
@@ -145,7 +145,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         // return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
 
-        return Perlin(seed, x, z, chunkX, chunkZ, 0, 1, 0.1f);
+        return Perlin(seed, x, z, 0, 0, 0, 1, 0.1f);
     }
 
     void SetColor(ref Color c, float r, float g, float b, float a=1)
@@ -164,8 +164,8 @@ public class ProceduralGeneration : MonoBehaviour
         if(loadedChunks.ContainsKey((chunkX, chunkZ))) return;
 
         var chunk = pool_chunks.Get();
-        chunk.transform.SetPositionAndRotation(new Vector3(chunkX*CHUNK_SIZE, 0, chunkZ*CHUNK_SIZE), Quaternion.identity);
         loadedChunks.Add((chunkX, chunkZ), chunk);
+        chunk.transform.SetPositionAndRotation(new Vector3(chunkX*CHUNK_SIZE, 0, chunkZ*CHUNK_SIZE), Quaternion.identity);
 
         var meshFilter = chunk.meshFilter;
         var meshCollider = chunk.meshCollider;
@@ -267,8 +267,10 @@ public class ProceduralGeneration : MonoBehaviour
             var chunkLoader = chunkLoaders.Dequeue();
             chunkLoader.mesh.RecalculateBounds();
             chunkLoader.collider.sharedMesh = chunkLoader.mesh;
-            int beginX = (chunkLoader.chunkX%diameter)*RESOLUTION;
-            int beginZ = (chunkLoader.chunkZ%diameter)*RESOLUTION;
+            Debug.Log(chunkLoader.chunkX+","+chunkLoader.chunkZ);
+            int beginX = (int)Math.Mod(chunkLoader.chunkX, diameter)*RESOLUTION;
+            int beginZ = (int)Math.Mod(chunkLoader.chunkZ, diameter)*RESOLUTION;
+            Debug.Log(beginX+","+beginZ);
             for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
             {
                 groundTexture.SetPixel(beginX+x, beginZ+z, chunkLoader.cols[x*RESOLUTION+z]);

@@ -96,4 +96,9 @@ public static class Math
     {
         return new Vector2Int(vec1.x/vec2.x, vec1.y/vec2.y);
     }
+
+    public static float Mod(float a,float b)
+    {
+        return a - b * Mathf.Floor(a / b);
+    }
 }
