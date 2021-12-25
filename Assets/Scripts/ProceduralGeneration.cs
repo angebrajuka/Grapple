@@ -31,10 +31,10 @@ public class ProceduralGeneration : MonoBehaviour
     public int renderDistance;
     public Texture2D rainTempMap;
 
-    public const int CHUNK_SIZE = 40;
-    public const int DENSITY = 1;
-    public const int CHUNK_VERTECIES = DENSITY*CHUNK_SIZE+1;
-    const int RESOLUTION = 32;
+    public const int CHUNK_SIZE = 10;
+    public const float DENSITY = 0.5f;
+    public const int CHUNK_VERTECIES = (int)(DENSITY*CHUNK_SIZE+1);
+    const int RESOLUTION = 64;
     static int diameter { get { return instance.renderDistance*2+1; } }
     static int maxChunks { get { return (int)Math.Sqr(diameter); } }
 
@@ -58,9 +58,10 @@ public class ProceduralGeneration : MonoBehaviour
 
 
         groundTexture = new Texture2D(RESOLUTION*diameter, RESOLUTION*diameter);
-        groundTexture.wrapMode = TextureWrapMode.Clamp;
+        groundTexture.wrapMode = TextureWrapMode.Repeat;
+        groundTexture.filterMode = FilterMode.Point;
         chunkMaterial.SetFloat("_Width", CHUNK_SIZE*diameter);
-        chunkMaterial.SetFloat("_Scale", (float)1/groundTexture.width);
+        chunkMaterial.SetFloat("_Scale", (float)1/(CHUNK_SIZE*diameter));
         chunkMaterial.mainTexture = groundTexture;
 
         chunkLoaders = new Queue<ChunkLoader>();
@@ -145,7 +146,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         // return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
 
-        return Perlin(seed, x, z, 0, 0, 0, 1, 0.1f);
+        return Perlin(seed, x, z, chunkX, chunkZ, 0, 1, 0.01f);
     }
 
     void SetColor(ref Color c, float r, float g, float b, float a=1)
@@ -198,7 +199,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
             {
-                cols[x*RESOLUTION+z] = Biome(x, z, chunkX, chunkZ) > 0.5 ? grass : sand;
+                cols[x*RESOLUTION+z] = Biome((float)x*CHUNK_SIZE/RESOLUTION, (float)z*CHUNK_SIZE/RESOLUTION, chunkX, chunkZ) > 0.5 ? grass : sand;
             }
         });
 
@@ -267,10 +268,8 @@ public class ProceduralGeneration : MonoBehaviour
             var chunkLoader = chunkLoaders.Dequeue();
             chunkLoader.mesh.RecalculateBounds();
             chunkLoader.collider.sharedMesh = chunkLoader.mesh;
-            Debug.Log(chunkLoader.chunkX+","+chunkLoader.chunkZ);
             int beginX = (int)Math.Mod(chunkLoader.chunkX, diameter)*RESOLUTION;
             int beginZ = (int)Math.Mod(chunkLoader.chunkZ, diameter)*RESOLUTION;
-            Debug.Log(beginX+","+beginZ);
             for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
             {
                 groundTexture.SetPixel(beginX+x, beginZ+z, chunkLoader.cols[x*RESOLUTION+z]);

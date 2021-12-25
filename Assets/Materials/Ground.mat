@@ -140,7 +140,7 @@ Material:
     - _QueueControl: 0
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _Scale: 0.001
+    - _Scale: 0.009090909
     - _Shininess: 0
     - _Smoothness: 0.067
     - _SmoothnessSource: 0
@@ -150,7 +150,7 @@ Material:
     - _SrcBlend: 1
     - _Surface: 0
     - _UVSec: 0
-    - _Width: 520
+    - _Width: 110
     - _WorkflowMode: 0
     - _ZWrite: 1
     m_Colors:
