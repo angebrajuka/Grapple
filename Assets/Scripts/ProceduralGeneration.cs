@@ -7,18 +7,13 @@ using System;
 
 struct ChunkLoader
 {
-    // public int chunkX, chunkZ;
     public Mesh mesh;
     public MeshCollider collider;
-    // public Color[] cols;
 
-    public ChunkLoader(/*int chunkX, int chunkZ, */Mesh mesh, MeshCollider collider/*, Color[] cols*/)
+    public ChunkLoader(Mesh mesh, MeshCollider collider)
     {
-        // this.chunkX = chunkX;
-        // this.chunkZ = chunkZ;
         this.mesh = mesh;
         this.collider = collider;
-        // this.cols = cols;
     }
 }
 
@@ -42,7 +37,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     static float seed;
 
-    static Queue<ChunkLoader> chunkLoaders;
+    static SortedList<float, Stack<ChunkLoader>> chunkLoaders;
     public static ObjectPool<Chunk> pool_chunks;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
@@ -63,7 +58,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         RandomSeed();
 
-        chunkLoaders = new Queue<ChunkLoader>();
+        chunkLoaders = new SortedList<float, Stack<ChunkLoader>>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
@@ -202,7 +197,12 @@ public class ProceduralGeneration : MonoBehaviour
         mesh.triangles = triangles;
         mesh.colors = cols;
 
-        chunkLoaders.Enqueue(new ChunkLoader(/*chunkX, chunkZ, */mesh, meshCollider/*, cols*/));
+        float dist = Math.Dist(currPos.x, currPos.z, chunkX, chunkZ);
+
+        if(!chunkLoaders.ContainsKey(dist)) {
+            chunkLoaders.Add(dist, new Stack<ChunkLoader>());
+        }
+        chunkLoaders[dist].Push(new ChunkLoader(mesh, meshCollider));
     }
 
     void Unload(int x, int z)
@@ -232,10 +232,8 @@ public class ProceduralGeneration : MonoBehaviour
 
     void AlternatingLoop(Action<int> func, int max) {
         for(int i=0; i<max; i++) {
-            for(int j=0; j<=1; j++) {
-                if(i==0 && j==1) break;
-                func(i * (j==0 ? 1 : -1));
-            }
+            func(i);
+            if(i != 0) func(-i);
         }
     }
 
@@ -261,7 +259,8 @@ public class ProceduralGeneration : MonoBehaviour
     {
         if(chunkLoaders.Count > 0)
         {
-            var chunkLoader = chunkLoaders.Dequeue();
+            var chunkLoader = chunkLoaders.Values[0].Pop();
+            if(chunkLoaders.Values[0].Count == 0) chunkLoaders.RemoveAt(0);
             chunkLoader.mesh.RecalculateBounds();
             chunkLoader.mesh.RecalculateNormals();
             chunkLoader.collider.sharedMesh = chunkLoader.mesh;
