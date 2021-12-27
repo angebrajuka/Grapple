@@ -40,11 +40,13 @@ public class Gun : MonoBehaviour
             () => {
                 // on create
                 var bullet = Instantiate(prefab_projectile, transform).GetComponent<Bullet>();
+                bullet.pool = pool_bullets;
 
                 return bullet;
             },
             (bullet) => {
                 // on get
+                bullet.OnGet();
                 bullet.gameObject.SetActive(true);
             },
             (bullet) => {
@@ -70,14 +72,10 @@ public class Gun : MonoBehaviour
         bullet.transform.SetPositionAndRotation(transform.position-transform.forward*0.5f, transform.rotation);
         bullet.transform.localEulerAngles += eulerOffset;
         bullet.transform.parent = null;
-        var rb = bullet.GetComponent<Rigidbody>();
-        if(rb != null)
-        {
-            rb.velocity += PlayerMovement.m_rigidbody.velocity*0.7f;
-            rb.AddForce(transform.forward*projectileForce);
-        }
-        bullet.pool = pool_bullets;
-        bullet.range = range;
+
+        bullet.rb.velocity = bullet.transform.forward*projectileForce;
+        bullet.SetRange(range);
+        bullet.rb.velocity += PlayerMovement.m_rigidbody.velocity*0.7f;
         bullet.damage = (float)damage / (float)pellets;
     }
 

@@ -7,42 +7,77 @@ public class Bullet : MonoBehaviour
     public bool grenade;
     public GameObject mesh;
     public GameObject trail;
+    public Rigidbody rb;
+    [Header("Grenade Specific")]
+    public float detonationTime;
+    public float randomRotation;
+    public GameObject prefab_explosion;
 
-    public float range;
+    public float lifetime;
     public float damage;
     public float distancePerTick;
     public LayerMask layermask;
+    // grenade specific
+    bool firstBounce;
 
-    float distanceTravelled;
+    float timeShot;
 
     public ObjectPool<Bullet> pool;
 
-    void OnEnable()
+    public void SetRange(float range)
     {
-        distanceTravelled = 0;
+        lifetime = range / rb.velocity.magnitude;
+    }
+
+    public void OnGet()
+    {
+        timeShot = Time.time;
         mesh.SetActive(false);
-        trail.SetActive(false);
+        if(trail != null) 
+        {
+            trail.GetComponent<TrailRenderer>().Clear();
+            trail.SetActive(false);
+        }
+
+        if(grenade)
+        {
+            firstBounce = true;
+            rb.AddTorque(new Vector3(Random.value, Random.value, Random.value)*randomRotation);
+        }
+    }
+
+    public void DetonateGrenade()
+    {
+        Instantiate(prefab_explosion, transform.position, transform.rotation, transform.parent);
+        pool.Release(this);
+    }
+
+    void OnCollisionEnter(Collision c)
+    {
+        var target = c.gameObject.GetComponent<Target>();
+        if(target != null)
+        {
+            if(!grenade)
+            {
+                target.Damage(damage, transform.forward);
+            }
+            else if(firstBounce)
+            {
+                DetonateGrenade();
+            }
+        }
+        firstBounce = false;
+
+        if(!grenade) pool.Release(this);
     }
 
     void FixedUpdate()
     {
-        RaycastHit hit;
-        if(Physics.Raycast(transform.position, transform.forward, out hit, distancePerTick, ~layermask))
-        {
-            var target = hit.transform.gameObject.GetComponent<Target>();
-            if(target != null)
-            {
-                target.Damage(damage, transform.forward);
-            }
-
-            pool.Release(this);
-        }
-        transform.position += transform.forward*distancePerTick;
-        distanceTravelled += distancePerTick;
         mesh.SetActive(true);
-        trail.SetActive(true);
-        if(distanceTravelled >= range)
+        if(trail != null) trail.SetActive(true);
+        if(Time.time >= timeShot + (grenade ? detonationTime : lifetime))
         {
+            if(grenade) DetonateGrenade();
             pool.Release(this);
         }
     }

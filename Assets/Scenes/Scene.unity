@@ -570,7 +570,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform_chunks: {fileID: 311379121}
   chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
-  renderDistance: 12
+  renderDistance: 20
+  chunksPerFrame: 3
   rainTempMap: {fileID: 0}
   hex_grass: '#70a35c'
   hex_sand: '#CCBC92'
@@ -892,7 +893,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &501616927
 Transform:
   m_ObjectHideFlags: 0
@@ -1524,14 +1525,14 @@ MonoBehaviour:
   shotgunReload: 1
   ammoPerShot: 1
   pellets: 1
-  range: 20
+  range: -1
   spread: 0
   recoil: 200
   clip_shoot: {fileID: 8300000, guid: db9be5e9ea9a1b5498df626fccadd5f7, type: 3}
   vol_shoot: 0.5
   prefab_muzzleFlash: {fileID: 0}
   prefab_projectile: {fileID: 4461108514495309114, guid: 07654feb56cc95740a409922e6fdfcfa, type: 3}
-  projectileForce: 500
+  projectileForce: 50
   index: 0
   timeBetweenShots: 0
   ammo: 0
@@ -2406,7 +2407,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!64 &1052228239
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -3705,7 +3706,7 @@ MonoBehaviour:
   vol_shoot: 0.4
   prefab_muzzleFlash: {fileID: 0}
   prefab_projectile: {fileID: 1984140583811047628, guid: a7ef85700fa113f45aebfe8478092d64, type: 3}
-  projectileForce: 0
+  projectileForce: 100
   index: 0
   timeBetweenShots: 0
   ammo: 0
@@ -5596,7 +5597,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2018162414
 Transform:
   m_ObjectHideFlags: 0
@@ -5605,7 +5606,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018162413}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.90495, y: -0.49759308, z: -2.7323897}
+  m_LocalPosition: {x: -5.90495, y: 20, z: -2.7323897}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5792,7 +5793,7 @@ MonoBehaviour:
   vol_shoot: 0.6
   prefab_muzzleFlash: {fileID: 0}
   prefab_projectile: {fileID: 1984140583811047628, guid: a7ef85700fa113f45aebfe8478092d64, type: 3}
-  projectileForce: 0
+  projectileForce: 100
   index: 0
   timeBetweenShots: 0
   ammo: 0

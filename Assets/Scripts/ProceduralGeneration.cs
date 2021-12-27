@@ -25,6 +25,7 @@ public class ProceduralGeneration : MonoBehaviour
     public Transform transform_chunks;
     public Material chunkMaterial;
     public int renderDistance;
+    public byte chunksPerFrame;
     public Texture2D rainTempMap;
     public string hex_grass, hex_sand;
 
@@ -257,7 +258,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(chunkLoaders.Count > 0)
+        for(int i=0; chunkLoaders.Count > 0 && i < chunksPerFrame; i++)
         {
             var chunkLoader = chunkLoaders.Values[0].Pop();
             if(chunkLoaders.Values[0].Count == 0) chunkLoaders.RemoveAt(0);
