@@ -570,8 +570,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform_chunks: {fileID: 311379121}
   chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
-  renderDistance: 5
+  renderDistance: 12
   rainTempMap: {fileID: 0}
+  hex_grass: '#70a35c'
+  hex_sand: '#CCBC92'
 --- !u!1 &386210565
 GameObject:
   m_ObjectHideFlags: 0
@@ -4859,7 +4861,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887390182}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11.52, y: 30, z: -3.54}
+  m_LocalPosition: {x: 0, y: 30, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6127,7 +6129,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.8
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.802082
@@ -6136,9 +6138,9 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 0.848
-    m_Bias: 0.02
-    m_NormalBias: 0.1
+    m_Strength: 0.59
+    m_Bias: 3.6
+    m_NormalBias: 0
     m_NearPlane: 0.1
     m_CullingMatrixOverride:
       e00: 1
@@ -6169,7 +6171,7 @@ Light:
   m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
-  m_BounceIntensity: 2
+  m_BounceIntensity: 0.5
   m_ColorTemperature: 6570
   m_UseColorTemperature: 0
   m_BoundingSphereOverride: {x: 0, y: 0.000000009185214, z: 4.5905e-41, w: 90.49591}
@@ -6184,14 +6186,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2138677391}
-  m_LocalRotation: {x: 0.6947203, y: 0.3456151, z: -0.13177118, w: 0.61688757}
+  m_LocalRotation: {x: 0.5543849, y: 0.020113735, z: -0.4389276, w: 0.70682067}
   m_LocalPosition: {x: -6.55, y: 8.55, z: 5.49}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 71.48, y: 130, z: 90}
+  m_LocalEulerAnglesHint: {x: 126.74, y: 130, z: 90}
 --- !u!114 &2138677394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6205,7 +6207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Version: 1
-  m_UsePipelineSettings: 1
+  m_UsePipelineSettings: 0
   m_AdditionalLightsShadowResolutionTier: 2
   m_LightLayerMask: 1
   m_CustomShadowLayers: 0

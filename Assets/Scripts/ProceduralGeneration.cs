@@ -3,21 +3,22 @@ using Unity.Collections;
 using System.Collections.Generic;
 using UnityEngine.Pool;
 using System.Threading.Tasks;
+using System;
 
 struct ChunkLoader
 {
-    public int chunkX, chunkZ;
+    // public int chunkX, chunkZ;
     public Mesh mesh;
     public MeshCollider collider;
-    public Color[] cols;
+    // public Color[] cols;
 
-    public ChunkLoader(int chunkX, int chunkZ, Mesh mesh, MeshCollider collider, Color[] cols)
+    public ChunkLoader(/*int chunkX, int chunkZ, */Mesh mesh, MeshCollider collider/*, Color[] cols*/)
     {
-        this.chunkX = chunkX;
-        this.chunkZ = chunkZ;
+        // this.chunkX = chunkX;
+        // this.chunkZ = chunkZ;
         this.mesh = mesh;
         this.collider = collider;
-        this.cols = cols;
+        // this.cols = cols;
     }
 }
 
@@ -30,6 +31,7 @@ public class ProceduralGeneration : MonoBehaviour
     public Material chunkMaterial;
     public int renderDistance;
     public Texture2D rainTempMap;
+    public string hex_grass, hex_sand;
 
     public const int CHUNK_SIZE = 10;
     public const float DENSITY = 2f;
@@ -49,9 +51,15 @@ public class ProceduralGeneration : MonoBehaviour
     static int rain_temp_map_width;
     static byte[,] rain_temp_map;
 
+    Color sand = new Color(0.76f, 0.69f, 0.5f);
+    Color grass = new Color(0, 0.6f, 0.1f);
+
     public void Init()
     {
         instance = this;
+
+        ColorUtility.TryParseHtmlString(hex_grass, out grass);
+        ColorUtility.TryParseHtmlString(hex_sand, out sand);
 
         RandomSeed();
 
@@ -96,7 +104,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     public static float RandomSeed()
     {
-        seed = Random.value*4586+Random.value;
+        seed = UnityEngine.Random.value*4586+UnityEngine.Random.value;
         return seed;
     }
 
@@ -149,9 +157,6 @@ public class ProceduralGeneration : MonoBehaviour
         c.a = a;
     }
 
-    readonly Color sand = new Color(0.76f, 0.69f, 0.5f);
-    readonly Color grass = new Color(0, 0.6f, 0.1f);
-
     async void Load(int chunkX, int chunkZ)
     {
         if(loadedChunks.ContainsKey((chunkX, chunkZ))) return;
@@ -197,7 +202,7 @@ public class ProceduralGeneration : MonoBehaviour
         mesh.triangles = triangles;
         mesh.colors = cols;
 
-        chunkLoaders.Enqueue(new ChunkLoader(chunkX, chunkZ, mesh, meshCollider, cols));
+        chunkLoaders.Enqueue(new ChunkLoader(/*chunkX, chunkZ, */mesh, meshCollider/*, cols*/));
     }
 
     void Unload(int x, int z)
@@ -225,15 +230,12 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
-    void LoadChunksZ(int x)
-    {
-        for(int z=0; z<=renderDistance; ++z)
-        {
-            Load(x, currPos.z+z);
-        }
-        for(int z=-1; z>=-renderDistance; --z)
-        {
-            Load(x, currPos.z+z);
+    void AlternatingLoop(Action<int> func, int max) {
+        for(int i=0; i<max; i++) {
+            for(int j=0; j<=1; j++) {
+                if(i==0 && j==1) break;
+                func(i * (j==0 ? 1 : -1));
+            }
         }
     }
 
@@ -245,8 +247,11 @@ public class ProceduralGeneration : MonoBehaviour
         if(currPos != prevPos || loadedChunks.Count == 0)
         {
             UnloadTooFar();
-            for(int x=0; x<=renderDistance; ++x) LoadChunksZ(currPos.x+x);
-            for(int x=-1; x>=-renderDistance; --x) LoadChunksZ(currPos.x+x);
+            AlternatingLoop((x) => {
+                AlternatingLoop((z) => {
+                    Load(currPos.x+x, currPos.z+z);
+                }, renderDistance);
+            }, renderDistance);
         }
 
         prevPos.Set(currPos.x, 0, currPos.z);
@@ -258,6 +263,7 @@ public class ProceduralGeneration : MonoBehaviour
         {
             var chunkLoader = chunkLoaders.Dequeue();
             chunkLoader.mesh.RecalculateBounds();
+            chunkLoader.mesh.RecalculateNormals();
             chunkLoader.collider.sharedMesh = chunkLoader.mesh;
         }
     }
