@@ -32,7 +32,7 @@ public class ProceduralGeneration : MonoBehaviour
     public Texture2D rainTempMap;
 
     public const int CHUNK_SIZE = 10;
-    public const float DENSITY = 0.5f;
+    public const float DENSITY = 2f;
     public const int CHUNK_VERTECIES = (int)(DENSITY*CHUNK_SIZE+1);
     const int RESOLUTION = 64;
     static int diameter { get { return instance.renderDistance*2+1; } }
@@ -44,7 +44,6 @@ public class ProceduralGeneration : MonoBehaviour
     public static ObjectPool<Chunk> pool_chunks;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
-    static Texture2D groundTexture;
     static int scrollX { get { return currPos.x; } }
     static int scrollZ { get { return currPos.z; } }
     static int rain_temp_map_width;
@@ -55,14 +54,6 @@ public class ProceduralGeneration : MonoBehaviour
         instance = this;
 
         RandomSeed();
-
-
-        groundTexture = new Texture2D(RESOLUTION*diameter, RESOLUTION*diameter);
-        groundTexture.wrapMode = TextureWrapMode.Repeat;
-        groundTexture.filterMode = FilterMode.Point;
-        chunkMaterial.SetFloat("_Width", CHUNK_SIZE*diameter);
-        chunkMaterial.SetFloat("_Scale", (float)1/(CHUNK_SIZE*diameter));
-        chunkMaterial.mainTexture = groundTexture;
 
         chunkLoaders = new Queue<ChunkLoader>();
 
@@ -77,6 +68,7 @@ public class ProceduralGeneration : MonoBehaviour
                 chunk.meshRenderer = chunk.gameObject.GetComponent<MeshRenderer>();
                 var mesh = new Mesh();
                 mesh.vertices = new Vector3[(int)Math.Sqr(CHUNK_VERTECIES)];
+                mesh.colors = new Color[mesh.vertices.Length];
                 mesh.triangles = new int[(int)Math.Sqr(CHUNK_VERTECIES-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
                 chunk.meshFilter.mesh = mesh;
                 chunk.meshRenderer.material = chunkMaterial;
@@ -175,7 +167,7 @@ public class ProceduralGeneration : MonoBehaviour
         var mesh = meshFilter.mesh;
         Vector3[] vertices = mesh.vertices;
         int[] triangles = mesh.triangles;
-        Color[] cols = new Color[RESOLUTION*RESOLUTION];
+        Color[] cols = mesh.colors;
 
         await Task.Run(() => {
             int i=0;
@@ -185,6 +177,9 @@ public class ProceduralGeneration : MonoBehaviour
                     (float)x/(float)DENSITY, 
                     Height((float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ), 
                     (float)z/(float)DENSITY);
+
+                cols[CHUNK_VERTECIES*x+z] = (Biome(x/DENSITY, z/DENSITY, chunkX, chunkZ) > 0.5 ? grass : sand);
+
                 if(x<CHUNK_VERTECIES-1 && z<CHUNK_VERTECIES-1)
                 {
                     triangles[6*i]   = CHUNK_VERTECIES*x+z;
@@ -196,15 +191,11 @@ public class ProceduralGeneration : MonoBehaviour
                     ++i;
                 }
             }
-
-            for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
-            {
-                cols[x*RESOLUTION+z] = Biome((float)x*CHUNK_SIZE/RESOLUTION, (float)z*CHUNK_SIZE/RESOLUTION, chunkX, chunkZ) > 0.5 ? grass : sand;
-            }
         });
 
         mesh.vertices = vertices;
         mesh.triangles = triangles;
+        mesh.colors = cols;
 
         chunkLoaders.Enqueue(new ChunkLoader(chunkX, chunkZ, mesh, meshCollider, cols));
     }
@@ -268,13 +259,6 @@ public class ProceduralGeneration : MonoBehaviour
             var chunkLoader = chunkLoaders.Dequeue();
             chunkLoader.mesh.RecalculateBounds();
             chunkLoader.collider.sharedMesh = chunkLoader.mesh;
-            int beginX = (int)Math.Mod(chunkLoader.chunkX, diameter)*RESOLUTION;
-            int beginZ = (int)Math.Mod(chunkLoader.chunkZ, diameter)*RESOLUTION;
-            for(int x=0; x<RESOLUTION; ++x) for(int z=0; z<RESOLUTION; ++z)
-            {
-                groundTexture.SetPixel(beginX+x, beginZ+z, chunkLoader.cols[x*RESOLUTION+z]);
-            }
-            groundTexture.Apply();
         }
     }
 }
