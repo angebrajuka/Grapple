@@ -112,23 +112,16 @@ public static class Commands
 
     public static void kfa(string[] args)
     {
-        // foreach(var pair in Items.guns)
-        // {
-        //     if(args.Length != 2)
-        //     {
-        //         AutoAddItem(new string[]{"give", pair.Key, "1"});
-        //     }
-        // }
+
+        fa(null);
     }
 
     public static void fa(string[] args)
     {
-        // for(int i=0; i<(args.Length==2 ? Int32.Parse(args[1]) : 1); i++)
-        // {
-        //     foreach(string type in Items.GetAmmoTypes())
-        //     {
-        //         AutoAddItem(new string[]{"give", type+"", Items.items[type].maxStack+""});
-        //     }
-        // }
+        foreach(var pair in PlayerInventory.maxAmmo)
+        {
+            PlayerInventory.reserveAmmo[pair.Key] = pair.Value;
+        }
+        PlayerHUD.UpdateAmmoReserve();
     }
 }

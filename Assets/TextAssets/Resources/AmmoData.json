@@ -1,0 +1,10 @@
+{
+    "maxAmmo": [
+        {"key": "TwelveGauge",      "value": 36},
+        {"key": "Grenade",          "value": 16}
+    ],
+    "startAmmo": [
+        {"key": "TwelveGauge",      "value": 18},
+        {"key": "Grenade",          "value": 8}
+    ]
+}

@@ -10,12 +10,12 @@ public class Target : MonoBehaviour
     public bool damageable;
     public bool dead;
 
-    public void OnDamage(float damage, Vector3 direction)
+    public void OnDamage(float damage, Vector3 direction, float knockback)
     {
         var rb = GetComponent<Rigidbody>();
         if(rb != null)
         {
-            rb.AddForce(direction*damage*50f);
+            rb.AddForce(direction*damage*knockback);
         }
     }
 
@@ -29,12 +29,12 @@ public class Target : MonoBehaviour
 
     }
 
-    public bool Damage(float damage, Vector3 direction=default(Vector3))
+    public bool Damage(float damage, Vector3 direction=default(Vector3), float knockback=0)
     {
         if(damageable && !dead)
         {
             health -= damage;
-            OnDamage(damage, direction);
+            OnDamage(damage, direction, knockback);
 
             if(health <= 0)
             {
@@ -43,7 +43,7 @@ public class Target : MonoBehaviour
             }
             return true;
         }
-        OnDamage(0, direction);
+        OnDamage(0, direction, knockback);
         return false;
     }
 

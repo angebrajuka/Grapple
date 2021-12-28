@@ -11,7 +11,8 @@ GameObject:
   - component: {fileID: 4241987330933062790}
   - component: {fileID: -2669232562386513502}
   - component: {fileID: 3913669786982347551}
-  m_Layer: 0
+  - component: {fileID: 5402813661665505843}
+  m_Layer: 8
   m_Name: P_Bullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,6 +52,9 @@ MonoBehaviour:
   mesh: {fileID: 9034786386339091634}
   trail: {fileID: 4982267574812933678}
   rb: {fileID: 3913669786982347551}
+  detonationTime: 0
+  randomRotation: 0
+  prefab_explosion: {fileID: 0}
   lifetime: 0
   damage: 0
   distancePerTick: 3
@@ -73,6 +77,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!135 &5402813661665505843
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1984140583811047628}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.05
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &4982267574812933678
 GameObject:
   m_ObjectHideFlags: 0
@@ -83,7 +100,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5779863636754452959}
   - component: {fileID: 2862252887972582273}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Trail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -215,7 +232,7 @@ GameObject:
   - component: {fileID: 2266623964334155877}
   - component: {fileID: 7213574486712740019}
   - component: {fileID: 8342949851032950771}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}

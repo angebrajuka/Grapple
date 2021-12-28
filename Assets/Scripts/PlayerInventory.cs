@@ -1,12 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[System.Serializable]
+class StringIntPair
+{
+    public string key;
+    public int value;
+}
+
+[System.Serializable]
+class AmmoDataJson
+{
+    public StringIntPair[] maxAmmo;
+    public StringIntPair[] startAmmo;
+}
+
 public class PlayerInventory : MonoBehaviour
 {
     public static bool[] hasGun;
     public static int _currentGun;
     public static int _nextGun;
     public static Gun CurrentGun { get { return Guns.guns[_currentGun]; } }
+    public static Dictionary<string, int> maxAmmo;
     public static Dictionary<string, int> reserveAmmo;
     public static int Ammo
     {
@@ -29,14 +44,19 @@ public class PlayerInventory : MonoBehaviour
     public static void Init()
     {
         hasGun = new bool[]{true, true, true};
+        maxAmmo = new Dictionary<string, int>();
         reserveAmmo = new Dictionary<string, int>();
-        foreach(var gun in Guns.guns)
+        var ammoData = JsonUtility.FromJson<AmmoDataJson>(Resources.Load<TextAsset>("AmmoData").text);
+        foreach(var pair in ammoData.maxAmmo)
         {
-            if(!reserveAmmo.ContainsKey(gun.ammoType)) reserveAmmo.Add(gun.ammoType, 0);
+            maxAmmo.Add(pair.key, pair.value);
+            reserveAmmo.Add(pair.key, 0);
         }
 
-        reserveAmmo["TwelveGauge"] = 16;
-        reserveAmmo["Grenade"] = 16;
+        foreach(var pair in ammoData.startAmmo)
+        {
+            reserveAmmo[pair.key] = pair.value;
+        }
 
         _currentGun = 0;
         _nextGun = 0;

@@ -59,7 +59,7 @@ public class Bullet : MonoBehaviour
         {
             if(!grenade)
             {
-                target.Damage(damage, transform.forward);
+                target.Damage(damage, transform.forward, 50);
             }
             else if(firstBounce)
             {
