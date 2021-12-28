@@ -28,7 +28,7 @@ public class Gun : MonoBehaviour
     [HideInInspector] public float timeLastShot;
     [HideInInspector] public bool primed;
 
-    ObjectPool<Bullet> pool_bullets;
+    ObjectPool<GameObject> pool_bullets;
 
     void Start()
     {
@@ -36,26 +36,26 @@ public class Gun : MonoBehaviour
         ammo = 0;
         timeLastShot = 0;
         primed = true;
-        pool_bullets = new ObjectPool<Bullet>(
+        pool_bullets = new ObjectPool<GameObject>(
             () => {
                 // on create
                 var bullet = Instantiate(prefab_projectile, transform).GetComponent<Bullet>();
                 bullet.pool = pool_bullets;
 
-                return bullet;
+                return bullet.gameObject;
             },
             (bullet) => {
                 // on get
-                bullet.gameObject.SetActive(true);
-                bullet.OnGet();
+                bullet.SetActive(true);
+                bullet.GetComponent<Bullet>().OnGet();
             },
             (bullet) => {
                 // on return
-                bullet.gameObject.SetActive(false);
+                bullet.SetActive(false);
             },
             (bullet) => {
                 // on destroy
-                Destroy(bullet.gameObject);
+                Destroy(bullet);
             },
             false, 50, 50
         );
@@ -68,7 +68,7 @@ public class Gun : MonoBehaviour
         float vertSpread = spread-Mathf.Abs(horzSpread);
         var eulerOffset = new Vector3(Random.Range(-vertSpread, vertSpread), horzSpread, 0);
 
-        var bullet = pool_bullets.Get();
+        var bullet = pool_bullets.Get().GetComponent<Bullet>();
         bullet.transform.SetPositionAndRotation(transform.position-transform.forward*0.5f, transform.rotation);
         bullet.transform.localEulerAngles += eulerOffset;
         bullet.transform.parent = null;

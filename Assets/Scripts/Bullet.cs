@@ -22,7 +22,7 @@ public class Bullet : MonoBehaviour
 
     float timeShot;
 
-    public ObjectPool<Bullet> pool;
+    public ObjectPool<GameObject> pool;
 
     public void SetRange(float range)
     {
@@ -46,10 +46,14 @@ public class Bullet : MonoBehaviour
         }
     }
 
+    void Release()
+    {
+        pool.Release(this.gameObject);
+    }
+
     public void DetonateGrenade()
     {
         Instantiate(prefab_explosion, transform.position, transform.rotation, transform.parent);
-        pool.Release(this);
     }
 
     void OnCollisionEnter(Collision c)
@@ -64,11 +68,12 @@ public class Bullet : MonoBehaviour
             else if(firstBounce)
             {
                 DetonateGrenade();
+                Release();
             }
         }
         firstBounce = false;
 
-        if(!grenade) pool.Release(this);
+        if(!grenade) Release();
     }
 
     void FixedUpdate()
@@ -78,7 +83,7 @@ public class Bullet : MonoBehaviour
         if(Time.time >= timeShot + (grenade ? detonationTime : lifetime))
         {
             if(grenade) DetonateGrenade();
-            pool.Release(this);
+            Release();
         }
     }
 }
