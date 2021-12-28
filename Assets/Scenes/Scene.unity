@@ -252,7 +252,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 100
-  damageable: 1
+  damageable: 0
   dead: 0
 --- !u!1 &103595106
 GameObject:

@@ -12,6 +12,7 @@ public class GrappleHook : MonoBehaviour
     public FixedJoint fixedJoint;
     bool addJoint=false;
     Rigidbody other;
+    bool connectedToRb;
     float maxDist;
 
     void Start()
@@ -31,7 +32,8 @@ public class GrappleHook : MonoBehaviour
     {
         this.other = other;
         addJoint = true;
-        if(other == null)
+        connectedToRb = (other != null);
+        if(!connectedToRb)
         {
             m_rigidbody.velocity *= 0;
             configJoint.massScale = 0;
@@ -79,6 +81,13 @@ public class GrappleHook : MonoBehaviour
             LockMotion(hit.rigidbody);
             configJoint.SetDistance();
             state = SWINGING;
+        }
+
+        if(state == SWINGING && ((fixedJoint == null && addJoint == false) || (connectedToRb && other == null)))
+        {
+            Destroy(fixedJoint);
+            fixedJoint = null;
+            Retract();
         }
     }
 

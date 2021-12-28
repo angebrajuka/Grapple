@@ -46,8 +46,8 @@ public class Gun : MonoBehaviour
             },
             (bullet) => {
                 // on get
-                bullet.OnGet();
                 bullet.gameObject.SetActive(true);
+                bullet.OnGet();
             },
             (bullet) => {
                 // on return
