@@ -26,6 +26,7 @@ public class DevConsole : MonoBehaviour
     void Enable()
     {
         isActive = true;
+        PauseHandler.frozenInput = true;
         inputField.gameObject.SetActive(true);
         inputField.ActivateInputField();
         textObject.text = "";
@@ -34,6 +35,7 @@ public class DevConsole : MonoBehaviour
     void Disable()
     {
         isActive = false;
+        PauseHandler.frozenInput = false;
         inputField.gameObject.SetActive(false);
     }
 
@@ -56,6 +58,10 @@ public class DevConsole : MonoBehaviour
         {
             if(!isActive)   Enable();
             else            Disable();
+        }
+        if(Input.GetKeyDown(KeyCode.Escape) && isActive)
+        {
+            Disable();
         }
     }
 }

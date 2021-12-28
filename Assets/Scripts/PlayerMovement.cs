@@ -67,6 +67,8 @@ public class PlayerMovement : MonoBehaviour
         input_move.Set(0, 0, 0);
         input_look.Set(0, 0);
 
+        if(PauseHandler.paused) return;
+
         if(GetKey("walk_front"))    input_move.z ++;
         if(GetKey("walk_back"))     input_move.z --;
         if(GetKey("walk_left"))     input_move.x --;
@@ -94,6 +96,20 @@ public class PlayerMovement : MonoBehaviour
     {
         bool wasGrounded = grounded;
         grounded = Physics.OverlapSphere(colliderGrounded.center+rb.position, colliderGrounded.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length > 0;
+
+        if(grounded)
+        {
+            // friction
+            Vector3 vel = rb.velocity;
+            vel *= crouching ? friction_slide : friction_normal;
+            vel.y = rb.velocity.y; // dont affect y for friction
+            rb.velocity = vel;
+
+            // jump
+            rb.AddForce(0, input_move.y*jumpForce, 0);
+        }
+
+        if(PauseHandler.paused) return;
 
         // accelerate
         var accel = Time.fixedDeltaTime * (grounded ? (crouching ? walkAccelCrouch : walkAccelDefault) : walkAccelAir);
@@ -132,18 +148,6 @@ public class PlayerMovement : MonoBehaviour
             colliderDefault.enabled = true;
             colliderCrouch.enabled = false;
             cameraPosTarget = cameraPosDefault;
-        }
-
-        if(grounded)
-        {
-            // friction
-            Vector3 vel = rb.velocity;
-            vel *= crouching ? friction_slide : friction_normal;
-            vel.y = rb.velocity.y; // dont affect y for friction
-            rb.velocity = vel;
-
-            // jump
-            rb.AddForce(0, input_move.y*jumpForce, 0);
         }
     }
 

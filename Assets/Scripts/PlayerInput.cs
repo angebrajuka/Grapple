@@ -101,7 +101,7 @@ public class PlayerInput : MonoBehaviour
 
     public static bool GetKey(string key)
     {
-        if(DevConsole.isActive) return false;
+        if(PauseHandler.frozenInput) return false;
 
         bool down = false;
         foreach(var bind in keybinds[key])
@@ -113,7 +113,7 @@ public class PlayerInput : MonoBehaviour
 
     public static bool GetKeyDown(string key)
     {
-        if(DevConsole.isActive) return false;
+        if(PauseHandler.frozenInput) return false;
 
         bool down = false;
         foreach(var bind in keybinds[key])

@@ -10,11 +10,13 @@ public class PauseHandler : MonoBehaviour
     static DepthOfField dofComponent;
     static int focalLengthVal=1;
     public static bool paused;
+    public static bool frozenInput;
 
     public void Init()
     {
         volume.profile.TryGet<DepthOfField>(out dofComponent);
         paused = false;
+        frozenInput = false;
     }
 
     public static void FreezePhysics()
@@ -25,18 +27,6 @@ public class PauseHandler : MonoBehaviour
     public static void UnfreezePhysics()
     {
         Time.timeScale = 1;
-    }
-
-    public static void DisableInput()
-    {
-        PlayerInput.instance.enabled = false;
-        PlayerMovement.instance.enabled = false;
-    }
-
-    public static void EnableInput()
-    {
-        PlayerInput.instance.enabled = true;
-        PlayerMovement.instance.enabled = true;
     }
 
     public static void HideCursor()
@@ -59,7 +49,7 @@ public class PauseHandler : MonoBehaviour
         paused = true;
 
         FreezePhysics();
-        DisableInput();
+        frozenInput = true;
 
         AudioManager.PauseAllAudio();
     }
@@ -70,7 +60,7 @@ public class PauseHandler : MonoBehaviour
         HideCursor();
 
         UnfreezePhysics();
-        EnableInput();
+        frozenInput = false;
 
         AudioManager.ResumeAllAudio();
 
@@ -79,7 +69,7 @@ public class PauseHandler : MonoBehaviour
 
     public static void Blur()
     {
-        focalLengthVal = 40;
+        focalLengthVal = 100;
         dofComponent.focalLength.value = 15;
     }
 
