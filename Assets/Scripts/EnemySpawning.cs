@@ -45,8 +45,8 @@ public class EnemySpawning : MonoBehaviour
         var max = pos2D.normalized*maxDistance;
         pos2D = (max-min)*pos2D.magnitude+min;
 
-        pos2D.x += PlayerMovement.m_rigidbody.position.x;
-        pos2D.y += PlayerMovement.m_rigidbody.position.z;
+        pos2D.x += PlayerMovement.rb.position.x;
+        pos2D.y += PlayerMovement.rb.position.z;
 
         return new Vector3(pos2D.x, ProceduralGeneration.Height(pos2D.x, pos2D.y)+5, pos2D.y);
     }

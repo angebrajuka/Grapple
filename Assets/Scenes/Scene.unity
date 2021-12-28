@@ -621,7 +621,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &314545544
 RectTransform:
   m_ObjectHideFlags: 0
@@ -963,6 +963,7 @@ MonoBehaviour:
   guns: {fileID: 1097735637}
   enemySpawning: {fileID: 501616928}
   canvas: {fileID: 1918868538}
+  devConsole: {fileID: 416143547}
   menuHandler: {fileID: 1036144109}
   load: 0
 --- !u!1 &416143545
@@ -2502,13 +2503,13 @@ MonoBehaviour:
     m_FontSize: 24
     m_FontStyle: 0
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 0
     m_HorizontalOverflow: 1
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
   m_Text: 
 --- !u!222 &1007332438
@@ -3199,15 +3200,15 @@ MonoBehaviour:
     m_FontSize: 24
     m_FontStyle: 2
     m_BestFit: 0
-    m_MinSize: 2
+    m_MinSize: 0
     m_MaxSize: 40
-    m_Alignment: 3
+    m_Alignment: 0
     m_AlignByGeometry: 0
     m_RichText: 1
     m_HorizontalOverflow: 0
-    m_VerticalOverflow: 0
+    m_VerticalOverflow: 1
     m_LineSpacing: 1
-  m_Text: try typing "self.heal 100"
+  m_Text: try typing "health set 100"
 --- !u!222 &1150708764
 CanvasRenderer:
   m_ObjectHideFlags: 0

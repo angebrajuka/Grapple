@@ -20,7 +20,7 @@ public class ReloadAnimationEvents : MonoBehaviour
     {
         var shell = Instantiate(prefab_shell, origin.position, origin.rotation);
         var rb = shell.GetComponent<Rigidbody>();
-        rb.velocity += PlayerMovement.m_rigidbody.velocity;
+        rb.velocity += PlayerMovement.rb.velocity;
         rb.AddRelativeForce(velocity);
     }
 

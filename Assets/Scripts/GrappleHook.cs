@@ -84,7 +84,7 @@ public class GrappleHook : MonoBehaviour
 
     void Update()
     {
-        if(fixedJoint == null && Vector3.Distance(m_rigidbody.position+configJoint.anchor, PlayerMovement.m_rigidbody.position+configJoint.connectedAnchor) > maxDist)
+        if(fixedJoint == null && Vector3.Distance(m_rigidbody.position+configJoint.anchor, PlayerMovement.rb.position+configJoint.connectedAnchor) > maxDist)
         {
             Retract();
         }

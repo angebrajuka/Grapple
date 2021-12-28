@@ -25,7 +25,7 @@ public class PlayerMovement : MonoBehaviour
     public float cameraHeightAdjustSpeed;
 
     // components
-    public static Rigidbody m_rigidbody;
+    public static Rigidbody rb;
 
     Vector3 cameraPosTarget;
     Vector3 cameraPosDefault;
@@ -44,7 +44,7 @@ public class PlayerMovement : MonoBehaviour
     {
         instance = this;
 
-        m_rigidbody = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
 
 
         slideHeightAdjust = colliderDefault.height - colliderCrouch.height;
@@ -93,18 +93,18 @@ public class PlayerMovement : MonoBehaviour
     void FixedUpdate()
     {
         bool wasGrounded = grounded;
-        grounded = Physics.OverlapSphere(colliderGrounded.center+m_rigidbody.position, colliderGrounded.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length > 0;
+        grounded = Physics.OverlapSphere(colliderGrounded.center+rb.position, colliderGrounded.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length > 0;
 
         // accelerate
         var accel = Time.fixedDeltaTime * (grounded ? (crouching ? walkAccelCrouch : walkAccelDefault) : walkAccelAir);
 
-        m_rigidbody.AddRelativeForce(
-            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.right)) < walkMaxSpeed ? input_move.x*accel : 0,
+        rb.AddRelativeForce(
+            Mathf.Abs(Vector3.Dot(rb.velocity, rb.transform.right)) < walkMaxSpeed ? input_move.x*accel : 0,
             0,
-            Mathf.Abs(Vector3.Dot(m_rigidbody.velocity, m_rigidbody.transform.forward)) < walkMaxSpeed ? input_move.z*accel : 0
+            Mathf.Abs(Vector3.Dot(rb.velocity, rb.transform.forward)) < walkMaxSpeed ? input_move.z*accel : 0
         );
 
-        var center = colliderDefault.center+m_rigidbody.position;
+        var center = colliderDefault.center+rb.position;
         var halfHeight = Vector3.up*(colliderDefault.height/2);
         var point0 = center + halfHeight;
         var point1 = center; // dont subtract half height for ignoring floor
@@ -118,10 +118,10 @@ public class PlayerMovement : MonoBehaviour
             colliderCrouch.enabled = true;
             cameraPosTarget = cameraPosCrouch;
 
-            float zvel = m_rigidbody.RelativeVelocity().z;
+            float zvel = rb.RelativeVelocity().z;
             if(crouchKeyDown && (!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
             {
-                m_rigidbody.AddRelativeForce(0, 0, slideForce);
+                rb.AddRelativeForce(0, 0, slideForce);
                 crouchKeyDown = false;
             }
         }
@@ -137,13 +137,13 @@ public class PlayerMovement : MonoBehaviour
         if(grounded)
         {
             // friction
-            Vector3 vel = m_rigidbody.velocity;
+            Vector3 vel = rb.velocity;
             vel *= crouching ? friction_slide : friction_normal;
-            vel.y = m_rigidbody.velocity.y; // dont affect y for friction
-            m_rigidbody.velocity = vel;
+            vel.y = rb.velocity.y; // dont affect y for friction
+            rb.velocity = vel;
 
             // jump
-            m_rigidbody.AddForce(0, input_move.y*jumpForce, 0);
+            rb.AddForce(0, input_move.y*jumpForce, 0);
         }
     }
 
@@ -154,9 +154,9 @@ public class PlayerMovement : MonoBehaviour
         Vector3 rotation;
         if(input_look.x != 0)
         {
-            rotation = m_rigidbody.rotation.eulerAngles;
+            rotation = rb.rotation.eulerAngles;
             rotation.y += input_look.x;
-            m_rigidbody.rotation = Quaternion.Euler(rotation);
+            rb.rotation = Quaternion.Euler(rotation);
         }
         if(input_look.y != 0)
         {

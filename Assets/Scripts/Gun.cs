@@ -75,7 +75,7 @@ public class Gun : MonoBehaviour
 
         bullet.rb.velocity = bullet.transform.forward*projectileForce;
         bullet.SetRange(range);
-        bullet.rb.velocity += PlayerMovement.m_rigidbody.velocity*0.7f;
+        bullet.rb.velocity += PlayerMovement.rb.velocity*0.7f;
         bullet.damage = (float)damage / (float)pellets;
     }
 
@@ -83,7 +83,7 @@ public class Gun : MonoBehaviour
     {
         PlayerAnimator.instance.gunReloadAnimator.SetInteger("state", 0);
         AudioManager.PlayClip(clip_shoot);
-        PlayerMovement.m_rigidbody.AddForce(PlayerMovement.instance.t_camera.TransformDirection(0, 0, -recoil));
+        PlayerMovement.rb.AddForce(PlayerMovement.instance.t_camera.TransformDirection(0, 0, -recoil));
         PlayerAnimator.instance.Recoil();
         timeLastShot = Time.time;
         ammo -= ammoPerShot;

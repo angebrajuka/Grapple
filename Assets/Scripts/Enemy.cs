@@ -8,7 +8,7 @@ public class Enemy : MonoBehaviour
 
     float Distance
     {
-        get { return Vector3.Distance(transform.position, PlayerMovement.m_rigidbody.position); }
+        get { return Vector3.Distance(transform.position, PlayerMovement.rb.position); }
     }
 
     public bool LineOfSight()

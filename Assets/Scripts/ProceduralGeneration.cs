@@ -240,7 +240,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     void Update()
     {
-        Vector3 p = PlayerMovement.m_rigidbody.position;
+        Vector3 p = PlayerMovement.rb.position;
         currPos.Set((int)Mathf.Floor(p.x/CHUNK_SIZE), 0, (int)Mathf.Floor(p.z/CHUNK_SIZE));
 
         if(currPos != prevPos || loadedChunks.Count == 0)

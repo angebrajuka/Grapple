@@ -30,9 +30,9 @@ public class SaveData
     public SaveData()
     {
         player_pos = new float[3];
-        for(int j=0; j<3; j++) player_pos[j] = PlayerMovement.m_rigidbody.position[j];
+        for(int j=0; j<3; j++) player_pos[j] = PlayerMovement.rb.position[j];
         player_rot_rb = new float[3];
-        for(int j=0; j<3; j++) player_rot_rb[j] = PlayerMovement.m_rigidbody.transform.localEulerAngles[j];
+        for(int j=0; j<3; j++) player_rot_rb[j] = PlayerMovement.rb.transform.localEulerAngles[j];
         player_rot_cam = new float[3];
         for(int j=0; j<3; j++) player_rot_cam[j] = PlayerMovement.instance.t_camera.localEulerAngles[j];
 
@@ -47,13 +47,13 @@ public class SaveData
 
     public void Load()
     {
-        Vector3 pos = PlayerMovement.m_rigidbody.position;
+        Vector3 pos = PlayerMovement.rb.position;
         for(int i=0; i<3; i++) pos[i] = player_pos[i];
-        PlayerMovement.m_rigidbody.position = pos;
+        PlayerMovement.rb.position = pos;
 
-        Vector3 rot = PlayerMovement.m_rigidbody.transform.localEulerAngles;
+        Vector3 rot = PlayerMovement.rb.transform.localEulerAngles;
         for(int i=0; i<3; i++) rot[i] = player_rot_rb[i];
-        PlayerMovement.m_rigidbody.transform.localEulerAngles = rot;
+        PlayerMovement.rb.transform.localEulerAngles = rot;
 
         rot = PlayerMovement.instance.t_camera.localEulerAngles;
         for(int i=0; i<3; i++) rot[i] = player_rot_cam[i];

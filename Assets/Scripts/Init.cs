@@ -10,6 +10,7 @@ public class Init : MonoBehaviour
     public Guns guns;
     public EnemySpawning enemySpawning;
     public Transform canvas;
+    public DevConsole devConsole;
     public MenuHandler menuHandler;
     public bool load;
 
@@ -33,6 +34,8 @@ public class Init : MonoBehaviour
         enemySpawning.Init();
 
         canvas.GetComponent<PlayerBloodUI>().Init();
+
+        devConsole.Init();
 
         menuHandler.Init();
 
