@@ -25,14 +25,14 @@ public class ProceduralGeneration : MonoBehaviour
     public Transform transform_chunks;
     public Material chunkMaterial;
     public int renderDistance;
+    public int chunkSize;
+    public int chunkWidthVertices;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
     public string hex_grass, hex_sand;
 
-    public const int CHUNK_SIZE = 10;
-    public const float DENSITY = 2f;
-    public const int CHUNK_VERTECIES = (int)(DENSITY*CHUNK_SIZE+1);
     const int RESOLUTION = 64;
+    float vertexSpacing { get { return (float)chunkSize/(float)(chunkWidthVertices-1); } }
     static int diameter { get { return instance.renderDistance*2+1; } }
     static int maxChunks { get { return (int)Math.Sqr(diameter); } }
 
@@ -71,9 +71,9 @@ public class ProceduralGeneration : MonoBehaviour
                 chunk.meshCollider = chunk.gameObject.GetComponent<MeshCollider>();
                 chunk.meshRenderer = chunk.gameObject.GetComponent<MeshRenderer>();
                 var mesh = new Mesh();
-                mesh.vertices = new Vector3[(int)Math.Sqr(CHUNK_VERTECIES)];
+                mesh.vertices = new Vector3[(int)Math.Sqr(chunkWidthVertices)];
                 mesh.colors = new Color[mesh.vertices.Length];
-                mesh.triangles = new int[(int)Math.Sqr(CHUNK_VERTECIES-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
+                mesh.triangles = new int[(int)Math.Sqr(chunkWidthVertices-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
                 chunk.meshFilter.mesh = mesh;
                 chunk.meshRenderer.material = chunkMaterial;
 
@@ -107,7 +107,7 @@ public class ProceduralGeneration : MonoBehaviour
     static float Perlin(float seed, float x, float z, float chunkX, float chunkZ, float min=0, float max=1, float scale=1)
     {
         const int perlinOffset = 34546; // prevents mirroring
-        return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+CHUNK_SIZE*chunkX)*scale, (perlinOffset+seed+z+CHUNK_SIZE*chunkZ)*scale), 0, 1, min, max);
+        return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
     public static float Height(float x, float z, float chunkX=0, float chunkZ=0)
@@ -159,7 +159,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         var chunk = pool_chunks.Get();
         loadedChunks.Add((chunkX, chunkZ), chunk);
-        chunk.transform.SetPositionAndRotation(new Vector3(chunkX*CHUNK_SIZE, 0, chunkZ*CHUNK_SIZE), Quaternion.identity);
+        chunk.transform.SetPositionAndRotation(new Vector3(chunkX*chunkSize, 0, chunkZ*chunkSize), Quaternion.identity);
 
         var meshFilter = chunk.meshFilter;
         var meshCollider = chunk.meshCollider;
@@ -172,23 +172,24 @@ public class ProceduralGeneration : MonoBehaviour
 
         await Task.Run(() => {
             int i=0;
-            for(int x=0; x<CHUNK_VERTECIES; ++x) for(int z=0; z<CHUNK_VERTECIES; ++z)
+            for(int x=0; x<chunkWidthVertices; ++x) for(int z=0; z<chunkWidthVertices; ++z)
             {
-                vertices[CHUNK_VERTECIES*x+z].Set(
-                    (float)x/(float)DENSITY, 
-                    Height((float)x/(float)DENSITY, (float)z/(float)DENSITY, chunkX, chunkZ), 
-                    (float)z/(float)DENSITY);
+                float offset = vertexSpacing*0.4f;
+                vertices[chunkWidthVertices*x+z].Set(
+                    (float)x*vertexSpacing+Perlin(154.2643f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset), 
+                    Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ), 
+                    (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset));
 
-                cols[CHUNK_VERTECIES*x+z] = (Biome(x/DENSITY, z/DENSITY, chunkX, chunkZ) > 0.5 ? grass : sand);
+                cols[chunkWidthVertices*x+z] = (Biome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ) > 0.5 ? grass : sand);
 
-                if(x<CHUNK_VERTECIES-1 && z<CHUNK_VERTECIES-1)
+                if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
                 {
-                    triangles[6*i]   = CHUNK_VERTECIES*x+z;
-                    triangles[6*i+1] = CHUNK_VERTECIES*x+z+1;
-                    triangles[6*i+2] = CHUNK_VERTECIES*(x+1)+z;
-                    triangles[6*i+3] = CHUNK_VERTECIES*(x+1)+z;
-                    triangles[6*i+4] = CHUNK_VERTECIES*x+z+1;
-                    triangles[6*i+5] = CHUNK_VERTECIES*(x+1)+z+1;
+                    triangles[6*i]   = chunkWidthVertices*x+z;
+                    triangles[6*i+1] = chunkWidthVertices*x+z+1;
+                    triangles[6*i+2] = chunkWidthVertices*(x+1)+z;
+                    triangles[6*i+3] = chunkWidthVertices*(x+1)+z;
+                    triangles[6*i+4] = chunkWidthVertices*x+z+1;
+                    triangles[6*i+5] = chunkWidthVertices*(x+1)+z+1;
                     ++i;
                 }
             }
@@ -241,7 +242,7 @@ public class ProceduralGeneration : MonoBehaviour
     void Update()
     {
         Vector3 p = PlayerMovement.rb.position;
-        currPos.Set((int)Mathf.Floor(p.x/CHUNK_SIZE), 0, (int)Mathf.Floor(p.z/CHUNK_SIZE));
+        currPos.Set((int)Mathf.Floor(p.x/chunkSize), 0, (int)Mathf.Floor(p.z/chunkSize));
 
         if(currPos != prevPos || loadedChunks.Count == 0)
         {

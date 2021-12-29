@@ -811,6 +811,8 @@ MonoBehaviour:
   transform_chunks: {fileID: 311379121}
   chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
   renderDistance: 20
+  chunkSize: 10
+  chunkWidthVertices: 3
   chunksPerFrame: 3
   rainTempMap: {fileID: 0}
   hex_grass: '#70a35c'
