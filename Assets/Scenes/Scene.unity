@@ -2617,7 +2617,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 2
-  m_AspectRatio: 4
+  m_AspectRatio: 4.1666665
 --- !u!114 &792857123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5602,19 +5602,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855b9269003f52047a380c241ac4a20d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  physicsMaterial: {fileID: 13400000, guid: 1596c5cdfcb1d5843885de29731f00f8, type: 2}
   t_camera: {fileID: 1687258585}
   colliderDefault: {fileID: 1887390187}
   colliderCrouch: {fileID: 1887390189}
   colliderGrounded: {fileID: 1887390192}
-  walkAccelDefault: 24000
+  walkAccelDefault: 23000
   walkAccelCrouch: 1000
   walkAccelAir: 1000
   walkMaxSpeed: 12
   friction_normal: 0.9
-  friction_slide: 1
-  jumpForce: 1000
+  friction_slide: 0
+  jumpForce: 15
   jumpTimeLeeway: 0.2
-  timeBetweenJumps: 0.1
+  timeBetweenJumps: 0.4
+  groundedMagnet: 0
   slideForce: 800
   slideStartThreshhold: 0.1
   slideMaxSpeed: 20
@@ -5740,8 +5742,8 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 0
   serializedVersion: 2
-  m_Radius: 0.29
-  m_Center: {x: 0, y: -0.72, z: 0}
+  m_Radius: 0.3
+  m_Center: {x: 0, y: -0.77, z: 0}
 --- !u!114 &1887390194
 MonoBehaviour:
   m_ObjectHideFlags: 0
