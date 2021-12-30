@@ -14,7 +14,6 @@ public class PauseHandler : MonoBehaviour
     public float blurSpeed, unblurSpeed;
 
     static DepthOfField dofComponent;
-    static float focalLengthVal=1;
     public static bool paused;
     public static bool blurred;
     public static bool frozenInput;
