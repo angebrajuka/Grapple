@@ -6,14 +6,23 @@ using UnityEngine.Rendering.Universal;
 
 public class PauseHandler : MonoBehaviour
 {
+    public static PauseHandler instance;
+
+    // hierarchy
     public Volume volume;
+    public float blurredFocalLength, unblurredFocalLength;
+    public float blurSpeed, unblurSpeed;
+
     static DepthOfField dofComponent;
-    static int focalLengthVal=1;
+    static float focalLengthVal=1;
     public static bool paused;
+    public static bool blurred;
     public static bool frozenInput;
 
     public void Init()
     {
+        instance = this;
+
         volume.profile.TryGet<DepthOfField>(out dofComponent);
         paused = false;
         frozenInput = false;
@@ -43,7 +52,7 @@ public class PauseHandler : MonoBehaviour
 
     public static void Pause()
     {
-        Blur();
+        blurred = true;
         ShowCursor();
 
         paused = true;
@@ -56,7 +65,7 @@ public class PauseHandler : MonoBehaviour
 
     public static void UnPause()
     {
-        UnBlur();
+        blurred = false;
         HideCursor();
 
         UnfreezePhysics();
@@ -65,17 +74,6 @@ public class PauseHandler : MonoBehaviour
         AudioManager.ResumeAllAudio();
 
         paused = false;
-    }
-
-    public static void Blur()
-    {
-        focalLengthVal = 100;
-        dofComponent.focalLength.value = 15;
-    }
-
-    public static void UnBlur()
-    {
-        focalLengthVal = 1;
     }
 
     void Update()
@@ -87,6 +85,6 @@ public class PauseHandler : MonoBehaviour
             return;
         }
 
-        dofComponent.focalLength.value = Mathf.Lerp(dofComponent.focalLength.value, focalLengthVal, Time.unscaledDeltaTime*4);
+        dofComponent.focalLength.value = Mathf.Lerp(dofComponent.focalLength.value, blurred ? blurredFocalLength : unblurredFocalLength, Time.unscaledDeltaTime*(blurred ? blurSpeed : unblurSpeed));
     }
 }

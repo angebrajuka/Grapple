@@ -83,7 +83,7 @@ public class GrappleHook : MonoBehaviour
             state = SWINGING;
         }
 
-        if(state == SWINGING && ((fixedJoint == null && addJoint == false) || (connectedToRb && other == null)))
+        if(state != SHOOTING && ((fixedJoint == null && addJoint == false) || (connectedToRb && other == null)))
         {
             Destroy(fixedJoint);
             fixedJoint = null;
