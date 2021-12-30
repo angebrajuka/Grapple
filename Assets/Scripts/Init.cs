@@ -21,6 +21,7 @@ public class Init : MonoBehaviour
         proceduralGeneration.GetComponent<ProceduralGeneration>().Init();
 
         player.GetComponent<PauseHandler>().Init();
+        menuHandler.Init();
 
         guns.Init();
         player.GetComponent<PlayerHUD>().Init();
@@ -33,11 +34,8 @@ public class Init : MonoBehaviour
 
         enemySpawning.Init();
 
-        canvas.GetComponent<PlayerBloodUI>().Init();
-
         devConsole.Init();
 
-        menuHandler.Init();
 
         if(load)
         {

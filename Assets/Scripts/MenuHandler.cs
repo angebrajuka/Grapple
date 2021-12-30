@@ -19,7 +19,6 @@ public class MenuHandler : MonoBehaviour
         {
             instance.transform.GetChild(i).gameObject.SetActive(false);
         }
-        Close();
         anyMenu = false;
     }
 

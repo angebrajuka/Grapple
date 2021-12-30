@@ -6056,7 +6056,6 @@ GameObject:
   - component: {fileID: 1918868537}
   - component: {fileID: 1918868536}
   - component: {fileID: 1918868535}
-  - component: {fileID: 1918868539}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -6095,7 +6094,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
-  m_ScaleFactor: 1
+  m_ScaleFactor: 0.6
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
   m_MatchWidthOrHeight: 0.5
@@ -6115,8 +6114,8 @@ Canvas:
   serializedVersion: 3
   m_RenderMode: 0
   m_Camera: {fileID: 0}
-  m_PlaneDistance: 100
-  m_PixelPerfect: 0
+  m_PlaneDistance: 0.1
+  m_PixelPerfect: 1
   m_ReceivesEvents: 1
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
@@ -6151,19 +6150,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
---- !u!114 &1918868539
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1918868534}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31939f5f89a442c4da6d317ae150a1fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  prefab_splatter: {fileID: 0}
 --- !u!4 &1933258450 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -18976741724091244, guid: 99dec5a0dc35c47499f4ccc681b4fa01, type: 3}
@@ -7093,6 +7079,10 @@ PrefabInstance:
     - target: {fileID: 2078996655745251303, guid: a526d31e4549f9f44819820623e33e32, type: 3}
       propertyPath: m_Name
       value: Main
+      objectReference: {fileID: 0}
+    - target: {fileID: 2078996655745251303, guid: a526d31e4549f9f44819820623e33e32, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a526d31e4549f9f44819820623e33e32, type: 3}
