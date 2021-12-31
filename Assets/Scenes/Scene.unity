@@ -15,8 +15,8 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 0
-  m_FogColor: {r: 0.65080994, g: 0.666729, b: 0.7075472, a: 1}
-  m_FogMode: 3
+  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
+  m_FogMode: 1
   m_FogDensity: 0.05
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
@@ -810,9 +810,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform_chunks: {fileID: 311379121}
   chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
-  renderDistance: 20
-  chunkSize: 10
-  chunkWidthVertices: 4
+  renderDistance: 17
+  chunkSize: 20
+  chunkWidthVertices: 25
+  offset: 0.04
   chunksPerFrame: 3
   rainTempMap: {fileID: 0}
   hex_grass: '#70a35c'
@@ -5617,7 +5618,7 @@ MonoBehaviour:
   jumpTimeLeeway: 0.2
   timeBetweenJumps: 0.4
   groundedMagnet: 0
-  slideForce: 800
+  slideForce: 1000
   slideStartThreshhold: 0.1
   slideMaxSpeed: 20
   cameraHeightAdjustSpeed: 12

@@ -27,6 +27,7 @@ public class ProceduralGeneration : MonoBehaviour
     public int renderDistance;
     public int chunkSize;
     public int chunkWidthVertices;
+    public float offset;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
     public string hex_grass, hex_sand;
@@ -174,7 +175,6 @@ public class ProceduralGeneration : MonoBehaviour
             int i=0;
             for(int x=0; x<chunkWidthVertices; ++x) for(int z=0; z<chunkWidthVertices; ++z)
             {
-                float offset = vertexSpacing*0.4f;
                 vertices[chunkWidthVertices*x+z].Set(
                     (float)x*vertexSpacing+Perlin(154.2643f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset), 
                     Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ), 
