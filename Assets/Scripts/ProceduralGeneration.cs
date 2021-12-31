@@ -76,6 +76,7 @@ public class ProceduralGeneration : MonoBehaviour
                 mesh.colors = new Color[mesh.vertices.Length];
                 mesh.triangles = new int[(int)Math.Sqr(chunkWidthVertices-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
                 chunk.meshFilter.mesh = mesh;
+                chunk.meshCollider.convex = false;
                 chunk.meshRenderer.material = chunkMaterial;
 
                 return chunk;

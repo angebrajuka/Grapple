@@ -810,9 +810,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   transform_chunks: {fileID: 311379121}
   chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
-  renderDistance: 17
-  chunkSize: 20
-  chunkWidthVertices: 25
+  renderDistance: 14
+  chunkSize: 40
+  chunkWidthVertices: 7
   offset: 0.04
   chunksPerFrame: 3
   rainTempMap: {fileID: 0}
@@ -5608,17 +5608,19 @@ MonoBehaviour:
   colliderDefault: {fileID: 1887390187}
   colliderCrouch: {fileID: 1887390189}
   colliderGrounded: {fileID: 1887390192}
-  walkAccelDefault: 23000
-  walkAccelCrouch: 1000
+  walkAccelDefault: 24000
+  walkAccelCrouch: 2000
   walkAccelAir: 1000
-  walkMaxSpeed: 12
+  walkMaxSpeed: 10
+  crouchMaxSpeed: 6
   friction_normal: 0.9
   friction_slide: 0
-  jumpForce: 15
+  jumpVelocity: 14
+  jumpForceForward: 300
   jumpTimeLeeway: 0.2
   timeBetweenJumps: 0.4
   groundedMagnet: 0
-  slideForce: 1000
+  slideForce: 1200
   slideStartThreshhold: 0.1
   slideMaxSpeed: 20
   cameraHeightAdjustSpeed: 12
@@ -5740,8 +5742,8 @@ SphereCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887390182}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
+  m_IsTrigger: 1
+  m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.3
   m_Center: {x: 0, y: -0.77, z: 0}

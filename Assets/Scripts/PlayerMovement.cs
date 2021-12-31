@@ -15,9 +15,11 @@ public class PlayerMovement : MonoBehaviour
     public float walkAccelCrouch;
     public float walkAccelAir;
     public float walkMaxSpeed;
+    public float crouchMaxSpeed;
     public float friction_normal;
     public float friction_slide;
-    public float jumpForce;
+    public float jumpVelocity;
+    public float jumpForceForward;
     public float jumpTimeLeeway;
     public float timeBetweenJumps;
     public float groundedMagnet;
@@ -87,7 +89,6 @@ public class PlayerMovement : MonoBehaviour
         if(Time.time <= jumpInputTime+jumpTimeLeeway && Time.time >= timeLastJumped+timeBetweenJumps)
         {
             input_move.y ++;
-            timeLastJumped = Time.time;
         }
 
         crouchKeyDown = GetKeyDown("slide") || crouchKeyDown;
@@ -99,14 +100,14 @@ public class PlayerMovement : MonoBehaviour
 
     void OnCollisionStay(Collision collisionInfo)
     {
-        foreach(ContactPoint contact in collisionInfo.contacts)
-        {
-            Vector3 normal = (colliderGrounded.center+rb.position - contact.point).normalized;
-            if(normal.y > groundedNormal.y)
-            {
-                groundedNormal = normal;
-            }
-        }
+        // foreach(ContactPoint contact in collisionInfo.contacts)
+        // {
+        //     Vector3 normal = (colliderGrounded.center+rb.position - contact.point).normalized;
+        //     if(normal.y > groundedNormal.y)
+        //     {
+        //         groundedNormal = normal;
+        //     }
+        // }
     }
 
     void FixedUpdate()
@@ -115,15 +116,35 @@ public class PlayerMovement : MonoBehaviour
 
         wasGrounded = grounded;
 
-        var colliders = Physics.OverlapSphere(colliderGrounded.center+rb.position, colliderGrounded.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore);
+        var colliderGroundedCenter = colliderGrounded.center+rb.position;
+        var colliders = Physics.OverlapSphere(colliderGroundedCenter, colliderGrounded.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore);
         grounded = colliders.Length > 0;
+        groundedNormal.Set(0, 0, 0);
+        foreach(var collider in colliders)
+        {
+            if(Physics.ComputePenetration(colliderGrounded, rb.position, Quaternion.identity, collider, collider.transform.position, collider.transform.rotation, out Vector3 normal, out _))
+            {
+                if(normal.y > groundedNormal.y)
+                {
+                    groundedNormal = normal;
+                }
+            }
+        }
 
         if(grounded && input_move.y > 0)
         {
             // jump
+
+            timeLastJumped = Time.time;
+
             var vel = rb.velocity;
-            vel.y = jumpForce;
+            vel.y = jumpVelocity;
             rb.velocity = vel;
+
+            if(input_move.z > 0)
+            {
+                rb.AddRelativeForce(Vector3.forward*jumpForceForward);
+            }
         }
 
         var center = colliderDefault.center+rb.position;
@@ -161,12 +182,13 @@ public class PlayerMovement : MonoBehaviour
         if(input_move.x != 0 || input_move.z != 0)
         {
             var accel = Time.fixedDeltaTime * (grounded ? (crouching ? walkAccelCrouch : walkAccelDefault) : walkAccelAir);
+            var maxSpeed = crouching ? crouchMaxSpeed : walkMaxSpeed;
 
             Vector3 f = grounded ? Vector3.Cross(rb.transform.right, groundedNormal) : rb.transform.forward;
             Vector3 r = grounded ? Vector3.Cross(groundedNormal, rb.transform.forward) : rb.transform.right;
 
-            rb.AddForce((Mathf.Abs(Vector3.Dot(rb.velocity, r)) < walkMaxSpeed ? input_move.x*accel : 0)*r);
-            rb.AddForce(((Mathf.Abs(Vector3.Dot(rb.velocity, f)) < walkMaxSpeed ? input_move.z*accel : 0) + (slideForward ? slideForce : 0))*f);
+            rb.AddForce((Mathf.Abs(Vector3.Dot(rb.velocity, r)) < maxSpeed ? input_move.x*accel : 0)*r);
+            rb.AddForce(((Mathf.Abs(Vector3.Dot(rb.velocity, f)) < maxSpeed ? input_move.z*accel : 0) + (slideForward ? slideForce : 0))*f);
 
             // rb.AddRelativeForce(
             //     Mathf.Abs(Vector3.Dot(rb.velocity, rb.transform.right)) < walkMaxSpeed ? input_move.x*accel : 0,
@@ -180,8 +202,6 @@ public class PlayerMovement : MonoBehaviour
         // friction
         physicsMaterial.staticFriction = crouching ? friction_slide : friction_normal;
         physicsMaterial.dynamicFriction = crouching ? friction_slide : friction_normal;
-
-        groundedNormal.Set(0, 0, 0);
     }
 
     void LateUpdate()
