@@ -9,11 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6617008212008839711}
+  - component: {fileID: 6398005573259797169}
   - component: {fileID: 6617008212008839706}
   - component: {fileID: 6617008212008839709}
   - component: {fileID: 6617008212008839708}
   - component: {fileID: 4911407599932391366}
-  - component: {fileID: 6398005573259797169}
   m_Layer: 5
   m_Name: P_Menu_Button
   m_TagString: Untagged
@@ -42,6 +42,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 40}
   m_Pivot: {x: 0, y: 1}
+--- !u!114 &6398005573259797169
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6617008212008839710}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d7db6105d10dd3499b06df434f8425a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clipHover: {fileID: 8300000, guid: 29bb8eb15bca91445baa37b377810757, type: 3}
+  clipClick: {fileID: 8300000, guid: b8aaff4da2eeea247a0499ee67e6a50a, type: 3}
+  diff: 3
+  toggle: 0
+  atLeastOne: 0
+  deselectOnClick: []
+  selected: 0
 --- !u!222 &6617008212008839706
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -193,21 +212,6 @@ MonoBehaviour:
             m_StringArgument: 
             m_BoolArgument: 0
           m_CallState: 2
---- !u!114 &6398005573259797169
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6617008212008839710}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7db6105d10dd3499b06df434f8425a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clipHover: {fileID: 8300000, guid: 29bb8eb15bca91445baa37b377810757, type: 3}
-  clipClick: {fileID: 8300000, guid: b8aaff4da2eeea247a0499ee67e6a50a, type: 3}
-  diff: 3
 --- !u!1 &6617008212421423644
 GameObject:
   m_ObjectHideFlags: 0
