@@ -673,6 +673,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8226649570949343268, guid: a526d31e4549f9f44819820623e33e32, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8226649570949343269, guid: a526d31e4549f9f44819820623e33e32, type: 3}
       propertyPath: m_RootOrder
       value: 0
@@ -2969,6 +2973,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 390174801}
     m_Modifications:
+    - target: {fileID: 6617008212008839708, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1036144109}
+    - target: {fileID: 6617008212008839708, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: StartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 6617008212008839708, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MenuHandler, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6617008212008839708, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6617008212008839710, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
       propertyPath: m_Name
       value: Start

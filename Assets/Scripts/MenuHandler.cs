@@ -25,12 +25,12 @@ public class MenuHandler : MonoBehaviour
     public static void Close()
     {
         instance.transform.GetChild(currentMenu).gameObject.SetActive(false);
+        anyMenu = false;
     }
 
     public static void Back()
     {
         Close();
-        anyMenu = false;
         if(prevMenu.Count != 0)
         {
             currentMenu = prevMenu.Pop();
@@ -47,6 +47,14 @@ public class MenuHandler : MonoBehaviour
     {
         prevMenu.Clear();
         CurrentMenu = 1;
+    }
+
+    public static void StartGame()
+    {
+        prevMenu.Clear();
+        Close();
+        PauseHandler.UnPause();
+
     }
 
     public static int CurrentMenu

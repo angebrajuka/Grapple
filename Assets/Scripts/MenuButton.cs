@@ -30,6 +30,11 @@ public class MenuButton : MonoBehaviour
         }
     }
 
+    void OnEnable()
+    {
+        OnExit();
+    }
+
     void Start()
     {
         textComp = transform.GetChild(0).GetComponent<Text>();
