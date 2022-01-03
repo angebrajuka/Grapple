@@ -2,12 +2,18 @@ using UnityEngine;
 
 public class Menu : MonoBehaviour
 {
+    public bool escBack;
+
+    public void Back()
+    {
+        MenuHandler.Back();
+    }
+
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape))
+        if(escBack && Input.GetKeyDown(KeyCode.Escape))
         {
             MenuHandler.Back();
-            if(!MenuHandler.anyMenu) PauseHandler.UnPause();
         }
     }
 }

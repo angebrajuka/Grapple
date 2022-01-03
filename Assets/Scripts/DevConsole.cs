@@ -59,10 +59,6 @@ public class DevConsole : MonoBehaviour
             if(!isActive)   Enable();
             else            Disable();
         }
-        if(Input.GetKeyDown(KeyCode.Escape) && isActive)
-        {
-            Disable();
-        }
     }
 }
 

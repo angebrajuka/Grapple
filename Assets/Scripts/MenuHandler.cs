@@ -37,6 +37,16 @@ public class MenuHandler : MonoBehaviour
             instance.transform.GetChild(currentMenu).gameObject.SetActive(true);
             anyMenu = true;
         }
+        else
+        {
+            PauseHandler.UnPause();
+        }
+    }
+
+    public static void MainMenu()
+    {
+        prevMenu.Clear();
+        CurrentMenu = 1;
     }
 
     public static int CurrentMenu
@@ -49,6 +59,8 @@ public class MenuHandler : MonoBehaviour
         {
             if(anyMenu)
             {
+                if(currentMenu == value) return;
+
                 prevMenu.Push(currentMenu);
                 Close();
             }
@@ -56,5 +68,10 @@ public class MenuHandler : MonoBehaviour
             instance.transform.GetChild(currentMenu).gameObject.SetActive(true);
             anyMenu = true;
         }
+    }
+
+    public static void Quit()
+    {
+        Application.Quit();
     }
 }

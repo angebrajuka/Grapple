@@ -77,7 +77,7 @@ public class PauseHandler : MonoBehaviour
 
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Escape) && !paused)
+        if(Input.GetKeyDown(KeyCode.Escape) && !paused && MenuHandler.CurrentMenu != 1)
         {
             Pause();
             MenuHandler.CurrentMenu = 0;

@@ -41,8 +41,12 @@ public class Init : MonoBehaviour
         {
             SaveData.TryLoad();
         }
+        else
+        {
+            PauseHandler.Pause();
+            MenuHandler.CurrentMenu = 1;
+        }
 
-        PauseHandler.UnPause();
 
         Destroy(gameObject);
     }
