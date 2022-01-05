@@ -22,6 +22,7 @@ public class PlayerInventory : MonoBehaviour
     public static int _nextGun;
     public static Gun CurrentGun { get { return Guns.guns[_currentGun]; } }
     public static Dictionary<string, int> maxAmmo;
+    public static Dictionary<string, int> startAmmo;
     public static Dictionary<string, int> reserveAmmo;
     public static int Ammo
     {
@@ -43,8 +44,9 @@ public class PlayerInventory : MonoBehaviour
 
     public static void Init()
     {
-        hasGun = new bool[]{true, true, true};
+        hasGun = new bool[3];
         maxAmmo = new Dictionary<string, int>();
+        startAmmo = new Dictionary<string, int>();
         reserveAmmo = new Dictionary<string, int>();
         var ammoData = JsonUtility.FromJson<AmmoDataJson>(Resources.Load<TextAsset>("AmmoData").text);
         foreach(var pair in ammoData.maxAmmo)
@@ -55,8 +57,24 @@ public class PlayerInventory : MonoBehaviour
 
         foreach(var pair in ammoData.startAmmo)
         {
-            reserveAmmo[pair.key] = pair.value;
+            startAmmo.Add(pair.key, pair.value);
         }
+    }
+
+    public static void Reset()
+    {
+        foreach(var pair in maxAmmo)
+        {
+            reserveAmmo[pair.Key] = 0;
+        }
+        foreach(var pair in startAmmo)
+        {
+            reserveAmmo[pair.Key] = pair.Value;
+        }
+
+        hasGun[0] = true;
+        hasGun[1] = true;
+        hasGun[2] = true;
 
         _currentGun = 0;
         _nextGun = 0;

@@ -204,8 +204,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6363865852984966140}
   - component: {fileID: 6363865852984966141}
-  - component: {fileID: 1742399958386261007}
-  - component: {fileID: 4341398595653739777}
   m_Layer: 0
   m_Name: Slider
   m_TagString: Untagged
@@ -299,72 +297,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1742399958386261007
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6363865852984966139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d7db6105d10dd3499b06df434f8425a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clipHover: {fileID: 8300000, guid: 29bb8eb15bca91445baa37b377810757, type: 3}
-  clipClick: {fileID: 8300000, guid: b8aaff4da2eeea247a0499ee67e6a50a, type: 3}
-  diff: 0
-  toggle: 0
-  atLeastOne: 0
-  defaultSelected: 0
-  selectedColor: {r: 0, g: 0, b: 0, a: 0}
-  deselectSiblings: 0
-  deselectOnClick: []
---- !u!114 &4341398595653739777
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6363865852984966139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b148fe25e99eb48b9724523833bab1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Delegates:
-  - eventID: 2
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1742399958386261007}
-          m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
-          m_MethodName: OnClick
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
-  - eventID: 0
-    callback:
-      m_PersistentCalls:
-        m_Calls:
-        - m_Target: {fileID: 1742399958386261007}
-          m_TargetAssemblyTypeName: MenuButton, Assembly-CSharp
-          m_MethodName: OnEnter
-          m_Mode: 1
-          m_Arguments:
-            m_ObjectArgument: {fileID: 0}
-            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-            m_IntArgument: 0
-            m_FloatArgument: 0
-            m_StringArgument: 
-            m_BoolArgument: 0
-          m_CallState: 2
 --- !u!1 &6363865853585040091
 GameObject:
   m_ObjectHideFlags: 0

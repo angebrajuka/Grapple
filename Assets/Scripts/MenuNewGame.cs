@@ -50,6 +50,8 @@ public class MenuNewGame : MonoBehaviour
         while(File.Exists(SaveData.DIRECTORY_PATH + SaveData.currentSaveFileName) && i < 1000);
 
         EnemySpawning.instance.Reset();
+        PlayerMovement.instance.Reset();
+        PlayerInventory.Reset();
         // other reset shit
 
         SaveData.Save(SaveData.currentSaveFileName);

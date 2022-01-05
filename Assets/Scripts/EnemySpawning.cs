@@ -45,7 +45,7 @@ public class EnemySpawning : MonoBehaviour
     {
         for(int i=0; i<transform.childCount; i++)
         {
-            Destroy(transform.GetChild(i));
+            Destroy(transform.GetChild(i).gameObject);
         }
         lastSpawnTime = Time.time;
         delayTime = maxDelay;

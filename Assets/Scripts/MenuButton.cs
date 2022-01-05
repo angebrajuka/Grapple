@@ -36,7 +36,7 @@ public class MenuButton : MonoBehaviour
 
     public void LoadGame()
     {
-        Debug.Log("TODO actually load");
+        SaveData.Load(load);
         MenuHandler.StartGame();
     }
 

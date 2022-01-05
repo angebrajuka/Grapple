@@ -69,6 +69,14 @@ public class PlayerMovement : MonoBehaviour
         timeLastJumped = -1000;
     }
 
+    public void Reset()
+    {
+        var pos = rb.position;
+        pos.Set(0, 40, 0);
+        rb.position = pos;
+        rb.velocity *= 0;
+    }
+
     void Update()
     {
         input_move.Set(0, 0, 0);

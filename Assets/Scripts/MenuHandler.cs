@@ -43,8 +43,18 @@ public class MenuHandler : MonoBehaviour
         }
     }
 
-    public static void MainMenu()
+    public static void Save()
     {
+        SaveData.Save(SaveData.currentSaveFileName);
+    }
+
+    public static void MainMenu(bool save)
+    {
+        if(save)
+        {
+            Save();
+        }
+
         prevMenu.Clear();
         CurrentMenu = 1;
     }

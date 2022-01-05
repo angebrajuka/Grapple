@@ -22,6 +22,8 @@ public class SaveData
 
     public string saveName;
 
+    public float seed;
+
     public float[] player_pos;
     public float[] player_rot_rb;
     public float[] player_rot_cam;
@@ -34,6 +36,8 @@ public class SaveData
     public SaveData()
     {
         saveName = currentSaveName;
+
+        seed = ProceduralGeneration.seed;
 
         player_pos = new float[3];
         for(int j=0; j<3; j++) player_pos[j] = PlayerMovement.rb.position[j];
@@ -54,6 +58,8 @@ public class SaveData
     public void Load()
     {
         currentSaveName = saveName;
+
+        ProceduralGeneration.seed = seed;
 
         Vector3 pos = PlayerMovement.rb.position;
         for(int i=0; i<3; i++) pos[i] = player_pos[i];
@@ -117,7 +123,7 @@ public class SaveData
         return data;
     }
 
-    public static bool TryLoad(string fileName)
+    public static bool Load(string fileName)
     {
         if(File.Exists(DIRECTORY_PATH + fileName))
         {
