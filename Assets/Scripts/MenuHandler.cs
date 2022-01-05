@@ -51,10 +51,10 @@ public class MenuHandler : MonoBehaviour
 
     public static void StartGame()
     {
+        ProceduralGeneration.UnloadAll();
         prevMenu.Clear();
         Close();
         PauseHandler.UnPause();
-
     }
 
     public static int CurrentMenu

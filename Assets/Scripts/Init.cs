@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.IO;
 
 public class Init : MonoBehaviour
 {
@@ -12,10 +13,11 @@ public class Init : MonoBehaviour
     public Transform canvas;
     public DevConsole devConsole;
     public MenuHandler menuHandler;
-    public bool load;
 
     void Start()
     {
+        Directory.CreateDirectory(SaveData.DIRECTORY_PATH);
+
         audioManager.Init();
         musicController.Init();
         proceduralGeneration.GetComponent<ProceduralGeneration>().Init();
@@ -36,17 +38,8 @@ public class Init : MonoBehaviour
 
         devConsole.Init();
 
-
-        if(load)
-        {
-            SaveData.TryLoad();
-        }
-        else
-        {
-            PauseHandler.Pause();
-            MenuHandler.CurrentMenu = 1;
-        }
-
+        PauseHandler.Pause();
+        MenuHandler.CurrentMenu = 1;
 
         Destroy(gameObject);
     }

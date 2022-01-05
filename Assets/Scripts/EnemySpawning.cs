@@ -19,8 +19,11 @@ public class EnemySpawning : MonoBehaviour
     public GameObject[] prefabs_bosses;
     public float minDistance, maxDistance;
     public float minDelay, maxDelay;
-    [Tooltip("time until next spawn, also initial delay before enemies start spawning")]
-    public float timer;
+    public float initialDelay;
+
+    public static float lastSpawnTime;
+    public static float delayTime;
+    public static int difficulty;
 
     public void Init()
     {
@@ -34,6 +37,18 @@ public class EnemySpawning : MonoBehaviour
             if(i == 0) continue;
             frequencies[i] += frequencies[i-1];
         }
+
+        Reset();
+    }
+
+    public void Reset()
+    {
+        for(int i=0; i<transform.childCount; i++)
+        {
+            Destroy(transform.GetChild(i));
+        }
+        lastSpawnTime = Time.time;
+        delayTime = maxDelay;
     }
 
     Vector3 GetPosition()
@@ -68,10 +83,11 @@ public class EnemySpawning : MonoBehaviour
 
     void Update()
     {
-        timer -= Time.deltaTime;
-        if(timer <= 0)
+        
+        if(Time.time >= lastSpawnTime+delayTime)
         {
-            timer = Random.Range(minDelay, maxDelay);
+            delayTime = Random.Range(minDelay, maxDelay);
+            lastSpawnTime = Time.time;
             Spawn(Random.Range(0, frequencies[frequencies.Length-1])/*, Vector3.up*20*/);
         }
     }

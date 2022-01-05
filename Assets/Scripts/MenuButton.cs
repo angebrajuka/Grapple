@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using System.IO;
 
 public class MenuButton : MonoBehaviour
 {
@@ -19,6 +20,9 @@ public class MenuButton : MonoBehaviour
     int originalTextSize;
     Color originalColor;
 
+    [HideInInspector] public string load;
+    [HideInInspector] public MenuLoad menuLoad;
+
     bool p_selected;
     [HideInInspector] public bool Selected
     {
@@ -28,6 +32,18 @@ public class MenuButton : MonoBehaviour
             p_selected = value;
             GetComponent<Image>().color = p_selected ? selectedColor : originalColor;
         }
+    }
+
+    public void LoadGame()
+    {
+        Debug.Log("TODO actually load");
+        MenuHandler.StartGame();
+    }
+
+    public void DeleteSave()
+    {
+        File.Delete(SaveData.DIRECTORY_PATH + load);
+        menuLoad.OnEnable();
     }
 
     void OnEnable()

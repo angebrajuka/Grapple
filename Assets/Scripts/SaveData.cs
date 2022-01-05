@@ -1,6 +1,8 @@
 using UnityEngine;
+using System;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Collections.Generic;
 
 [System.Serializable]
 public class SaveData
@@ -18,6 +20,8 @@ public class SaveData
         }
     }
 
+    public string saveName;
+
     public float[] player_pos;
     public float[] player_rot_rb;
     public float[] player_rot_cam;
@@ -29,6 +33,8 @@ public class SaveData
 
     public SaveData()
     {
+        saveName = currentSaveName;
+
         player_pos = new float[3];
         for(int j=0; j<3; j++) player_pos[j] = PlayerMovement.rb.position[j];
         player_rot_rb = new float[3];
@@ -36,17 +42,19 @@ public class SaveData
         player_rot_cam = new float[3];
         for(int j=0; j<3; j++) player_rot_cam[j] = PlayerMovement.instance.t_camera.localEulerAngles[j];
 
-        bloodUI_splatters = new (float, float, int)[PlayerBloodUI.splatters.Count];
-        int i=0;
-        foreach(var splatter in PlayerBloodUI.splatters)
-        {
-            bloodUI_splatters[i] = (splatter.pos.x, splatter.pos.y, splatter.index);
-            i ++;
-        }
+        // bloodUI_splatters = new (float, float, int)[PlayerBloodUI.splatters.Count];
+        // int i=0;
+        // foreach(var splatter in PlayerBloodUI.splatters)
+        // {
+        //     bloodUI_splatters[i] = (splatter.pos.x, splatter.pos.y, splatter.index);
+        //     i ++;
+        // }
     }
 
     public void Load()
     {
+        currentSaveName = saveName;
+
         Vector3 pos = PlayerMovement.rb.position;
         for(int i=0; i<3; i++) pos[i] = player_pos[i];
         PlayerMovement.rb.position = pos;
@@ -59,45 +67,61 @@ public class SaveData
         for(int i=0; i<3; i++) rot[i] = player_rot_cam[i];
         PlayerMovement.instance.t_camera.localEulerAngles = rot;
 
-        foreach(var splatter in bloodUI_splatters)
+        // foreach(var splatter in bloodUI_splatters)
+        // {
+        //     PlayerBloodUI.AddSplatter(new Vector2(splatter.x, splatter.y), splatter.index, false);
+        // }
+    }
+
+    public static string currentSaveName;
+    public static string currentSaveFileName;
+
+    public static string DIRECTORY_PATH { get { return Application.persistentDataPath + "/savedata/"; } }
+
+    public static (string fileName, string saveName)[] GetSaves()
+    {
+        var fileInfos = new DirectoryInfo(DIRECTORY_PATH).GetFiles("*.save");
+        Array.Sort(fileInfos, (y, x) => StringComparer.OrdinalIgnoreCase.Compare(x.CreationTime, y.CreationTime));
+        var saves = new (string, string)[fileInfos.Length];
+
+        int i=0;
+        foreach(var fileInfo in fileInfos)
         {
-            PlayerBloodUI.AddSplatter(new Vector2(splatter.x, splatter.y), splatter.index, false);
+            var data = GetSaveData(fileInfo.Name);
+            saves[i] = (fileInfo.Name, data.saveName);
+            i++;
         }
+
+        return saves; // file name, save name
     }
 
-    public static string DIRECTORY_PATH
-    {
-        get { return Application.persistentDataPath + "/savedata/"; }
-    }
-
-    public static string FILE_PATH
-    {
-        get { return DIRECTORY_PATH+"game.sav"; }
-    }
-
-    public static void Save()
+    public static void Save(string fileName)
     {
         BinaryFormatter formatter = new BinaryFormatter();
 
         Directory.CreateDirectory(DIRECTORY_PATH);
-        FileStream stream = new FileStream(FILE_PATH, FileMode.Create);
+        FileStream stream = new FileStream(DIRECTORY_PATH + fileName, FileMode.Create);
 
         SaveData data = new SaveData();
         formatter.Serialize(stream, data);
         stream.Close();
     }
 
-    public static bool TryLoad()
+    public static SaveData GetSaveData(string fileName)
     {
-        if(File.Exists(FILE_PATH))
+        BinaryFormatter formatter = new BinaryFormatter();
+        var stream = new FileStream(DIRECTORY_PATH + fileName, FileMode.Open);
+
+        SaveData data = formatter.Deserialize(stream) as SaveData;
+        stream.Close();
+        return data;
+    }
+
+    public static bool TryLoad(string fileName)
+    {
+        if(File.Exists(DIRECTORY_PATH + fileName))
         {
-            BinaryFormatter formatter = new BinaryFormatter();
-            var stream = new FileStream(FILE_PATH, FileMode.Open);
-
-            SaveData data = formatter.Deserialize(stream) as SaveData;
-            data.Load();
-            stream.Close();
-
+            GetSaveData(fileName).Load();
             return true;
         }
         return false;
