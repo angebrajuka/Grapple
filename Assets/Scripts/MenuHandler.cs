@@ -45,15 +45,14 @@ public class MenuHandler : MonoBehaviour
 
     public static void Save()
     {
-        SaveData.Save(SaveData.currentSaveFileName);
+        SaveData.Save();
     }
 
-    public static void MainMenu(bool save)
+    public static void MainMenu()
     {
-        if(save)
-        {
-            Save();
-        }
+        Save();
+        SaveData.currentSaveFileName = "";
+        SaveData.currentSaveName = "";
 
         prevMenu.Clear();
         CurrentMenu = 1;
@@ -65,6 +64,7 @@ public class MenuHandler : MonoBehaviour
         prevMenu.Clear();
         Close();
         PauseHandler.UnPause();
+        Save();
     }
 
     public static int CurrentMenu

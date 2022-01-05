@@ -101,12 +101,12 @@ public class SaveData
         return saves; // file name, save name
     }
 
-    public static void Save(string fileName)
+    public static void Save()
     {
         BinaryFormatter formatter = new BinaryFormatter();
 
         Directory.CreateDirectory(DIRECTORY_PATH);
-        FileStream stream = new FileStream(DIRECTORY_PATH + fileName, FileMode.Create);
+        FileStream stream = new FileStream(DIRECTORY_PATH + currentSaveFileName, FileMode.Create);
 
         SaveData data = new SaveData();
         formatter.Serialize(stream, data);
@@ -123,11 +123,11 @@ public class SaveData
         return data;
     }
 
-    public static bool Load(string fileName)
+    public static bool TryLoad()
     {
-        if(File.Exists(DIRECTORY_PATH + fileName))
+        if(File.Exists(DIRECTORY_PATH + currentSaveFileName))
         {
-            GetSaveData(fileName).Load();
+            GetSaveData(currentSaveFileName).Load();
             return true;
         }
         return false;

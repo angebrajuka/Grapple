@@ -36,7 +36,9 @@ public class MenuButton : MonoBehaviour
 
     public void LoadGame()
     {
-        SaveData.Load(load);
+        SaveData.currentSaveFileName = load;
+        SaveData.currentSaveName = transform.GetChild(0).GetComponent<Text>().text;
+        SaveData.TryLoad();
         MenuHandler.StartGame();
     }
 
