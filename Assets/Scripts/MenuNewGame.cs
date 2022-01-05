@@ -54,8 +54,6 @@ public class MenuNewGame : MonoBehaviour
         PlayerInventory.Reset();
         // other reset shit
 
-        SaveData.Save(SaveData.currentSaveFileName);
-
         MenuHandler.StartGame();
     }
 }
