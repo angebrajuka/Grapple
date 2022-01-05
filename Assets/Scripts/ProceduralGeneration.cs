@@ -37,7 +37,7 @@ public class ProceduralGeneration : MonoBehaviour
     static int diameter { get { return instance.renderDistance*2+1; } }
     static int maxChunks { get { return (int)Math.Sqr(diameter); } }
 
-    static float seed;
+    public static float seed;
 
     static SortedList<float, Stack<ChunkLoader>> chunkLoaders;
     public static ObjectPool<Chunk> pool_chunks;
@@ -102,7 +102,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     public static float RandomSeed()
     {
-        seed = UnityEngine.Random.value*4586+UnityEngine.Random.value;
+        seed = (float)UnityEngine.Random.value*(float)4586+UnityEngine.Random.value;
         return seed;
     }
 
@@ -208,7 +208,7 @@ public class ProceduralGeneration : MonoBehaviour
         chunkLoaders[dist].Push(new ChunkLoader(mesh, meshCollider));
     }
 
-    void Unload(int x, int z)
+    static void Unload(int x, int z)
     {
         if(!loadedChunks.ContainsKey((x, z))) return;
 
@@ -233,10 +233,28 @@ public class ProceduralGeneration : MonoBehaviour
         }
     }
 
-    void AlternatingLoop(Action<int> func, int max) {
-        for(int i=0; i<max; i++) {
+    void AlternatingLoop(Action<int> func, int max)
+    {
+        for(int i=0; i<max; i++)
+        {
             func(i);
             if(i != 0) func(-i);
+        }
+    }
+
+    public static void UnloadAll()
+    {
+        chunkLoaders.Clear();
+        var toUnload = new (int x, int z)[loadedChunks.Count];
+        int i=0;
+        foreach(var pair in loadedChunks)
+        {
+            toUnload[i] = pair.Key;
+            i++;
+        }
+        foreach(var key in toUnload)
+        {
+            Unload(key.x, key.z);
         }
     }
 
