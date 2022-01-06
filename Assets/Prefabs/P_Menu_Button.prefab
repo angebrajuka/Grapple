@@ -59,8 +59,12 @@ MonoBehaviour:
   diff: 3
   toggle: 0
   atLeastOne: 0
+  defaultSelected: 0
+  selectedColor: {r: 0, g: 0, b: 0, a: 0}
+  deselectSiblings: 0
   deselectOnClick: []
-  selected: 0
+  load: 
+  menuLoad: {fileID: 0}
 --- !u!222 &6617008212008839706
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -272,7 +276,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:

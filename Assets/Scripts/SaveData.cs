@@ -79,22 +79,22 @@ public class SaveData
         // }
     }
 
-    public static string currentSaveName;
-    public static string currentSaveFileName;
+    public static string currentSaveName="";
+    public static string currentSaveFileName="";
 
     public static string DIRECTORY_PATH { get { return Application.persistentDataPath + "/savedata/"; } }
 
-    public static (string fileName, string saveName)[] GetSaves()
+    public static (string fileName, string saveName, string date)[] GetSaves()
     {
         var fileInfos = new DirectoryInfo(DIRECTORY_PATH).GetFiles("*.save");
         Array.Sort(fileInfos, (y, x) => StringComparer.OrdinalIgnoreCase.Compare(x.CreationTime, y.CreationTime));
-        var saves = new (string, string)[fileInfos.Length];
+        var saves = new (string, string, string)[fileInfos.Length];
 
         int i=0;
         foreach(var fileInfo in fileInfos)
         {
             var data = GetSaveData(fileInfo.Name);
-            saves[i] = (fileInfo.Name, data.saveName);
+            saves[i] = (fileInfo.Name, data.saveName, fileInfo.LastWriteTime.ToString());
             i++;
         }
 
