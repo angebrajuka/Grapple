@@ -371,8 +371,9 @@ GameObject:
   m_Component:
   - component: {fileID: 183977445}
   - component: {fileID: 183977444}
+  - component: {fileID: 183977446}
   m_Layer: 0
-  m_Name: OnExit
+  m_Name: Misc
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -405,6 +406,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &183977446
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 183977443}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 390c908427028cf4d8ce5a56690001d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  minWidth: 900
+  minHeight: 700
 --- !u!1001 &241485901
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9375,7 +9390,7 @@ MonoBehaviour:
   m_ScaleFactor: 0.6
   m_ReferenceResolution: {x: 1920, y: 1080}
   m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0.5
+  m_MatchWidthOrHeight: 1
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
