@@ -7,6 +7,7 @@ public class Init : MonoBehaviour
     public AudioManager audioManager;
     public MusicController musicController;
     public Transform proceduralGeneration;
+    public Transform misc;
     public Transform player;
     public Guns guns;
     public EnemySpawning enemySpawning;
@@ -22,7 +23,7 @@ public class Init : MonoBehaviour
         musicController.Init();
         proceduralGeneration.GetComponent<ProceduralGeneration>().Init();
 
-        player.GetComponent<PauseHandler>().Init();
+        misc.GetComponent<PauseHandler>().Init();
         menuHandler.Init();
 
         guns.Init();

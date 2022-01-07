@@ -52,6 +52,7 @@ public class PauseHandler : MonoBehaviour
     public static void Pause()
     {
         blurred = true;
+        PlayerHUD.instance.t_HUD.gameObject.SetActive(false);
         ShowCursor();
 
         paused = true;
@@ -65,6 +66,7 @@ public class PauseHandler : MonoBehaviour
     public static void UnPause()
     {
         blurred = false;
+        PlayerHUD.instance.t_HUD.gameObject.SetActive(true);
         HideCursor();
 
         UnfreezePhysics();
