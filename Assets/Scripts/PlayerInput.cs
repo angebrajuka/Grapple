@@ -27,6 +27,7 @@ public class PlayerInput : MonoBehaviour
         get { return SaveData.DIRECTORY_PATH+"/controls.json"; }
     }
     public static float MAX_LOOK_SPEED = 6f;
+    public static float MAX_SCROLL_SPEED = 2f;
 
     public static PlayerInput instance;
 
@@ -96,6 +97,12 @@ public class PlayerInput : MonoBehaviour
     {
         PlayerPrefs.SetFloat("speed_look_x", speed_look.x);
         PlayerPrefs.SetFloat("speed_look_y", speed_look.y);
+        PlayerPrefs.Save();
+    }
+
+    public static void SaveScrollSpeed()
+    {
+        PlayerPrefs.SetFloat("speed_scroll", speed_scroll);
         PlayerPrefs.Save();
     }
 
