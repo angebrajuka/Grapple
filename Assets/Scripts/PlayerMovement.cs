@@ -84,10 +84,10 @@ public class PlayerMovement : MonoBehaviour
 
         if(PauseHandler.paused) return;
 
-        if(GetKey("walk_front"))    input_move.z ++;
-        if(GetKey("walk_back"))     input_move.z --;
-        if(GetKey("walk_left"))     input_move.x --;
-        if(GetKey("walk_right"))    input_move.x ++;
+        if(GetKey("walk forward"))  input_move.z ++;
+        if(GetKey("walk back"))     input_move.z --;
+        if(GetKey("walk left"))     input_move.x --;
+        if(GetKey("walk right"))    input_move.x ++;
         input_move.Normalize();
 
         if(GetKeyDown("jump"))

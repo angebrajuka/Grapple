@@ -23,6 +23,9 @@ public class MenuButton : MonoBehaviour
     [HideInInspector] public string load;
     [HideInInspector] public MenuLoad menuLoad;
 
+    [HideInInspector] public string control;
+    [HideInInspector] public MenuKeybinds menuKeybinds;
+
     bool p_selected;
     [HideInInspector] public bool Selected
     {
@@ -32,6 +35,14 @@ public class MenuButton : MonoBehaviour
             p_selected = value;
             GetComponent<Image>().color = p_selected ? selectedColor : originalColor;
         }
+    }
+
+    public void KeybindOnClick()
+    {
+        menuKeybinds.focusedButton = this;
+        menuKeybinds.waitingForKey = true;
+        menuKeybinds.overlay.gameObject.SetActive(true);
+        menuKeybinds.transform.GetComponent<Menu>().escBack = false;
     }
 
     public void LoadGame()

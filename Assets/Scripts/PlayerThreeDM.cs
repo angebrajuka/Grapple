@@ -84,16 +84,16 @@ public class PlayerThreeDM : MonoBehaviour
 
     void Update()
     {
-        if(GetKey("grapple_shoot") && !IsGrappling && CanShoot)
+        if(GetKey("shoot grapple hook") && !IsGrappling && CanShoot)
         {
             ShootHook();
             AudioManager.PlayClip(clip_shoot, volume_shoot);
         }
-        else if(GetKeyUp("grapple_shoot") && IsGrappling)
+        else if(GetKeyUp("shoot grapple hook") && IsGrappling)
         {
             hook.Retract();
         }
-        else if(IsGrappling && GetKeyDown("grapple_shoot"))
+        else if(IsGrappling && GetKeyDown("shoot grapple hook"))
         {
             Destroy(hook.fixedJoint);
             hook.Retract();

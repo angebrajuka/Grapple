@@ -1,16 +1,16 @@
 {
     "keybinds": [
-        {"name": "walk_front",      "keys": [119] },
-        {"name": "walk_back",       "keys": [115] },
-        {"name": "walk_left",       "keys": [97] },
-        {"name": "walk_right",      "keys": [100] },
-        {"name": "jump",            "keys": [32] },
-        {"name": "slide",           "keys": [304] },
-        {"name": "grapple_shoot",   "keys": [324] },
-        {"name": "gun_switch_0",    "keys": [49] },
-        {"name": "gun_switch_1",    "keys": [50] },
-        {"name": "gun_switch_2",    "keys": [51] },
-        {"name": "shoot",           "keys": [323] },
-        {"name": "reload",          "keys": [114] }
+        {"name": "walk forward",        "keys": [119] },
+        {"name": "walk back",           "keys": [115] },
+        {"name": "walk left",           "keys": [97] },
+        {"name": "walk right",          "keys": [100] },
+        {"name": "jump",                "keys": [32] },
+        {"name": "slide",               "keys": [304] },
+        {"name": "shoot grapple hook",  "keys": [324] },
+        {"name": "gun_switch_0",        "keys": [49] },
+        {"name": "gun_switch_1",        "keys": [50] },
+        {"name": "gun_switch_2",        "keys": [51] },
+        {"name": "shoot",               "keys": [323] },
+        {"name": "reload",              "keys": [114] }
     ]
 }
