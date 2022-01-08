@@ -26,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public float slideForce;
     public float slideStartThreshhold;
     public float slideMaxSpeed;
+    public float slideJumpDelay;
     public float cameraHeightAdjustSpeed;
 
     // components
@@ -44,6 +45,7 @@ public class PlayerMovement : MonoBehaviour
     bool input_crouch;
     float jumpInputTime;
     float timeLastJumped;
+    float timeLastSlid;
 
     public void Init()
     {
@@ -67,6 +69,7 @@ public class PlayerMovement : MonoBehaviour
         crouchKeyDown = false;
         jumpInputTime = -1000;
         timeLastJumped = -1000;
+        timeLastSlid = -1000;
     }
 
     public void Reset()
@@ -106,18 +109,6 @@ public class PlayerMovement : MonoBehaviour
         input_look.y = Input.GetAxis("Mouse Y") * speed_look.y;
     }
 
-    void OnCollisionStay(Collision collisionInfo)
-    {
-        // foreach(ContactPoint contact in collisionInfo.contacts)
-        // {
-        //     Vector3 normal = (colliderGrounded.center+rb.position - contact.point).normalized;
-        //     if(normal.y > groundedNormal.y)
-        //     {
-        //         groundedNormal = normal;
-        //     }
-        // }
-    }
-
     void FixedUpdate()
     {
         if(PauseHandler.paused) return;
@@ -139,7 +130,7 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
-        if(grounded && input_move.y > 0)
+        if(grounded && input_move.y > 0 && Time.time > timeLastSlid + slideJumpDelay)
         {
             // jump
 
@@ -171,10 +162,11 @@ public class PlayerMovement : MonoBehaviour
             cameraPosTarget = cameraPosCrouch;
 
             float zvel = rb.RelativeVelocity().z;
-            if(crouchKeyDown && (!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
+            if(crouchKeyDown && Time.time - timeLastJumped > 0.01f && (!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
             {
                 slideForward = true;
                 crouchKeyDown = false;
+                timeLastSlid = Time.time;
             }
         }
         else if(Physics.OverlapCapsule(point0, point1, colliderDefault.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length == 0)
@@ -197,14 +189,6 @@ public class PlayerMovement : MonoBehaviour
 
             rb.AddForce((Mathf.Abs(Vector3.Dot(rb.velocity, r)) < maxSpeed ? input_move.x*accel : 0)*r);
             rb.AddForce(((Mathf.Abs(Vector3.Dot(rb.velocity, f)) < maxSpeed ? input_move.z*accel : 0) + (slideForward ? slideForce : 0))*f);
-
-            // rb.AddRelativeForce(
-            //     Mathf.Abs(Vector3.Dot(rb.velocity, rb.transform.right)) < walkMaxSpeed ? input_move.x*accel : 0,
-            //     0,
-            //     Mathf.Abs(Vector3.Dot(rb.velocity, rb.transform.forward)) < walkMaxSpeed ? input_move.z*accel : 0
-            // );
-
-            // rb.AddForce((Time.time - timeLastJumped > timeBetweenJumps ? -groundedMagnet : 0) * groundedNormal);
         }
 
         // friction

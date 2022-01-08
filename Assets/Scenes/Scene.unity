@@ -1432,8 +1432,6 @@ MonoBehaviour:
   offset: 0.04
   chunksPerFrame: 3
   rainTempMap: {fileID: 2800000, guid: 8ef5e476acbfa214b958ea74651cf0aa, type: 3}
-  hex_grass: '#70a35c'
-  hex_sand: '#CCBC92'
 --- !u!1001 &358934375
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10167,6 +10165,7 @@ MonoBehaviour:
   slideForce: 1200
   slideStartThreshhold: 0.1
   slideMaxSpeed: 20
+  slideJumpDelay: 0.3
   cameraHeightAdjustSpeed: 12
 --- !u!114 &1887390186
 MonoBehaviour:
