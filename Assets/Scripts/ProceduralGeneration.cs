@@ -63,7 +63,6 @@ public class ProceduralGeneration : MonoBehaviour
             if(ColorUtility.TryParseHtmlString(biomesJson[i].rain_temp_map_color, out Color color))
             {
                 var color32 = (Color32)color;
-                Debug.Log(color32.ToString());
                 for(int x=0; x<rain_temp_map_width; x++)
                 {
                     for(int y=0; y<rain_temp_map_width; y++)
@@ -78,16 +77,6 @@ public class ProceduralGeneration : MonoBehaviour
                 }
             }
         }
-
-        // for(int y=0; y<rain_temp_map_width; y++)
-        // {
-        //     string row = "[";
-        //     for(int x=0; x<rain_temp_map_width; x++)
-        //     {
-        //         row += rain_temp_map[x, y] + (x == rain_temp_map_width-1 ? "]" : ",");
-        //     }
-        //     Debug.Log(row);
-        // }
 
         RandomSeed();
 
@@ -174,10 +163,6 @@ public class ProceduralGeneration : MonoBehaviour
         perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
 
         return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
-
-        // return Perlin(seed, x, z, chunkX, chunkZ, 0, 1, 0.01f);
-
-        // return 0;
     }
 
     void SetColor(ref Color c, float r, float g, float b, float a=1)
