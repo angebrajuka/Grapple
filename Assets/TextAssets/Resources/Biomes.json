@@ -1,0 +1,28 @@
+{
+    "biomes": [
+        {
+            "name": "plains",
+            "color": "#70a35c",
+            "rain_temp_map_color": "",
+            "decorations": [
+
+            ]
+        },
+        {
+            "name": "forest",
+            "color": "#FFFFFF",
+            "rain_temp_map_color": "#BF40FF",
+            "decorations": [
+
+            ]
+        },
+        {
+            "name": "desert",
+            "color": "#FFFFFF",
+            "rain_temp_map_color": "",
+            "decorations": [
+
+            ]
+        }
+    ]
+}

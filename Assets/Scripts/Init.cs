@@ -21,6 +21,7 @@ public class Init : MonoBehaviour
 
         audioManager.Init();
         musicController.Init();
+        Biome.Init();
         proceduralGeneration.GetComponent<ProceduralGeneration>().Init();
 
         misc.GetComponent<PauseHandler>().Init();

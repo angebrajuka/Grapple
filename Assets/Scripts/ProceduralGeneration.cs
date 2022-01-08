@@ -30,7 +30,6 @@ public class ProceduralGeneration : MonoBehaviour
     public float offset;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
-    public string hex_grass, hex_sand;
 
     const int RESOLUTION = 64;
     float vertexSpacing { get { return (float)chunkSize/(float)(chunkWidthVertices-1); } }
@@ -45,18 +44,50 @@ public class ProceduralGeneration : MonoBehaviour
     public static Vector3Int prevPos, currPos;
     static int scrollX { get { return currPos.x; } }
     static int scrollZ { get { return currPos.z; } }
-    static int rain_temp_map_width;
     static byte[,] rain_temp_map;
-
-    Color sand = new Color(0.76f, 0.69f, 0.5f);
-    Color grass = new Color(0, 0.6f, 0.1f);
+    static int rain_temp_map_width;
+    static Biome[] biomes;
 
     public void Init()
     {
         instance = this;
 
-        ColorUtility.TryParseHtmlString(hex_grass, out grass);
-        ColorUtility.TryParseHtmlString(hex_sand, out sand);
+        var biomesJson = JsonUtility.FromJson<BiomesJson>(Resources.Load<TextAsset>("Biomes").text).biomes;
+        rain_temp_map_width = rainTempMap.width;
+        rain_temp_map = new byte[rain_temp_map_width,rain_temp_map_width];
+        biomes = new Biome[biomesJson.Length];
+
+        for(int i=0; i<biomes.Length; i++)
+        {
+            biomes[i] = new Biome(biomesJson[i]);
+            if(ColorUtility.TryParseHtmlString(biomesJson[i].rain_temp_map_color, out Color color))
+            {
+                var color32 = (Color32)color;
+                Debug.Log(color32.ToString());
+                for(int x=0; x<rain_temp_map_width; x++)
+                {
+                    for(int y=0; y<rain_temp_map_width; y++)
+                    {
+                        Color32 c = rainTempMap.GetPixel(x, y);
+
+                        if(c.r == color32.r && c.g == color32.g && c.b == color32.b)
+                        {
+                            rain_temp_map[x,y] = (byte)i;
+                        }
+                    }
+                }
+            }
+        }
+
+        // for(int y=0; y<rain_temp_map_width; y++)
+        // {
+        //     string row = "[";
+        //     for(int x=0; x<rain_temp_map_width; x++)
+        //     {
+        //         row += rain_temp_map[x, y] + (x == rain_temp_map_width-1 ? "]" : ",");
+        //     }
+        //     Debug.Log(row);
+        // }
 
         RandomSeed();
 
@@ -123,28 +154,30 @@ public class ProceduralGeneration : MonoBehaviour
         return map[Mathf.Clamp(x, 0, map.GetLength(0)-1), Mathf.Clamp(y, 0, map.GetLength(1)-1)];
     }
 
-    public static float Biome(float x, float z, float chunkX=0, float chunkZ=0)
+    public static int Biome(float x, float z, float chunkX=0, float chunkZ=0)
     {
-        // const float rainSeedOffset = 21674253.165235f;
-        // const float tempSeedOffset = 3567567.6345678f;
+        const float rainSeedOffset = 21674253.165235f;
+        const float tempSeedOffset = 3567567.6345678f;
 
-        // const float perlinScaleRain = 0.003f;
-        // const float perlinScaleTemp = 0.003f;
+        const float perlinScaleRain = 0.003f;
+        const float perlinScaleTemp = 0.003f;
 
-        // float perlinValRain = Perlin(seed+rainSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
-        // float perlinValTemp = Perlin(seed+tempSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
+        float perlinValRain = Perlin(seed+rainSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
+        float perlinValTemp = Perlin(seed+tempSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
 
-        // float perlinScaleFine = 0.1f;
-        // float fineNoise = Perlin(seed, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
+        float perlinScaleFine = 0.1f;
+        float fineNoise = Perlin(seed, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
-        // perlinValTemp -= fineNoise;
-        // perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
-        // perlinValRain -= fineNoise;
-        // perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
+        perlinValTemp -= fineNoise;
+        perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
+        perlinValRain -= fineNoise;
+        perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
 
-        // return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
+        return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
 
-        return Perlin(seed, x, z, chunkX, chunkZ, 0, 1, 0.01f);
+        // return Perlin(seed, x, z, chunkX, chunkZ, 0, 1, 0.01f);
+
+        // return 0;
     }
 
     void SetColor(ref Color c, float r, float g, float b, float a=1)
@@ -181,7 +214,7 @@ public class ProceduralGeneration : MonoBehaviour
                     Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ), 
                     (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset));
 
-                cols[chunkWidthVertices*x+z] = (Biome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ) > 0.5 ? grass : sand);
+                cols[chunkWidthVertices*x+z] = biomes[Biome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ)].color;
 
                 if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
                 {
