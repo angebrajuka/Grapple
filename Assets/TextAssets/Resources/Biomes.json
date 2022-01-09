@@ -5,11 +5,11 @@
             "color": "#70a35c",
             "rain_temp_map_color": "FF6161",
             "decorations": [
-                {"name": "grass",           "frequency": 0.05},
-                {"name": "flower_orange",   "frequency": 0.01},
-                {"name": "flower_violet",   "frequency": 0.01},
-                {"name": "flower_red",      "frequency": 0.01},
-                {"name": "rock_big",        "frequency": 0.005}
+                {"name": "grass",               "frequency": 0.05},
+                {"name": "flower_orange",       "frequency": 0.01},
+                {"name": "flower_violet",       "frequency": 0.01},
+                {"name": "flower_red",          "frequency": 0.01},
+                {"name": "rock_big",            "frequency": 0.005}
             ]
         },
         {
@@ -17,8 +17,8 @@
             "color": "#5CA041",
             "rain_temp_map_color": "",
             "decorations": [
-                {"s": "tree_oak", "f": 0.03},
-                {"s": "grass", "f": 0.03}
+                {"name": "tree_oak",    "frequency": 0.03},
+                {"name": "grass",       "frequency": 0.03}
             ]
         },
         {
@@ -26,9 +26,9 @@
             "color": "#CCBC92",
             "rain_temp_map_color": "#FF0000",
             "decorations": [
-                {"s": "cactus_0", "f": 0.03},
-                {"s": "deadbush_0", "f": 0.007},
-                {"s": "deadbush_1", "f": 0.007}
+                {"name": "cactus_0",        "frequency": 0.03},
+                {"name": "deadbush_0",      "frequency": 0.007},
+                {"name": "deadbush_1",      "frequency": 0.007}
             ]
         },
         {
@@ -36,9 +36,9 @@
             "color": "#FFFAFA",
             "rain_temp_map_color": "#FF80FF",
             "decorations": [
-                {"s": "tree_pine", "f": 0.02},
-                {"s": "grass", "f": 0.02},
-                {"s": "flower_blue", "f": 0.03}
+                {"name": "tree_pine",       "frequency": 0.02},
+                {"name": "grass",           "frequency": 0.02},
+                {"name": "flower_blue",     "frequency": 0.03}
             ]
         },
         {
@@ -46,8 +46,8 @@
             "color": "#FFFAFA",
             "rain_temp_map_color": "#FFBFD4",
             "decorations": [
-                {"s": "grass", "f": 0.02},
-                {"s": "flower_blue", "f": 0.02}
+                {"name": "grass",           "frequency": 0.02},
+                {"name": "flower_blue",     "frequency": 0.02}
             ]
         },
         {
@@ -55,11 +55,11 @@
             "color": "#4EA828",
             "rain_temp_map_color": "#0000FF",
             "decorations": [
-                {"s": "tree_rainforest_big", "f": 0.025},
-                {"s": "tree_rainforest_small", "f": 0.035},
-                {"s": "grass", "f": 0.1},
-                {"s": "flower_orange", "f": 0.03},
-                {"s": "flower_red", "f": 0.03}
+                {"name": "tree_rainforest_big",     "frequency": 0.025},
+                {"name": "tree_rainforest_small",   "frequency": 0.035},
+                {"name": "grass",                   "frequency": 0.1},
+                {"name": "flower_orange",           "frequency": 0.03},
+                {"name": "flower_red",              "frequency": 0.03}
             ]
         },
         {
@@ -67,10 +67,10 @@
             "color": "#8CA552",
             "rain_temp_map_color": "#FF00AA",
             "decorations": [
-                {"s": "tree_acacia", "f": 0.01},
-                {"s": "deadbush_0", "f": 0.007},
-                {"s": "deadbush_1", "f": 0.007},
-                {"s": "grass", "f": 0.007}
+                {"name": "tree_acacia",     "frequency": 0.01},
+                {"name": "deadbush_0",      "frequency": 0.007},
+                {"name": "deadbush_1",      "frequency": 0.007},
+                {"name": "grass",           "frequency": 0.007}
             ]
         },
         {
@@ -78,9 +78,9 @@
             "color": "#7A643D",
             "rain_temp_map_color": "#4040FF",
             "decorations": [
-                {"s": "lillypad_0", "f": 0.02},
-                {"s": "lillypad_1", "f": 0.02},
-                {"s": "grass", "f": 0.01}
+                {"name": "lillypad_0",  "frequency": 0.02},
+                {"name": "lillypad_1",  "frequency": 0.02},
+                {"name": "grass",       "frequency": 0.01}
             ]
         }
     ]

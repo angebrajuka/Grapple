@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 222980816850673323}
   - component: {fileID: 222980816850673322}
   - component: {fileID: 222980816850673325}
+  - component: {fileID: 2202734500862273889}
   m_Layer: 0
   m_Name: P_Menu_Scrollview
   m_TagString: Untagged
@@ -109,6 +110,19 @@ MonoBehaviour:
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2202734500862273889
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222980816850673327}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 153294bb941a2164884d7b515177bf2f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sens: 10
 --- !u!1 &222980817135171332
 GameObject:
   m_ObjectHideFlags: 0

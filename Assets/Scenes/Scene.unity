@@ -8042,10 +8042,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 222980816850673325, guid: bd7939af861fb6841a3bf8ee5ede1910, type: 3}
-      propertyPath: m_ScrollSensitivity
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 222980816850673327, guid: bd7939af861fb6841a3bf8ee5ede1910, type: 3}
       propertyPath: m_Name
       value: P_Menu_Scrollview
