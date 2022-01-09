@@ -35,7 +35,8 @@ public struct Biome
         s_decorations.Clear();
         for(int i=0; i<decorations.Length; i++)
         {
-            s_decorations.Add(decorations[i].name, decorations[i]);
+            var name = decorations[i].name;
+            s_decorations.Add(name, decorations[i]);
         }
     }
 
@@ -49,11 +50,12 @@ public struct Biome
         ColorUtility.TryParseHtmlString(jsonBiome.color, out color);
         decorationThreshholds = new float[jsonBiome.decorations.Length];
 
-        // for(int i=0; i<decorations.Length; i++)
-        // {
-        //     decorations[i] = s_decorations[jsonBiome.decorations[i].name];
-        //     decorationThreshholds[i] = jsonBiome.decorations[i].frequency;
-        //     decorationThreshholds[i] += (i > 0 ? decorationThreshholds[i-1] : 0);
-        // }
+        for(int i=0; i<decorations.Length; i++)
+        {
+            var name = jsonBiome.decorations[i].name;
+            decorations[i] = s_decorations[s_decorations.ContainsKey(name) ? name : "P_Tree_Oak"];
+            decorationThreshholds[i] = jsonBiome.decorations[i].frequency;
+            decorationThreshholds[i] += (i > 0 ? decorationThreshholds[i-1] : 0);
+        }
     }
 }

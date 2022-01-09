@@ -5,11 +5,10 @@
             "color": "#70a35c",
             "rain_temp_map_color": "FF6161",
             "decorations": [
-                {"name": "grass",               "frequency": 0.05},
-                {"name": "flower_orange",       "frequency": 0.01},
-                {"name": "flower_violet",       "frequency": 0.01},
-                {"name": "flower_red",          "frequency": 0.01},
-                {"name": "rock_big",            "frequency": 0.005}
+                {"name": "P_Grass",               "frequency": 0.05},
+                {"name": "P_Flower_Orange",       "frequency": 0.01},
+                {"name": "P_Flower_Violet",       "frequency": 0.01},
+                {"name": "P_Flower_Red",          "frequency": 0.01}
             ]
         },
         {
@@ -17,8 +16,8 @@
             "color": "#5CA041",
             "rain_temp_map_color": "",
             "decorations": [
-                {"name": "tree_oak",    "frequency": 0.03},
-                {"name": "grass",       "frequency": 0.03}
+                {"name": "P_Tree_Oak",    "frequency": 0.03},
+                {"name": "P_Grass",       "frequency": 0.03}
             ]
         },
         {
@@ -26,9 +25,9 @@
             "color": "#CCBC92",
             "rain_temp_map_color": "#FF0000",
             "decorations": [
-                {"name": "cactus_0",        "frequency": 0.03},
-                {"name": "deadbush_0",      "frequency": 0.007},
-                {"name": "deadbush_1",      "frequency": 0.007}
+                {"name": "P_Cactus_0",        "frequency": 0.03},
+                {"name": "P_Deadbush_0",      "frequency": 0.007},
+                {"name": "P_Deadbush_1",      "frequency": 0.007}
             ]
         },
         {
@@ -36,9 +35,9 @@
             "color": "#FFFAFA",
             "rain_temp_map_color": "#FF80FF",
             "decorations": [
-                {"name": "tree_pine",       "frequency": 0.02},
-                {"name": "grass",           "frequency": 0.02},
-                {"name": "flower_blue",     "frequency": 0.03}
+                {"name": "P_Tree_Pine",       "frequency": 0.02},
+                {"name": "P_Grass",           "frequency": 0.02},
+                {"name": "P_Flower_Blue",     "frequency": 0.03}
             ]
         },
         {
@@ -46,8 +45,8 @@
             "color": "#FFFAFA",
             "rain_temp_map_color": "#FFBFD4",
             "decorations": [
-                {"name": "grass",           "frequency": 0.02},
-                {"name": "flower_blue",     "frequency": 0.02}
+                {"name": "P_Grass",           "frequency": 0.02},
+                {"name": "P_Flower_Blue",     "frequency": 0.02}
             ]
         },
         {
@@ -55,11 +54,11 @@
             "color": "#4EA828",
             "rain_temp_map_color": "#0000FF",
             "decorations": [
-                {"name": "tree_rainforest_big",     "frequency": 0.025},
-                {"name": "tree_rainforest_small",   "frequency": 0.035},
-                {"name": "grass",                   "frequency": 0.1},
-                {"name": "flower_orange",           "frequency": 0.03},
-                {"name": "flower_red",              "frequency": 0.03}
+                {"name": "P_Tree_Rainforest_Big",     "frequency": 0.025},
+                {"name": "P_Tree_Rainforest_Small",   "frequency": 0.035},
+                {"name": "P_Grass",                   "frequency": 0.1},
+                {"name": "P_Flower_Orange",           "frequency": 0.03},
+                {"name": "P_Flower_Red",              "frequency": 0.03}
             ]
         },
         {
@@ -67,10 +66,10 @@
             "color": "#8CA552",
             "rain_temp_map_color": "#FF00AA",
             "decorations": [
-                {"name": "tree_acacia",     "frequency": 0.01},
-                {"name": "deadbush_0",      "frequency": 0.007},
-                {"name": "deadbush_1",      "frequency": 0.007},
-                {"name": "grass",           "frequency": 0.007}
+                {"name": "P_Tree_Acacia",     "frequency": 0.01},
+                {"name": "P_Deadbush_0",      "frequency": 0.007},
+                {"name": "P_Deadbush_1",      "frequency": 0.007},
+                {"name": "P_Grass",           "frequency": 0.007}
             ]
         },
         {

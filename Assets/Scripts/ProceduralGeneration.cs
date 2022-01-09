@@ -5,18 +5,6 @@ using UnityEngine.Pool;
 using System.Threading.Tasks;
 using System;
 
-struct ChunkLoader
-{
-    public Mesh mesh;
-    public MeshCollider collider;
-
-    public ChunkLoader(Mesh mesh, MeshCollider collider)
-    {
-        this.mesh = mesh;
-        this.collider = collider;
-    }
-}
-
 public class ProceduralGeneration : MonoBehaviour
 {
     public static ProceduralGeneration instance;
@@ -36,9 +24,11 @@ public class ProceduralGeneration : MonoBehaviour
     static int diameter { get { return instance.renderDistance*2+1; } }
     static int maxChunks { get { return (int)Math.Sqr(diameter); } }
 
+    const int MAX_DECORS = 20;
+
     public static float seed;
 
-    static SortedList<float, Stack<ChunkLoader>> chunkLoaders;
+    static SortedList<float, Stack<Chunk>> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
@@ -80,7 +70,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         RandomSeed();
 
-        chunkLoaders = new SortedList<float, Stack<ChunkLoader>>();
+        loadingChunks = new SortedList<float, Stack<Chunk>>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
@@ -98,6 +88,8 @@ public class ProceduralGeneration : MonoBehaviour
                 chunk.meshFilter.mesh = mesh;
                 chunk.meshCollider.convex = false;
                 chunk.meshRenderer.material = chunkMaterial;
+                chunk.decorPositions = new Vector3[MAX_DECORS];
+                chunk.decors = new int[MAX_DECORS];
 
                 return chunk;
             },
@@ -189,6 +181,9 @@ public class ProceduralGeneration : MonoBehaviour
         Vector3[] vertices = mesh.vertices;
         int[] triangles = mesh.triangles;
         Color[] cols = mesh.colors;
+        Vector3[] decorPositions = chunk.decorPositions;
+        int[] decors = chunk.decors;
+        int numOfDecors = 0;
 
         await Task.Run(() => {
             int i=0;
@@ -203,7 +198,7 @@ public class ProceduralGeneration : MonoBehaviour
 
                 if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
                 {
-                    triangles[6*i]   = chunkWidthVertices*x+z;
+                    triangles[6*i+0] = chunkWidthVertices*x+z;
                     triangles[6*i+1] = chunkWidthVertices*x+z+1;
                     triangles[6*i+2] = chunkWidthVertices*(x+1)+z;
                     triangles[6*i+3] = chunkWidthVertices*(x+1)+z;
@@ -218,12 +213,16 @@ public class ProceduralGeneration : MonoBehaviour
         mesh.triangles = triangles;
         mesh.colors = cols;
 
+        chunk.decorPositions = decorPositions;
+        chunk.decors = decors;
+        chunk.numOfDecors = numOfDecors;
+
         float dist = Math.Dist(currPos.x, currPos.z, chunkX, chunkZ);
 
-        if(!chunkLoaders.ContainsKey(dist)) {
-            chunkLoaders.Add(dist, new Stack<ChunkLoader>());
+        if(!loadingChunks.ContainsKey(dist)) {
+            loadingChunks.Add(dist, new Stack<Chunk>());
         }
-        chunkLoaders[dist].Push(new ChunkLoader(mesh, meshCollider));
+        loadingChunks[dist].Push(chunk);
     }
 
     static void Unload(int x, int z)
@@ -262,7 +261,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     public static void UnloadAll()
     {
-        chunkLoaders.Clear();
+        loadingChunks.Clear();
         var toUnload = new (int x, int z)[loadedChunks.Count];
         int i=0;
         foreach(var pair in loadedChunks)
@@ -296,13 +295,18 @@ public class ProceduralGeneration : MonoBehaviour
 
     void FixedUpdate()
     {
-        for(int i=0; chunkLoaders.Count > 0 && i < chunksPerFrame; i++)
+        for(int i=0; loadingChunks.Count > 0 && i < chunksPerFrame; i++)
         {
-            var chunkLoader = chunkLoaders.Values[0].Pop();
-            if(chunkLoaders.Values[0].Count == 0) chunkLoaders.RemoveAt(0);
-            chunkLoader.mesh.RecalculateBounds();
-            chunkLoader.mesh.RecalculateNormals();
-            chunkLoader.collider.sharedMesh = chunkLoader.mesh;
+            var chunk = loadingChunks.Values[0].Pop();
+            if(loadingChunks.Values[0].Count == 0) loadingChunks.RemoveAt(0);
+            chunk.meshFilter.mesh.RecalculateBounds();
+            chunk.meshFilter.mesh.RecalculateNormals();
+            chunk.meshCollider.sharedMesh = chunk.meshFilter.mesh;
+
+            for(int di=0; di<chunk.numOfDecors; di++)
+            {
+                
+            }
         }
     }
 }
