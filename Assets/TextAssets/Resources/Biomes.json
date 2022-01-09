@@ -14,7 +14,7 @@
         {
             "biome_name": "forest",
             "color": "#5CA041",
-            "rain_temp_map_color": "",
+            "rain_temp_map_color": "#BF40FF",
             "decorations": [
                 {"name": "P_Tree_Oak",    "frequency": 0.03},
                 {"name": "P_Grass",       "frequency": 0.03}
@@ -70,16 +70,6 @@
                 {"name": "P_Deadbush_0",      "frequency": 0.007},
                 {"name": "P_Deadbush_1",      "frequency": 0.007},
                 {"name": "P_Grass",           "frequency": 0.007}
-            ]
-        },
-        {
-            "biome_name": "swamp",
-            "color": "#7A643D",
-            "rain_temp_map_color": "#4040FF",
-            "decorations": [
-                {"name": "lillypad_0",  "frequency": 0.02},
-                {"name": "lillypad_1",  "frequency": 0.02},
-                {"name": "grass",       "frequency": 0.01}
             ]
         }
     ]

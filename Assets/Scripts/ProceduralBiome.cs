@@ -55,7 +55,7 @@ public struct Biome
             var name = jsonBiome.decorations[i].name;
             decorations[i] = s_decorations[s_decorations.ContainsKey(name) ? name : "P_Tree_Oak"];
             decorationThreshholds[i] = jsonBiome.decorations[i].frequency;
-            decorationThreshholds[i] += (i > 0 ? decorationThreshholds[i-1] : 0);
+            if(i > 0) decorationThreshholds[i] += decorationThreshholds[i-1];
         }
     }
 }

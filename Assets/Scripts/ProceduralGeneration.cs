@@ -30,6 +30,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     static SortedList<float, Stack<Chunk>> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
+    public static Dictionary<string, ObjectPool<GameObject>> pool_decor;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
     static int scrollX { get { return currPos.x; } }
@@ -68,7 +69,31 @@ public class ProceduralGeneration : MonoBehaviour
             }
         }
 
-        RandomSeed();
+        pool_decor = new Dictionary<string, ObjectPool<GameObject>>();
+        foreach(var pair in Biome.s_decorations)
+        {
+            pool_decor.Add(pair.Key, new ObjectPool<GameObject>(
+                () => {
+                    // on create
+                    var decor = Instantiate(pair.Value);
+
+                    return decor;
+                },
+                (decor) => {
+                    // on get
+                    decor.gameObject.SetActive(true);
+                },
+                (decor) => {
+                    // on return
+                    decor.gameObject.SetActive(false);
+                },
+                (decor) => {
+                    // on destroy
+                    Destroy(decor.gameObject);
+                },
+                false, 100, 1000
+            ));
+        }
 
         loadingChunks = new SortedList<float, Stack<Chunk>>();
 
@@ -135,7 +160,7 @@ public class ProceduralGeneration : MonoBehaviour
         return map[Mathf.Clamp(x, 0, map.GetLength(0)-1), Mathf.Clamp(y, 0, map.GetLength(1)-1)];
     }
 
-    public static int Biome(float x, float z, float chunkX=0, float chunkZ=0)
+    public static int PerlinBiome(float x, float z, float chunkX=0, float chunkZ=0)
     {
         const float rainSeedOffset = 21674253.165235f;
         const float tempSeedOffset = 3567567.6345678f;
@@ -194,7 +219,7 @@ public class ProceduralGeneration : MonoBehaviour
                     Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ), 
                     (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset));
 
-                cols[chunkWidthVertices*x+z] = biomes[Biome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ)].color;
+                cols[chunkWidthVertices*x+z] = biomes[PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ)].color;
 
                 if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
                 {
@@ -305,7 +330,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             for(int di=0; di<chunk.numOfDecors; di++)
             {
-                
+
             }
         }
     }
