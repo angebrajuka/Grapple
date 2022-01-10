@@ -5587,6 +5587,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05132a87563b1b84d86e6c4358331975, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  savingScreen: {fileID: 0}
 --- !u!1 &1040054161
 GameObject:
   m_ObjectHideFlags: 0

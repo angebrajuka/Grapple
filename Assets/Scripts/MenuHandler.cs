@@ -5,6 +5,7 @@ using System.Collections.Generic;
 public class MenuHandler : MonoBehaviour
 {
     static MenuHandler instance;
+
     private static int currentMenu;
     private static Stack<int> prevMenu;
     public static bool anyMenu;

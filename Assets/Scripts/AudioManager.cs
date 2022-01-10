@@ -74,23 +74,40 @@ public class AudioManager : MonoBehaviour
         instance.mixer.SetFloat("PitchSFX", pitch);
     }
 
+    static AudioSource[] sources;
     public static void PauseAllAudio()
     {
-        for(int i=0; i<instance.transform.childCount; i++)
-        {
-            instance.transform.GetChild(i).GetComponent<AudioSource>().Pause();
+        sources = Object.FindObjectsOfType(typeof(AudioSource)) as AudioSource[];
+        for(int i=0; i<sources.Length; i++) {
+            if(!sources[i].isPlaying || sources[i].transform.tag == "Music") {
+                sources[i] = null;
+            } else {
+                sources[i].Pause();
+                var comp = sources[i].gameObject.GetComponent<DestroyWhenDonePlaying>();
+                if(comp != null)
+                {
+                    comp.paused = true;
+                }
+            }
         }
     }
     public static void ResumeAllAudio()
     {
-        for(int i=0; i<instance.transform.childCount; i++)
+        foreach(var source in sources)
         {
-            AudioSource audioSource = instance.transform.GetChild(i).GetComponent<AudioSource>();
-            audioSource.UnPause();
+            if(source != null)
+            {
+                source.UnPause();
+                var comp = source.gameObject.GetComponent<DestroyWhenDonePlaying>();
+                if(comp != null)
+                {
+                    comp.paused = false;
+                }
+            }
         }
     }
 
-    public static GameObject PlayClip(AudioClip clip, float volume=1, Mixer mixer=Mixer.SFX, float spatialBlend=0.0f, Vector3 position=default(Vector3))
+    public static GameObject PlayClip(AudioClip clip, float volume=1, Mixer mixer=Mixer.SFX, float spatialBlend=0.0f, Vector3 position=default(Vector3), bool destroy=true)
     {
         GameObject gameObject = new GameObject();
         gameObject.transform.parent = instance.transform;
@@ -112,7 +129,11 @@ public class AudioManager : MonoBehaviour
         source.volume = volume;
         source.spatialBlend = spatialBlend;
         source.Play();
-        MonoBehaviour.Destroy(gameObject, clip.length+0.1f);
+        if(destroy)
+        {
+            var d = gameObject.AddComponent<DestroyWhenDonePlaying>();
+            d.s = source;
+        }
         return gameObject;
     }
 }
