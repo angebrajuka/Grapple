@@ -1432,6 +1432,102 @@ MonoBehaviour:
   offset: 0.04
   chunksPerFrame: 3
   rainTempMap: {fileID: 2800000, guid: 8ef5e476acbfa214b958ea74651cf0aa, type: 3}
+  biomesData:
+  - name: plains
+    color: '#70a35c'
+    height_min: 0
+    height_max: 1
+    rain_temp_map_color: '#FF6161'
+    decorations:
+    - name: P_Grass
+      frequency: 5
+    - name: P_Flower_Orange
+      frequency: 1
+    - name: P_Flower_Violet
+      frequency: 1
+    - name: P_Flower_Red
+      frequency: 1
+    density: 1
+  - name: forest
+    color: '#5CA041'
+    height_min: 0
+    height_max: 1
+    rain_temp_map_color: '#BF40FF'
+    decorations:
+    - name: P_Tree_Oak
+      frequency: 3
+    - name: P_Grass
+      frequency: 3
+    density: 1
+  - name: desert
+    color: '#CCBC92'
+    height_min: 0
+    height_max: 1
+    rain_temp_map_color: '#FF0000'
+    decorations:
+    - name: P_Cactus_0
+      frequency: 30
+    - name: P_Deadbush_0
+      frequency: 7
+    - name: P_Deadbush_1
+      frequency: 7
+    density: 1
+  - name: taiga
+    color: '#FFFAFA'
+    height_min: 0
+    height_max: 1
+    rain_temp_map_color: '#FF80FF'
+    decorations:
+    - name: P_Tree_Pine
+      frequency: 2
+    - name: P_Grass
+      frequency: 2
+    - name: P_Flower_Blue
+      frequency: 3
+    density: 1
+  - name: tundra
+    color: '#FFFAFA'
+    height_min: 0
+    height_max: 1
+    rain_temp_map_color: '#FFBFD4'
+    decorations:
+    - name: P_Grass
+      frequency: 2
+    - name: P_Flower_Blue
+      frequency: 2
+    density: 1
+  - name: rainforest
+    color: '#4EA828'
+    height_min: 0
+    height_max: 1
+    rain_temp_map_color: '#0000FF'
+    decorations:
+    - name: P_Tree_Rainforest_Big
+      frequency: 25
+    - name: P_Tree_Rainforest_Small
+      frequency: 35
+    - name: P_Grass
+      frequency: 100
+    - name: P_Flower_Orange
+      frequency: 30
+    - name: P_Flower_Red
+      frequency: 30
+    density: 1
+  - name: savanna
+    color: '#8CA552'
+    height_min: 0
+    height_max: 1
+    rain_temp_map_color: '#FF00AA'
+    decorations:
+    - name: P_Tree_Acacia
+      frequency: 10
+    - name: P_Deadbush_0
+      frequency: 7
+    - name: P_Deadbush_1
+      frequency: 7
+    - name: P_Grass
+      frequency: 7
+    density: 1
 --- !u!1001 &358934375
 PrefabInstance:
   m_ObjectHideFlags: 0

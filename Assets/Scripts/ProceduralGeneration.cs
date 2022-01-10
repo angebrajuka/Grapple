@@ -18,6 +18,7 @@ public class ProceduralGeneration : MonoBehaviour
     public float offset;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
+    public BiomeData[] biomesData;
 
     const int RESOLUTION = 64;
     float vertexSpacing { get { return (float)chunkSize/(float)(chunkWidthVertices-1); } }
@@ -43,15 +44,14 @@ public class ProceduralGeneration : MonoBehaviour
     {
         instance = this;
 
-        var biomesJson = JsonUtility.FromJson<BiomesJson>(Resources.Load<TextAsset>("Biomes").text).biomes;
         rain_temp_map_width = rainTempMap.width;
         rain_temp_map = new byte[rain_temp_map_width,rain_temp_map_width];
-        biomes = new Biome[biomesJson.Length];
+        biomes = new Biome[biomesData.Length];
 
         for(int i=0; i<biomes.Length; i++)
         {
-            biomes[i] = new Biome(biomesJson[i]);
-            if(ColorUtility.TryParseHtmlString(biomesJson[i].rain_temp_map_color, out Color color))
+            biomes[i] = new Biome(biomesData[i]);
+            if(ColorUtility.TryParseHtmlString(biomesData[i].rain_temp_map_color, out Color color))
             {
                 var color32 = (Color32)color;
                 for(int x=0; x<rain_temp_map_width; x++)
@@ -330,7 +330,7 @@ public class ProceduralGeneration : MonoBehaviour
 
             for(int di=0; di<chunk.numOfDecors; di++)
             {
-
+                // spawn decor
             }
         }
     }

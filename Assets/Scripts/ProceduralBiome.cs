@@ -10,18 +10,15 @@ public class Decor
 }
 
 [System.Serializable]
-public class JsonBiome
+public class BiomeData
 {
     public string name;
     public string color;
+    public float height_min, height_max;
+    // public float scale
     public string rain_temp_map_color;
     public Decor[] decorations;
-}
-
-[System.Serializable]
-public class BiomesJson
-{
-    public JsonBiome[] biomes;
+    public float density;
 }
 
 public struct Biome
@@ -44,18 +41,22 @@ public struct Biome
     public float[] decorationThreshholds;
     public Color color;
 
-    public Biome(JsonBiome jsonBiome)
+    public Biome(BiomeData biomeData)
     {
-        decorations = new GameObject[jsonBiome.decorations.Length];
-        ColorUtility.TryParseHtmlString(jsonBiome.color, out color);
-        decorationThreshholds = new float[jsonBiome.decorations.Length];
+        decorations = new GameObject[biomeData.decorations.Length];
+        ColorUtility.TryParseHtmlString(biomeData.color, out color);
+        decorationThreshholds = new float[biomeData.decorations.Length];
 
         for(int i=0; i<decorations.Length; i++)
         {
-            var name = jsonBiome.decorations[i].name;
+            var name = biomeData.decorations[i].name;
             decorations[i] = s_decorations[s_decorations.ContainsKey(name) ? name : "P_Tree_Oak"];
-            decorationThreshholds[i] = jsonBiome.decorations[i].frequency;
+            decorationThreshholds[i] = biomeData.decorations[i].frequency;
             if(i > 0) decorationThreshholds[i] += decorationThreshholds[i-1];
+        }
+        for(int i=0; i<decorations.Length; i++)
+        {
+            decorationThreshholds[i] /= decorationThreshholds[decorationThreshholds.Length-1];
         }
     }
 }
