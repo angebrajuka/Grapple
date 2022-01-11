@@ -11,6 +11,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     // hierarchy
     public Transform transform_chunks;
+    public Transform transform_decor;
     public Material chunkMaterial;
     public int renderDistance;
     public int chunkSize;
@@ -31,7 +32,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     static SortedList<float, Stack<Chunk>> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
-    public static Dictionary<string, ObjectPool<GameObject>> pool_decor;
+    public static ObjectPool<GameObject>[] pool_decor;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
     static int scrollX { get { return currPos.x; } }
@@ -69,13 +70,13 @@ public class ProceduralGeneration : MonoBehaviour
             }
         }
 
-        pool_decor = new Dictionary<string, ObjectPool<GameObject>>();
-        foreach(var pair in Biome.s_decorations)
+        pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
+        foreach(var pair in Biome.s_indexes)
         {
-            pool_decor.Add(pair.Key, new ObjectPool<GameObject>(
+            pool_decor[pair.Value] = new ObjectPool<GameObject>(
                 () => {
                     // on create
-                    var decor = Instantiate(pair.Value);
+                    var decor = Instantiate(Biome.s_decorations[pair.Value], transform_decor);
 
                     return decor;
                 },
@@ -92,7 +93,7 @@ public class ProceduralGeneration : MonoBehaviour
                     Destroy(decor.gameObject);
                 },
                 false, 100, 1000
-            ));
+            );
         }
 
         loadingChunks = new SortedList<float, Stack<Chunk>>();
@@ -234,6 +235,10 @@ public class ProceduralGeneration : MonoBehaviour
             }
         });
 
+        numOfDecors = 1;
+        decors[0] = 0;
+        decorPositions[0].Set(chunkX*chunkSize, 50, chunkZ*chunkSize);
+
         mesh.vertices = vertices;
         mesh.triangles = triangles;
         mesh.colors = cols;
@@ -330,7 +335,8 @@ public class ProceduralGeneration : MonoBehaviour
 
             for(int di=0; di<chunk.numOfDecors; di++)
             {
-                // spawn decor
+                var decor = pool_decor[chunk.decors[di]].Get();
+                decor.transform.position = chunk.decorPositions[di];
             }
         }
     }

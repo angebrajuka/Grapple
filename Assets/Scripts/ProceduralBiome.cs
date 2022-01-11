@@ -23,38 +23,39 @@ public class BiomeData
 
 public struct Biome
 {
-    public static Dictionary<string, GameObject> s_decorations = new Dictionary<string, GameObject>();
+    public static Dictionary<string, int> s_indexes;
+    public static GameObject[] s_decorations;
 
     public static void Init()
     {
-        var decorations = Resources.LoadAll<GameObject>("Decorations");
+        s_decorations = Resources.LoadAll<GameObject>("Decorations");
 
-        s_decorations.Clear();
-        for(int i=0; i<decorations.Length; i++)
+        s_indexes = new Dictionary<string, int>();
+        for(int i=0; i<s_decorations.Length; i++)
         {
-            var name = decorations[i].name;
-            s_decorations.Add(name, decorations[i]);
+            var name = s_decorations[i].name;
+            s_indexes.Add(name, i);
         }
     }
 
-    public GameObject[] decorations;
+    public int[] decorationIndexes;
     public float[] decorationThreshholds;
     public Color color;
 
     public Biome(BiomeData biomeData)
     {
-        decorations = new GameObject[biomeData.decorations.Length];
+        decorationIndexes = new int[biomeData.decorations.Length];
         ColorUtility.TryParseHtmlString(biomeData.color, out color);
         decorationThreshholds = new float[biomeData.decorations.Length];
 
-        for(int i=0; i<decorations.Length; i++)
+        for(int i=0; i<decorationIndexes.Length; i++)
         {
             var name = biomeData.decorations[i].name;
-            decorations[i] = s_decorations[s_decorations.ContainsKey(name) ? name : "P_Tree_Oak"];
+            decorationIndexes[i] = s_indexes.ContainsKey(name) ? s_indexes[name] : 0;
             decorationThreshholds[i] = biomeData.decorations[i].frequency;
             if(i > 0) decorationThreshholds[i] += decorationThreshholds[i-1];
         }
-        for(int i=0; i<decorations.Length; i++)
+        for(int i=0; i<decorationThreshholds.Length; i++)
         {
             decorationThreshholds[i] /= decorationThreshholds[decorationThreshholds.Length-1];
         }
