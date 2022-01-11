@@ -82,15 +82,15 @@ public class ProceduralGeneration : MonoBehaviour
                 },
                 (decor) => {
                     // on get
-                    decor.gameObject.SetActive(true);
+                    decor.SetActive(true);
                 },
                 (decor) => {
                     // on return
-                    decor.gameObject.SetActive(false);
+                    decor.SetActive(false);
                 },
                 (decor) => {
                     // on destroy
-                    Destroy(decor.gameObject);
+                    Destroy(decor);
                 },
                 false, 100, 1000
             );
@@ -116,6 +116,7 @@ public class ProceduralGeneration : MonoBehaviour
                 chunk.meshRenderer.material = chunkMaterial;
                 chunk.decorPositions = new Vector3[MAX_DECORS];
                 chunk.decors = new int[MAX_DECORS];
+                chunk.decorRefs = new GameObject[MAX_DECORS];
 
                 return chunk;
             },
@@ -261,6 +262,10 @@ public class ProceduralGeneration : MonoBehaviour
 
         var chunk = loadedChunks[(x, z)];
         loadedChunks.Remove((x, z));
+        for(int i=0; i<chunk.numOfDecors; i++)
+        {
+            if(chunk.decorRefs[i] != null) pool_decor[chunk.decors[i]].Release(chunk.decorRefs[i]);
+        }
         pool_chunks.Release(chunk);
     }
 
@@ -337,6 +342,7 @@ public class ProceduralGeneration : MonoBehaviour
             {
                 var decor = pool_decor[chunk.decors[di]].Get();
                 decor.transform.position = chunk.decorPositions[di];
+                chunk.decorRefs[di] = decor;
             }
         }
     }

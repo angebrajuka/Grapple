@@ -8,4 +8,5 @@ public class Chunk : MonoBehaviour
     public Vector3[] decorPositions;
     public int[] decors;
     public int numOfDecors;
+    public GameObject[] decorRefs;
 }
