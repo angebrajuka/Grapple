@@ -23,10 +23,12 @@ public class PlayerMovement : MonoBehaviour
     public float jumpTimeLeeway;
     public float timeBetweenJumps;
     public float groundedMagnet;
+    public float minGroundedNormalY;
     public float slideForce;
     public float slideStartThreshhold;
     public float slideMaxSpeed;
     public float slideJumpDelay;
+    public float minSlideTime;
     public float cameraHeightAdjustSpeed;
 
     // components
@@ -93,7 +95,7 @@ public class PlayerMovement : MonoBehaviour
         if(GetKey("walk right"))    input_move.x ++;
         input_move.Normalize();
 
-        if(GetKeyDown("jump"))
+        if(GetKey("jump"))
         {
             jumpInputTime = Time.time;
         }
@@ -117,15 +119,16 @@ public class PlayerMovement : MonoBehaviour
 
         var colliderGroundedCenter = colliderGrounded.center+rb.position;
         var colliders = Physics.OverlapSphere(colliderGroundedCenter, colliderGrounded.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore);
-        grounded = colliders.Length > 0;
+        grounded = false;
         groundedNormal.Set(0, 0, 0);
         foreach(var collider in colliders)
         {
             if(Physics.ComputePenetration(colliderGrounded, rb.position, Quaternion.identity, collider, collider.transform.position, collider.transform.rotation, out Vector3 normal, out _))
             {
-                if(normal.y > groundedNormal.y)
+                if(normal.y > minGroundedNormalY && normal.y > groundedNormal.y)
                 {
                     groundedNormal = normal;
+                    grounded = true;
                 }
             }
         }
@@ -169,7 +172,7 @@ public class PlayerMovement : MonoBehaviour
                 timeLastSlid = Time.time;
             }
         }
-        else if(Physics.OverlapCapsule(point0, point1, colliderDefault.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length == 0)
+        else if(Time.time - timeLastSlid > minSlideTime && Physics.OverlapCapsule(point0, point1, colliderDefault.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length == 0)
         {
             crouching = false;
 

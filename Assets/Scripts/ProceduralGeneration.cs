@@ -238,7 +238,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         numOfDecors = 1;
         decors[0] = 0;
-        decorPositions[0].Set(chunkX*chunkSize, 50, chunkZ*chunkSize);
+        decorPositions[0].Set(chunkX*chunkSize, Height(0, 0, chunkX, chunkZ), chunkZ*chunkSize);
 
         mesh.vertices = vertices;
         mesh.triangles = triangles;
