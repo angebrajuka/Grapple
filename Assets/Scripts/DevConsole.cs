@@ -86,19 +86,19 @@ public static class Commands
 
     public static void health(string[] args)
     {
-        // float amount = float.Parse(args[2]);
+        float amount = float.Parse(args[2]);
 
-        // switch(args[1])
-        // {
-        // case "add":
-        //     PlayerTarget.target.Heal(amount);
-        //     break;
-        // case "sub":
-        //     PlayerTarget.target.Damage(amount);
-        //     break;
-        // default:
-        //     return;
-        // }
+        switch(args[1])
+        {
+        case "add":
+            PlayerTarget.instance.Heal(amount);
+            break;
+        case "sub":
+            PlayerTarget.instance.Damage(amount, -PlayerMovement.rb.transform.forward, 100);
+            break;
+        default:
+            return;
+        }
     }
 
 
@@ -114,7 +114,10 @@ public static class Commands
 
     public static void kfa(string[] args)
     {
-
+        for(int i=0; i<PlayerInventory.hasGun.Length; i++)
+        {
+            PlayerInventory.hasGun[i] = true;
+        }
         fa(null);
     }
 

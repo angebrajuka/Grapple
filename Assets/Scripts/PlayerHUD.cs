@@ -16,6 +16,8 @@ public class PlayerHUD : MonoBehaviour
     public Transform grappleRecharge_needle;
     public float compressedAir_minAngle, compressedAir_maxAngle;
     public float speed_grappleRechargeDecrease, speed_grappleRechargeIncrease, compressedAir_speed;
+    public Slider slider_health;
+    public Slider slider_armour;
 
     public static Dictionary<string, Texture2D> ammoImages;
     float grappleRechargeAngle;
@@ -48,6 +50,16 @@ public class PlayerHUD : MonoBehaviour
     public static void UpdateCompressedAir()
     {
         instance.compressedAirTarget = Math.Remap(PlayerThreeDM.CompressedAir, 0, 1, instance.compressedAir_minAngle, instance.compressedAir_maxAngle);
+    }
+
+    public static void UpdateHealth()
+    {
+        instance.slider_health.value = PlayerTarget.instance.health / PlayerTarget.instance.maxHealth;
+    }
+
+    public static void UpdateArmour()
+    {
+        instance.slider_armour.value = PlayerTarget.instance.armour / PlayerTarget.instance.maxArmour;
     }
 
 

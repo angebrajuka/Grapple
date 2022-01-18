@@ -7,39 +7,61 @@ public class Target : MonoBehaviour
 {
     public float maxHealth;
     public float health;
+    public float armour;
+    public float maxArmour;
+    public float absorbtion;
+    public float taken { get { return 1 - absorbtion; } }
     public bool damageable;
     public bool dead;
 
-    public void OnDamage(float damage, Vector3 direction, float knockback)
+    Rigidbody rb;
+
+    void Start()
     {
-        var rb = GetComponent<Rigidbody>();
-        if(rb != null)
-        {
-            rb.AddForce(direction*damage*knockback);
-        }
+        rb = GetComponent<Rigidbody>();
     }
 
-    public void OnKill(float damage, Vector3 direction)
+    public void Knockback(float damage, Vector3 direction, float knockback)
+    {
+        if(rb == null || direction == default(Vector3) || knockback == 0) return;
+
+        rb.AddForce(direction*damage*knockback);
+    }
+
+    public virtual void OnDamage(float damage, Vector3 direction, float knockback)
+    {
+
+    }
+
+    public virtual void OnKill(float damage, Vector3 direction)
     {
         Destroy(gameObject);
     }
 
-    public void OnHeal(float health)
+    public virtual void OnHeal(float health)
+    {
+
+    }
+
+    public virtual void OnGainArmour(float amount)
     {
 
     }
 
     public bool Damage(float damage, Vector3 direction=default(Vector3), float knockback=0)
     {
+        float actual = damage*taken;
         if(damageable && !dead)
         {
-            health -= damage;
-            OnDamage(damage, direction, knockback);
+            armour -= damage*absorbtion;
+            if(armour < 0) armour = 0;
+            health -= actual;
+            OnDamage(actual, direction, knockback);
 
             if(health <= 0)
             {
                 dead = true;
-                OnKill(damage, direction);
+                OnKill(taken, direction);
             }
             return true;
         }
@@ -49,16 +71,27 @@ public class Target : MonoBehaviour
 
     public bool Heal(float heal)
     {
-        if(damageable)
+        if(!damageable) return false;
+        
+        health += heal;
+        OnHeal(heal);
+        if(health > maxHealth)
         {
-            health += heal;
-            OnHeal(heal);
-            if(health > maxHealth)
-            {
-                health = maxHealth;
-                return true;
-            }
+            health = maxHealth;
         }
-        return false;
+        return true;
+    }
+
+    public bool GainArmour(float amount)
+    {
+        if(!damageable) return false;
+
+        armour += amount;
+        OnGainArmour(amount);
+        if(armour > maxArmour)
+        {
+            armour = maxArmour;
+        }
+        return true;
     }
 }

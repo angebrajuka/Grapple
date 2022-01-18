@@ -35,6 +35,7 @@ public class Init : MonoBehaviour
         player.GetComponent<PlayerInput>().Init();
         player.GetComponent<PlayerMovement>().Init();
         player.GetComponent<PlayerThreeDM>().Init();
+        player.GetComponent<PlayerTarget>().Init();
 
         enemySpawning.Init();
 

@@ -73,8 +73,8 @@ public class PlayerInventory : MonoBehaviour
         }
 
         hasGun[0] = true;
-        hasGun[1] = true;
-        hasGun[2] = true;
+        hasGun[1] = false;
+        hasGun[2] = false;
 
         _currentGun = 0;
         _nextGun = 0;
@@ -124,9 +124,14 @@ public class PlayerInventory : MonoBehaviour
 
     void Update()
     {
-        if(PlayerInput.GetKey("gun_switch_0")) _nextGun = 0;
-        if(PlayerInput.GetKey("gun_switch_1")) _nextGun = 1;
-        if(PlayerInput.GetKey("gun_switch_2")) _nextGun = 2;
+        for(int i=0; i<hasGun.Length; i++)
+        {
+            if(hasGun[i] && PlayerInput.GetKey("gun_switch_"+i))
+            {
+                _nextGun = i;
+                break;
+            }
+        }
 
         if(PlayerInput.GetKey("reload")) PlayerAnimator.instance.CheckReload(true);
 
