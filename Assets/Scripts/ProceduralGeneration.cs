@@ -14,7 +14,7 @@ public class ProceduralGeneration : MonoBehaviour
     public Transform transform_decor;
     public Material chunkMaterial;
     public int renderDistance;
-    public int chunkSize;
+    public float chunkSize;
     public int chunkWidthVertices;
     public float offset;
     public byte chunksPerFrame;
@@ -30,7 +30,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     public static float seed;
 
-    static SortedList<float, Stack<Chunk>> loadingChunks;
+    static LinkedList<Chunk> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
     public static ObjectPool<GameObject>[] pool_decor;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
@@ -96,7 +96,7 @@ public class ProceduralGeneration : MonoBehaviour
             );
         }
 
-        loadingChunks = new SortedList<float, Stack<Chunk>>();
+        loadingChunks = new LinkedList<Chunk>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
@@ -250,10 +250,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         float dist = Math.Dist(currPos.x, currPos.z, chunkX, chunkZ);
 
-        if(!loadingChunks.ContainsKey(dist)) {
-            loadingChunks.Add(dist, new Stack<Chunk>());
-        }
-        loadingChunks[dist].Push(chunk);
+        loadingChunks.AddLast(chunk);
     }
 
     static void Unload(int x, int z)
@@ -330,10 +327,24 @@ public class ProceduralGeneration : MonoBehaviour
 
     void FixedUpdate()
     {
+        var offset = new Vector3(chunkSize/2, 0, chunkSize/2);
         for(int i=0; loadingChunks.Count > 0 && i < chunksPerFrame; i++)
         {
-            var chunk = loadingChunks.Values[0].Pop();
-            if(loadingChunks.Values[0].Count == 0) loadingChunks.RemoveAt(0);
+            var closest = loadingChunks.First;
+            var closestDist = Mathf.Infinity;
+            for(var node = loadingChunks.First; node != null; node = node.Next)
+            {
+                var dist = Vector3.Distance(PlayerMovement.rb.position, node.Value.transform.position+offset);
+                if(dist < closestDist)
+                {
+                    closestDist = dist;
+                    closest = node;
+                }
+            }
+
+            var chunk = closest.Value;
+            loadingChunks.Remove(closest);
+
             chunk.meshFilter.mesh.RecalculateBounds();
             chunk.meshFilter.mesh.RecalculateNormals();
             chunk.meshCollider.sharedMesh = chunk.meshFilter.mesh;

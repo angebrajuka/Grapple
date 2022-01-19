@@ -128,7 +128,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5c42a7bde9c4524d9775d22b78cd41a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 30
-  health: 30
+  maxHealth: 20
+  health: 20
+  armour: 0
+  maxArmour: 0
+  absorbtion: 0
   damageable: 1
   dead: 0

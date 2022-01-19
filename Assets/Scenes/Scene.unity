@@ -610,7 +610,7 @@ MonoBehaviour:
   minWidth: 960
   minHeight: 540
   minAspect: 1
-  maxAspect: 2
+  maxAspect: 3
 --- !u!114 &183977447
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4429,7 +4429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_AspectMode: 2
-  m_AspectRatio: 1.7916666
+  m_AspectRatio: 3
 --- !u!114 &792857123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7525,7 +7525,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: PumpActionShotgun
   ammoType: TwelveGauge
-  damage: 50
+  damage: 60
   rpm: 96
   animateBetweenShots: 1
   animatePostReload: 1
@@ -10154,7 +10154,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: DoubleBarrelShotgun
   ammoType: TwelveGauge
-  damage: 60
+  damage: 80
   rpm: 140
   animateBetweenShots: 0
   animatePostReload: 0
