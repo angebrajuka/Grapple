@@ -1471,8 +1471,8 @@ MonoBehaviour:
   biomesData:
   - name: plains
     color: '#70a35c'
-    height_min: 0
-    height_max: 1
+    height_min: 10
+    height_max: 20
     rain_temp_map_color: '#FF6161'
     decorations:
     - name: P_Grass
@@ -1486,8 +1486,8 @@ MonoBehaviour:
     density: 1
   - name: forest
     color: '#5CA041'
-    height_min: 0
-    height_max: 1
+    height_min: 8
+    height_max: 24
     rain_temp_map_color: '#BF40FF'
     decorations:
     - name: P_Tree_Oak
@@ -1497,8 +1497,8 @@ MonoBehaviour:
     density: 1
   - name: desert
     color: '#CCBC92'
-    height_min: 0
-    height_max: 1
+    height_min: 12
+    height_max: 18
     rain_temp_map_color: '#FF0000'
     decorations:
     - name: P_Cactus_0
@@ -1510,8 +1510,8 @@ MonoBehaviour:
     density: 1
   - name: taiga
     color: '#FFFAFA'
-    height_min: 0
-    height_max: 1
+    height_min: 10
+    height_max: 20
     rain_temp_map_color: '#FF80FF'
     decorations:
     - name: P_Tree_Pine
@@ -1523,8 +1523,8 @@ MonoBehaviour:
     density: 1
   - name: tundra
     color: '#FFFAFA'
-    height_min: 0
-    height_max: 1
+    height_min: 10
+    height_max: 20
     rain_temp_map_color: '#FFBFD4'
     decorations:
     - name: P_Grass
@@ -1534,8 +1534,8 @@ MonoBehaviour:
     density: 1
   - name: rainforest
     color: '#4EA828'
-    height_min: 0
-    height_max: 1
+    height_min: 10
+    height_max: 20
     rain_temp_map_color: '#0000FF'
     decorations:
     - name: P_Tree_Rainforest_Big
@@ -1551,8 +1551,8 @@ MonoBehaviour:
     density: 1
   - name: savanna
     color: '#8CA552'
-    height_min: 0
-    height_max: 1
+    height_min: 10
+    height_max: 20
     rain_temp_map_color: '#FF00AA'
     decorations:
     - name: P_Tree_Acacia
@@ -9187,7 +9187,7 @@ MonoBehaviour:
   slideForce: 1200
   slideStartThreshhold: 0.1
   slideMaxSpeed: 20
-  slideJumpDelay: 0.3
+  slideJumpDelay: 0.2
   minSlideTime: 0.3
   cameraHeightAdjustSpeed: 12
 --- !u!114 &1887390186

@@ -151,10 +151,15 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
-    public static float Height(float x, float z, float chunkX=0, float chunkZ=0)
+    public static float Height(float x, float z, float chunkX=0, float chunkZ=0, int biome=-1)
     {
+        if(biome == -1)
+        {
+            biome = PerlinBiome(x, z, chunkX, chunkZ);
+        }
+        var b = biomes[biome];
         return Perlin(seed, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
-                +Perlin(seed, x, z, chunkX, chunkZ, 0, 20, 0.04f);
+                +Perlin(seed, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
     }
 
     public static byte MapClamped(byte[,] map, int x, int y)
@@ -216,12 +221,14 @@ public class ProceduralGeneration : MonoBehaviour
             int i=0;
             for(int x=0; x<chunkWidthVertices; ++x) for(int z=0; z<chunkWidthVertices; ++z)
             {
+                int biome = PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ);
+
                 vertices[chunkWidthVertices*x+z].Set(
                     (float)x*vertexSpacing+Perlin(154.2643f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset), 
-                    Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ), 
+                    Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ, biome), 
                     (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset));
 
-                cols[chunkWidthVertices*x+z] = biomes[PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ)].color;
+                cols[chunkWidthVertices*x+z] = biomes[biome].color;
 
                 if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
                 {

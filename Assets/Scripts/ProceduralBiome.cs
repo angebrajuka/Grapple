@@ -41,12 +41,16 @@ public struct Biome
     public int[] decorationIndexes;
     public float[] decorationThreshholds;
     public Color color;
+    public float minHeight, maxHeight;
 
     public Biome(BiomeData biomeData)
     {
         decorationIndexes = new int[biomeData.decorations.Length];
         ColorUtility.TryParseHtmlString(biomeData.color, out color);
         decorationThreshholds = new float[biomeData.decorations.Length];
+
+        minHeight = biomeData.height_min;
+        maxHeight = biomeData.height_max;
 
         for(int i=0; i<decorationIndexes.Length; i++)
         {
