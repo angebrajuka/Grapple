@@ -3185,6 +3185,152 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
+--- !u!1001 &622906088
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1097735634}
+    m_Modifications:
+    - target: {fileID: -8680258365202560803, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.27
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -5522769758115217341, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -1025775642829027777, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 246612728333642702, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Name
+      value: gun_LaserRifle
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1214824004972775095, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1503042473373452744, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5530701255766440318, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6619225641134156614, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 7053421877332046286, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+--- !u!4 &622906089 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+  m_PrefabInstance: {fileID: 622906088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &622906090 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+  m_PrefabInstance: {fileID: 622906088}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &622906091
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 622906090}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d321e609440fb84bad1196b8e623b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _name: LaserRifle
+  ammoType: Plasma
+  damage: 0
+  rpm: 100
+  animateBetweenShots: 0
+  animatePostReload: 0
+  magSize: 30
+  shotgunReload: 0
+  ammoPerShot: 30
+  pellets: 1
+  range: 100
+  spread: 0
+  recoil: 0
+  clip_shoot: {fileID: 0}
+  vol_shoot: 1
+  prefab_muzzleFlash: {fileID: 0}
+  prefab_projectile: {fileID: 6545686767845689485, guid: 798a647a883c0044a828e9281edfbb37, type: 3}
+  projectileForce: 10
+  index: 0
+  timeBetweenShots: 0
+  ammo: 0
+  timeLastShot: 0
+  primed: 0
 --- !u!1001 &626555648
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5584,6 +5730,7 @@ Transform:
   - {fileID: 1755035577}
   - {fileID: 2038921329}
   - {fileID: 626555649}
+  - {fileID: 622906089}
   m_Father: {fileID: 546853964}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

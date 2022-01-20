@@ -15,7 +15,6 @@ public class Bullet : MonoBehaviour
 
     public float lifetime;
     public float damage;
-    public float distancePerTick;
     public LayerMask layermask;
     // grenade specific
     bool firstBounce;

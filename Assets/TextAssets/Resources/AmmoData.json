@@ -1,10 +1,7 @@
 {
-    "maxAmmo": [
-        {"key": "TwelveGauge",      "value": 36},
-        {"key": "Grenade",          "value": 16}
-    ],
-    "startAmmo": [
-        {"key": "TwelveGauge",      "value": 18},
-        {"key": "Grenade",          "value": 8}
+    "ammoDatums": [
+        {"name": "TwelveGauge",         "max": 36,      "start": 18},
+        {"name": "Grenade",             "max": 16,      "start": 0},
+        {"name": "Plasma",              "max": 300,      "start": 0}
     ]
 }

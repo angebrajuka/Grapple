@@ -10,6 +10,7 @@
         {"name": "gun_switch_0",        "keys": [49] },
         {"name": "gun_switch_1",        "keys": [50] },
         {"name": "gun_switch_2",        "keys": [51] },
+        {"name": "gun_switch_3",        "keys": [52] },
         {"name": "shoot",               "keys": [323] },
         {"name": "reload",              "keys": [114] }
     ]
