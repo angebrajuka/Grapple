@@ -3,7 +3,22 @@ guid: fec0857d0aa48314aad2c4faf24ed056
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Grip
+    second: {fileID: 2100000, guid: d5d03e9617af1754c8beeed48a3e2aa7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stock
+    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Stock Padding
+    second: {fileID: 2100000, guid: f826fff431ad72f4ca5542835ad49769, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0
