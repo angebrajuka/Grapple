@@ -7,8 +7,33 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Barrel
+    second: {fileID: 2100000, guid: d5d03e9617af1754c8beeed48a3e2aa7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Barrel Guard
+    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Forgrip
+    second: {fileID: 2100000, guid: d5d03e9617af1754c8beeed48a3e2aa7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Grip
     second: {fileID: 2100000, guid: d5d03e9617af1754c8beeed48a3e2aa7, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shell Eject Port
+    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Shell Insert Flap
+    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -19,6 +44,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Stock Padding
     second: {fileID: 2100000, guid: f826fff431ad72f4ca5542835ad49769, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Trigger
+    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
   materials:
     materialImportMode: 1
     materialName: 0

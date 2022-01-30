@@ -8,6 +8,7 @@ public class Gun : MonoBehaviour
     public float        damage;
     public int          rpm;
     public bool         animateBetweenShots;
+    public bool         animatePreReload;
     public bool         animatePostReload;
     public int          magSize;
     public bool         shotgunReload;
@@ -75,7 +76,7 @@ public class Gun : MonoBehaviour
 
         bullet.rb.velocity = bullet.transform.forward*projectileForce;
         bullet.SetRange(range);
-        bullet.rb.velocity += PlayerMovement.rb.velocity*0.7f;
+        // bullet.rb.velocity += PlayerMovement.rb.velocity*0.7f;
         bullet.damage = (float)damage / (float)pellets;
     }
 
