@@ -2910,9 +2910,11 @@ MonoBehaviour:
   pumpActionShell: {fileID: 1755035578}
   grenadeLauncherShell:
   - {fileID: 0}
+  laserShell: {fileID: 1521834672}
   animator: {fileID: 546853965}
   prefab_shell: {fileID: 8391918072369556103, guid: 4fcfd1d91c46c284b8f5e7ec06d62259, type: 3}
   prefab_shell_grenade: {fileID: 0}
+  prefab_shell_laser: {fileID: 8117090277491810597, guid: 0fec3cbf8c8fe994883d21859966b2c4, type: 3}
 --- !u!114 &546853967
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3192,6 +3194,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1097735634}
     m_Modifications:
+    - target: {fileID: -8928142258166665514, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: -8928142258166665514, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -8680258365202560803, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -3312,9 +3322,8 @@ MonoBehaviour:
   ammoType: Plasma
   damage: 200
   rpm: 100
-  animateBetweenShots: 1
-  animatePreReload: 0
-  animatePostReload: 0
+  chamberPostShot: 1
+  chamberPostReload: 2
   magSize: 30
   shotgunReload: 0
   ammoPerShot: 30
@@ -3326,12 +3335,12 @@ MonoBehaviour:
   vol_shoot: 1
   prefab_muzzleFlash: {fileID: 0}
   prefab_projectile: {fileID: 6545686767845689485, guid: 798a647a883c0044a828e9281edfbb37, type: 3}
-  projectileForce: 50
+  projectileForce: 150
   index: 0
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
-  primed: 0
+  chamber: 0
 --- !u!1001 &626555648
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3559,6 +3568,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 6619225641134156614, guid: dfbb0c5e080b3584680ec210e865261f, type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 8576736195921237979, guid: dfbb0c5e080b3584680ec210e865261f, type: 3}
       propertyPath: m_Layer
       value: 3
@@ -3599,9 +3612,8 @@ MonoBehaviour:
   ammoType: Grenade
   damage: 120
   rpm: 220
-  animateBetweenShots: 1
-  animatePreReload: 0
-  animatePostReload: 0
+  chamberPostShot: 0
+  chamberPostReload: 2
   magSize: 4
   shotgunReload: 1
   ammoPerShot: 1
@@ -3618,7 +3630,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
-  primed: 0
+  chamber: 0
 --- !u!114 &626555652
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7676,9 +7688,8 @@ MonoBehaviour:
   ammoType: TwelveGauge
   damage: 60
   rpm: 96
-  animateBetweenShots: 1
-  animatePreReload: 0
-  animatePostReload: 1
+  chamberPostShot: 1
+  chamberPostReload: 0
   magSize: 6
   shotgunReload: 1
   ammoPerShot: 1
@@ -7695,7 +7706,12 @@ MonoBehaviour:
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
-  primed: 0
+  chamber: 0
+--- !u!4 &1521834672 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1646928359334541822, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
+  m_PrefabInstance: {fileID: 622906088}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1544013628
 GameObject:
   m_ObjectHideFlags: 0
@@ -10304,18 +10320,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: DoubleBarrelShotgun
   ammoType: TwelveGauge
-  damage: 80
+  damage: 140
   rpm: 140
-  animateBetweenShots: 0
-  animatePreReload: 1
-  animatePostReload: 0
+  chamberPostShot: 1
+  chamberPostReload: 2
   magSize: 2
   shotgunReload: 0
-  ammoPerShot: 1
-  pellets: 16
+  ammoPerShot: 2
+  pellets: 32
   range: 100
   spread: 10
-  recoil: 600
+  recoil: 1200
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.6
   prefab_muzzleFlash: {fileID: 0}
@@ -10325,7 +10340,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
-  primed: 0
+  chamber: 1
 --- !u!1 &2063678654
 GameObject:
   m_ObjectHideFlags: 0

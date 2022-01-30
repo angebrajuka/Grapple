@@ -7,9 +7,8 @@ public class Gun : MonoBehaviour
     public string       ammoType;
     public float        damage;
     public int          rpm;
-    public bool         animateBetweenShots;
-    public bool         animatePreReload;
-    public bool         animatePostReload;
+    public Chamber      chamberPostShot;
+    public Chamber      chamberPostReload;
     public int          magSize;
     public bool         shotgunReload;
     public int          ammoPerShot;
@@ -27,7 +26,8 @@ public class Gun : MonoBehaviour
     [HideInInspector] public float timeBetweenShots;
     [HideInInspector] public int ammo;
     [HideInInspector] public float timeLastShot;
-    [HideInInspector] public bool primed;
+    public enum Chamber { EMPTY, SHELL, FULL }
+    public Chamber chamber;
 
     ObjectPool<GameObject> pool_bullets;
 
@@ -36,7 +36,6 @@ public class Gun : MonoBehaviour
         timeBetweenShots = 60f/rpm;
         ammo = 0;
         timeLastShot = 0;
-        primed = true;
         pool_bullets = new ObjectPool<GameObject>(
             () => {
                 // on create
@@ -82,13 +81,12 @@ public class Gun : MonoBehaviour
 
     public void Shoot()
     {
-        PlayerAnimator.instance.gunReloadAnimator.SetInteger("state", 0);
+        PlayerAnimator.SetState(PlayerAnimator.RECOIL_BACK);
         AudioManager.PlayClip(clip_shoot);
         PlayerMovement.rb.AddForce(PlayerMovement.instance.t_camera.TransformDirection(0, 0, -recoil));
-        PlayerAnimator.instance.Recoil();
         timeLastShot = Time.time;
         ammo -= ammoPerShot;
-        primed = false;
+        chamber = chamberPostShot;
 
         for(int i=0; i<pellets; i++)
         {

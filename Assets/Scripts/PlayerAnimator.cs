@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 using static PlayerAnimator.State;
 
@@ -20,32 +21,101 @@ public class PlayerAnimator : MonoBehaviour
     public static string activeGun="";
     public static Transform ActiveGun { get { return guns[activeGun]; } }
 
-    public enum State
-    {
-        RAISED,
-        SWAPPING,
-        RECOIL_BACK,
-        RECOIL_FORWARD
-    }
-    public static State state;
+    public class State {
+        private Action set, update;
 
-    public static Animator GunPosAnimator
-    {
-        get
-        {
-            instance.gunPosAnimator.enabled = true;
-            return instance.gunPosAnimator;
+        static void Default() {}
+
+        public State(Action set=null, Action update=null) {
+            this.set = (set == null ? Default : set);
+            this.update = (update == null ? Default : update);
+        }
+
+        public void Set() {
+            set();
+        }
+
+        public void Update() {
+            update();
         }
     }
 
-    public static bool IsReloading { get { return instance.gunReloadAnimator.GetInteger("state") == 1; } }
-    public static bool IsIdle { get { return instance.gunReloadAnimator.GetInteger("state") == 0; } }
+    public static readonly State RAISED = new State(() => {
+        PlayerAnimator.GunPosAnimator.enabled = false;
+        instance.gunReloadAnimator.SetInteger("state", 0);
+    }, () => {
+        if(PlayerInventory.CurrentGun.chamber == Gun.Chamber.SHELL) {
+            SetState(EJECTING);
+            return;
+        }
+        if(PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY && PlayerInventory.Ammo >= PlayerInventory.CurrentGun.ammoPerShot) {
+            SetState(PRIMING);
+            return;
+        }
+        instance.CheckReload();
+    });
+    public static readonly State SWAPPING = new State(() => {
+        PlayerInventory._currentGun = PlayerInventory._nextGun;
+        instance.gunReloadAnimator.SetInteger("state", 0);
+        GunPosAnimator.Play("Base Layer.Lowering");
+    });
+    public static readonly State EJECTING = new State(() => {
+        instance.gunReloadAnimator.SetInteger("state", 2);
+    });
+    public static readonly State PRIMING = new State(() => {
+        instance.gunReloadAnimator.SetInteger("state", 3);
+    });
+    public static readonly State RELOADING = new State(() => {
+        instance.gunReloadAnimator.SetInteger("state", 1);
+    });
+    public static readonly State RECOIL_BACK = new State(() => {
+        instance.gunReloadAnimator.SetInteger("state", 0);
+    }, () => {
+        var pos = instance.gunPos.localPosition;
+        var rot = instance.gunPos.localRotation;
+        var backRotation = Quaternion.Euler(instance.backRotation*PlayerInventory.CurrentGun.recoil);
+        Vector3 backPosition = PlayerInventory.CurrentGun.recoil*instance.backPosition;
+        pos = Vector3.MoveTowards(pos, backPosition, Time.deltaTime*instance.recoilSpeed_moveBack);
+        rot = Quaternion.RotateTowards(rot, backRotation, Time.deltaTime*instance.recoilSpeed_rotateBack);
+        if(pos == backPosition) SetState(RECOIL_FORWARD);
+        instance.gunPos.localPosition = pos;
+        instance.gunPos.localRotation = rot;
+    });
+    public static readonly State RECOIL_FORWARD = new State(null, () => {
+        var pos = instance.gunPos.localPosition;
+        var rot = instance.gunPos.localRotation;
+        pos = Vector3.MoveTowards(pos, Vector3.zero, Time.deltaTime*instance.recoilSpeed_moveForward);
+        rot = Quaternion.RotateTowards(rot, Quaternion.identity, Time.deltaTime*instance.recoilSpeed_rotateForward);
+        if(pos == Vector3.zero)
+        {
+            SetState(RAISED);
+        }
+        instance.gunPos.localPosition = pos;
+        instance.gunPos.localRotation = rot;
+    });
+    
+    private static State p_state;
+    public static State state { get { return p_state; } }
+
+    public static void SetState(State newState) {
+        p_state = newState;
+        p_state.Set();
+    }
+
+    public static Animator GunPosAnimator { get {
+        instance.gunPosAnimator.enabled = true;
+        return instance.gunPosAnimator; } }
+
+    public static bool CanShoot { get { 
+        return state != SWAPPING && 
+            (state != EJECTING || PlayerInventory.CurrentGun.shotgunReload) && 
+            PlayerInventory.CurrentGunName == activeGun; }}
 
     public void Init()
     {
         instance = this;
 
-        state = RAISED;
+        SetState(RAISED);
         guns = new Dictionary<string, Transform>();
 
         foreach(var gun in Guns.guns)
@@ -57,14 +127,14 @@ public class PlayerAnimator : MonoBehaviour
         AtLowest();
     }
 
-    bool CanReload { get { return IsIdle && (PlayerInventory.CurrentGun.primed || !PlayerInventory.CurrentGun.animateBetweenShots) && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize; } }
+    bool CanReload { get { return state == RAISED; } }
     bool ShotgunAutoReload { get { return PlayerInventory.CurrentGun.shotgunReload && Time.time > PlayerInventory.CurrentGun.timeLastShot+PlayerInventory.CurrentGun.timeBetweenShots*2; } }
 
     public void CheckReload(bool force=false)
     {
-        if(CanReload && (ShotgunAutoReload || force || PlayerInventory.Ammo <= 0))
+        if(CanReload && PlayerInventory.CanReload && (ShotgunAutoReload || force || PlayerInventory.Ammo <= 0))
         {
-            gunReloadAnimator.SetInteger("state", 1); // reloading
+            SetState(RELOADING);
         }
     }
 
@@ -86,57 +156,13 @@ public class PlayerAnimator : MonoBehaviour
         GunPosAnimator.Play("Base Layer.Raising"); // raise
     }
 
-    public void Recoil()
-    {
-        state = RECOIL_BACK;
-    }
-
     void Update()
     {
-        var pos = gunPos.localPosition;
-        var rot = gunPos.localRotation;
-
-        switch(state)
+        if(state != RECOIL_BACK && state != RECOIL_FORWARD && PlayerInventory.hasGun[PlayerInventory._nextGun] && PlayerInventory._nextGun != PlayerInventory._currentGun)
         {
-        case RECOIL_BACK:
-            var backRotation = Quaternion.Euler(this.backRotation*PlayerInventory.CurrentGun.recoil);
-            Vector3 backPosition = PlayerInventory.CurrentGun.recoil*this.backPosition;
-            pos = Vector3.MoveTowards(pos, backPosition, Time.deltaTime*recoilSpeed_moveBack);
-            rot = Quaternion.RotateTowards(rot, backRotation, Time.deltaTime*recoilSpeed_rotateBack);
-            if(pos == backPosition) state = RECOIL_FORWARD;
-
-            break;
-        case RECOIL_FORWARD:
-            pos = Vector3.MoveTowards(pos, Vector3.zero, Time.deltaTime*recoilSpeed_moveForward);
-            rot = Quaternion.RotateTowards(rot, Quaternion.identity, Time.deltaTime*recoilSpeed_rotateForward);
-            if(pos == Vector3.zero)
-            {
-                gunAnimationEvents.Raised();
-            }
-
-            break;
-        case RAISED:
-            if(PlayerInventory.hasGun[PlayerInventory._nextGun] && PlayerInventory._nextGun != PlayerInventory._currentGun && !IsReloading)
-            {
-                PlayerInventory._currentGun = PlayerInventory._nextGun;
-                state = SWAPPING;
-                gunReloadAnimator.SetInteger("state", 0);
-                GunPosAnimator.Play("Base Layer.Lowering");
-            }
-            else if(IsIdle)
-            {
-                if(!PlayerInventory.CurrentGun.primed && !IsReloading && PlayerInventory.CurrentGun.animateBetweenShots)
-                {
-                    gunReloadAnimator.SetInteger("state", 2);
-                }
-                CheckReload();
-            }
-            break;
-        default:
-            break;
+            SetState(SWAPPING);
         }
 
-        gunPos.localPosition = pos;
-        gunPos.localRotation = rot;
+        state.Update();
     }
 }

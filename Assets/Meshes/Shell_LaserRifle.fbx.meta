@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: fec0857d0aa48314aad2c4faf24ed056
+guid: d8bcb1a6f5e3a034bb25a7e2732486b5
 ModelImporter:
   serializedVersion: 21202
   internalIDToNameTable: []
@@ -7,55 +7,10 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
-      name: Barrel
-    second: {fileID: 2100000, guid: d5d03e9617af1754c8beeed48a3e2aa7, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Barrel Guard
-    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Forgrip
-    second: {fileID: 2100000, guid: d5d03e9617af1754c8beeed48a3e2aa7, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Grip
-    second: {fileID: 2100000, guid: d5d03e9617af1754c8beeed48a3e2aa7, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
       name: Shell
     second: {fileID: 2100000, guid: 23cd66b0478b048438b20d78e07673c8, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Shell Eject Port
-    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Shell Insert Flap
-    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Stock
-    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Stock Padding
-    second: {fileID: 2100000, guid: f826fff431ad72f4ca5542835ad49769, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Trigger
-    second: {fileID: 2100000, guid: 2ccb156482d1a6b4e9f05107c1da56aa, type: 2}
   materials:
-    materialImportMode: 1
+    materialImportMode: 2
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -64,7 +19,7 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-    removeConstantScaleCurves: 0
+    removeConstantScaleCurves: 1
     motionNodeName: 
     rigImportErrors: 
     rigImportWarnings: 
@@ -94,7 +49,7 @@ ModelImporter:
     importBlendShapes: 1
     importCameras: 1
     importLights: 1
-    nodeNameCollisionStrategy: 0
+    nodeNameCollisionStrategy: 1
     fileIdsGeneration: 2
     swapUVChannels: 0
     generateSecondaryUV: 0
@@ -106,7 +61,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-    optimizeBones: 1
+    optimizeBones: 0
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -118,13 +73,13 @@ ModelImporter:
     secondaryUVPackMargin: 4
     useFileScale: 1
   tangentSpace:
-    normalSmoothAngle: 0
-    normalImportMode: 1
+    normalSmoothAngle: 60
+    normalImportMode: 0
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1
-    normalSmoothingSource: 2
+    normalSmoothingSource: 0
   referencedClips: []
   importAnimation: 1
   humanDescription:

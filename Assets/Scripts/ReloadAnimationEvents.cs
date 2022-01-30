@@ -6,9 +6,11 @@ public class ReloadAnimationEvents : MonoBehaviour
     public Transform[] doubleBarrelShells;
     public Transform pumpActionShell;
     public Transform[] grenadeLauncherShell;
+    public Transform laserShell;
     public Animator animator;
     public GameObject prefab_shell;
     public GameObject prefab_shell_grenade;
+    public GameObject prefab_shell_laser;
 
     public void Sound(AnimationEvent e)
     {
@@ -37,33 +39,44 @@ public class ReloadAnimationEvents : MonoBehaviour
         ShellEject(prefab_shell, pumpActionShell, Vector3.right*force);
     }
 
+    public void ShellEjectLR(float force)
+    {
+        ShellEject(prefab_shell_laser, laserShell, (Vector3.right+Vector3.forward)*force);
+    }
+
     public void ShellEjectGrenadeLauncher(float force)
     {
         // ShellEject(prefab_shell_grenade, grenadeLauncherShell, Vector3.up*force);
     }
 
-    public void Idle()
-    {
-        PlayerInventory.CurrentGun.primed = true;
-        animator.SetInteger("state", 0);
+    public void Primed() {
+        if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
+        PlayerInventory.CurrentGun.chamber = Gun.Chamber.FULL;
+        PlayerAnimator.SetState(PlayerAnimator.RAISED);
+    }
+
+    public void Ejected() {
+        if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
+        PlayerInventory.CurrentGun.chamber = Gun.Chamber.EMPTY;
+        PlayerAnimator.SetState(PlayerAnimator.RAISED);
     }
 
     public void Finish()
     {
-        if(!PlayerAnimator.IsReloading) return;
+        if(PlayerAnimator.state != PlayerAnimator.RELOADING) return;
 
         PlayerInventory.FinishReload();
-        if(PlayerInventory._nextGun == PlayerInventory._currentGun && PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
+        if(PlayerInventory._nextGun == PlayerInventory._currentGun && PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.CurrentGun.chamber == Gun.Chamber.FULL && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
         {
             PlayerAnimator.instance.CheckReload(true);
         }
-        else if(PlayerInventory.CurrentGun.animateBetweenShots)
+        else if(PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY)
         {
-            animator.SetInteger("state", 2);
+            PlayerAnimator.SetState(PlayerAnimator.PRIMING);
         }
         else
         {
-            animator.SetInteger("state", 0);
+            PlayerAnimator.SetState(PlayerAnimator.RAISED);
         }
     }
 }
