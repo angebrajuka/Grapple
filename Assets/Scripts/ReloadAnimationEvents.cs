@@ -14,7 +14,7 @@ public class ReloadAnimationEvents : MonoBehaviour
 
     public void Sound(AnimationEvent e)
     {
-        // if(e.stringParameter == "true" && animator.GetInteger("state") != e.intParameter) return;
+        if(PlayerAnimator.state != PlayerAnimator.RELOADING && PlayerAnimator.state != PlayerAnimator.EJECTING && PlayerAnimator.state != PlayerAnimator.PRIMING) return;
         AudioManager.PlayClip((AudioClip)e.objectReferenceParameter, e.floatParameter);
     }
 
@@ -49,23 +49,31 @@ public class ReloadAnimationEvents : MonoBehaviour
         // ShellEject(prefab_shell_grenade, grenadeLauncherShell, Vector3.up*force);
     }
 
+    public void SetRaised() {
+        if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
+        PlayerAnimator.SetState(PlayerAnimator.RAISED);
+    }
+
     public void Primed() {
         if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
         PlayerInventory.CurrentGun.chamber = Gun.Chamber.FULL;
-        PlayerAnimator.SetState(PlayerAnimator.RAISED);
     }
 
     public void Ejected() {
         if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
         PlayerInventory.CurrentGun.chamber = Gun.Chamber.EMPTY;
-        PlayerAnimator.SetState(PlayerAnimator.RAISED);
+    }
+
+    public void UpdateAmmo()
+    {
+        if(PlayerAnimator.state != PlayerAnimator.RELOADING) return;
+        PlayerInventory.FinishReload();
     }
 
     public void Finish()
     {
         if(PlayerAnimator.state != PlayerAnimator.RELOADING) return;
 
-        PlayerInventory.FinishReload();
         if(PlayerInventory._nextGun == PlayerInventory._currentGun && PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.CurrentGun.chamber == Gun.Chamber.FULL && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
         {
             PlayerAnimator.instance.CheckReload(true);

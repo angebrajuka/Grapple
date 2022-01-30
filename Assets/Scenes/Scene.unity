@@ -3272,7 +3272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1214824004972775095, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
       propertyPath: m_Layer
@@ -3323,7 +3323,7 @@ MonoBehaviour:
   damage: 200
   rpm: 100
   chamberPostShot: 1
-  chamberPostReload: 2
+  chamberPostReload: 0
   magSize: 30
   shotgunReload: 0
   ammoPerShot: 30
@@ -7706,7 +7706,7 @@ MonoBehaviour:
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
-  chamber: 0
+  chamber: 1
 --- !u!4 &1521834672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1646928359334541822, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}

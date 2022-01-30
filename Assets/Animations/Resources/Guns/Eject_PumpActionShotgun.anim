@@ -5424,21 +5424,28 @@ AnimationClip:
   m_HasMotionFloatCurves: 0
   m_Events:
   - time: 0.06666667
-    functionName: Sound
-    data: 
-    objectReferenceParameter: {fileID: 8300000, guid: 1a7ea523f4926d04aa7d504d15958305, type: 3}
-    floatParameter: 0.5
-    intParameter: 0
-    messageOptions: 0
-  - time: 0.15
     functionName: ShellEjectPA
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 200
     intParameter: 0
     messageOptions: 0
-  - time: 0.15
+  - time: 0.06666667
+    functionName: Sound
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: 1a7ea523f4926d04aa7d504d15958305, type: 3}
+    floatParameter: 0.5
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.06666667
     functionName: Ejected
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.15
+    functionName: SetRaised
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0

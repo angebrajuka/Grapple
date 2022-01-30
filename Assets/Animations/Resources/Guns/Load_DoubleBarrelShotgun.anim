@@ -16422,6 +16422,13 @@ AnimationClip:
     floatParameter: 0.8
     intParameter: 0
     messageOptions: 0
+  - time: 0.21666667
+    functionName: UpdateAmmo
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
   - time: 0.43333334
     functionName: Sound
     data: 
