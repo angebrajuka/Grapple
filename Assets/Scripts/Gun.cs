@@ -58,7 +58,7 @@ public class Gun : MonoBehaviour
                 // on destroy
                 Destroy(bullet);
             },
-            false, 50, 50
+            false, pellets*2, pellets*2
         );
     }
 
@@ -89,7 +89,7 @@ public class Gun : MonoBehaviour
         ammo -= ammoPerShot;
         chamber = chamberPostShot;
 
-        if(prefab_muzzleFlash != null) Instantiate(prefab_muzzleFlash, barrelTip.position, transform.rotation, null);
+        if(prefab_muzzleFlash != null) Instantiate(prefab_muzzleFlash, barrelTip.position, transform.rotation, barrelTip);
 
         for(int i=0; i<pellets; i++)
         {

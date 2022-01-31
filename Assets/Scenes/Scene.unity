@@ -3320,20 +3320,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: LaserRifle
   ammoType: Plasma
-  damage: 200
+  damage: 300
   rpm: 100
   chamberPostShot: 1
   chamberPostReload: 0
   magSize: 30
   shotgunReload: 0
   ammoPerShot: 30
-  pellets: 1
+  pellets: 60
   range: 100
-  spread: 0
+  spread: 2
   recoil: 700
   clip_shoot: {fileID: 8300000, guid: 5731a3deca4cd204abe35d4238cca3e3, type: 3}
   vol_shoot: 1
-  prefab_muzzleFlash: {fileID: 8117090277491810597, guid: 0fec3cbf8c8fe994883d21859966b2c4, type: 3}
+  prefab_muzzleFlash: {fileID: 0}
   barrelTip: {fileID: 1396427960}
   prefab_projectile: {fileID: 6545686767845689485, guid: 798a647a883c0044a828e9281edfbb37, type: 3}
   projectileForce: 150
@@ -3624,7 +3624,7 @@ MonoBehaviour:
   recoil: 200
   clip_shoot: {fileID: 8300000, guid: db9be5e9ea9a1b5498df626fccadd5f7, type: 3}
   vol_shoot: 0.5
-  prefab_muzzleFlash: {fileID: 8117090277491810597, guid: 0fec3cbf8c8fe994883d21859966b2c4, type: 3}
+  prefab_muzzleFlash: {fileID: 0}
   barrelTip: {fileID: 1933543450}
   prefab_projectile: {fileID: 4461108514495309114, guid: 07654feb56cc95740a409922e6fdfcfa, type: 3}
   projectileForce: 50
@@ -7590,7 +7590,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1396427959}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.873}
+  m_LocalPosition: {x: 0, y: 0, z: 0.875}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
