@@ -40,10 +40,11 @@ with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
     zip_ref.extractall(APP_DATA)
 os.remove(zip_file_path)
 
-sys_version_file = open(sys_version_file_path, 'wb')
-byte_array = bytearray([cld_version_major, cld_version_minor, cld_version_patch])
-sys_version_file.write(byte_array)
-sys_version_file.close()
+# sys_version_file = open(sys_version_file_path, 'wb')
+# sys_version_file.write(cld_version_major.to_bytes(4, byteorder='big'))
+# sys_version_file.write(cld_version_minor.to_bytes(4, byteorder='big'))
+# sys_version_file.write(cld_version_patch.to_bytes(4, byteorder='big'))
+# sys_version_file.close()
 
 print('updated to newest version ({0}.{1}.{2})'.format(cld_version_major, cld_version_minor, cld_version_patch))
 

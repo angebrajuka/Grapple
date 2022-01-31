@@ -5980,7 +5980,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 846185126731159132, guid: a526d31e4549f9f44819820623e33e32, type: 3}
       propertyPath: m_Text
-      value: main menu (obviously)
+      value: main menu (clearly)
       objectReference: {fileID: 0}
     - target: {fileID: 2078996655745251302, guid: a526d31e4549f9f44819820623e33e32, type: 3}
       propertyPath: m_Pivot.x
