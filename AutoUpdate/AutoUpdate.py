@@ -3,6 +3,8 @@ import sys
 from google_drive_downloader import GoogleDriveDownloader as gdd
 import zipfile
 import shutil
+import winshell
+from win32com.client import Dispatch
 
 APP_DATA = os.getenv('APPDATA')+'/'
 game_files_directory_path = APP_DATA+'.Grapple/'
@@ -30,7 +32,8 @@ if(os.path.isfile(sys_version_file_path)):
         print('current version ({0}.{1}.{2}) already installed'.format(sys_version_major, sys_version_minor, sys_version_patch))
         sys.exit()
 
-shutil.rmtree(game_files_directory_path)
+if(os.path.isdir(game_files_directory_path)):
+    shutil.rmtree(game_files_directory_path)
 zip_file_path = './temp.zip'
 gdd.download_file_from_google_drive(file_id=cld_game_files_id, dest_path=zip_file_path, unzip=False)
 with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
@@ -43,3 +46,18 @@ sys_version_file.write(byte_array)
 sys_version_file.close()
 
 print('updated to newest version ({0}.{1}.{2})'.format(cld_version_major, cld_version_minor, cld_version_patch))
+
+desktop = winshell.desktop()
+path = os.path.join(desktop, "Grapple.lnk")
+target = game_files_directory_path+'Grapple.exe'
+wDir = game_files_directory_path
+icon = target
+shell = Dispatch('WScript.Shell')
+shortcut = shell.CreateShortCut(path)
+shortcut.Targetpath = target
+shortcut.WorkingDirectory = wDir
+shortcut.IconLocation = icon
+shortcut.save()
+
+# compile with pyinstaller:
+# pyinstaller -F AutoUpdate.py

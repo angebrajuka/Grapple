@@ -72,3 +72,7 @@ crashlytics-build.properties
 
 # other
 .vscode/
+AutoUpdate/__pycache__
+AutoUpdate/build
+AutoUpdate/dist
+AutoUpdate/AutoUpdate.spec
