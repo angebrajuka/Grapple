@@ -50,17 +50,17 @@ public class ReloadAnimationEvents : MonoBehaviour
     }
 
     public void SetRaised() {
-        if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
+        if(PlayerAnimator.state != PlayerAnimator.PRIMING && PlayerAnimator.state != PlayerAnimator.EJECTING) return;
         PlayerAnimator.SetState(PlayerAnimator.RAISED);
     }
 
     public void Primed() {
-        if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
+        if(PlayerAnimator.state != PlayerAnimator.PRIMING) return;
         PlayerInventory.CurrentGun.chamber = Gun.Chamber.FULL;
     }
 
     public void Ejected() {
-        if(PlayerAnimator.state == PlayerAnimator.SWAPPING) return;
+        if(PlayerAnimator.state != PlayerAnimator.EJECTING) return;
         PlayerInventory.CurrentGun.chamber = Gun.Chamber.EMPTY;
     }
 

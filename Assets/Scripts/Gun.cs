@@ -19,6 +19,7 @@ public class Gun : MonoBehaviour
     public AudioClip    clip_shoot;
     public float        vol_shoot; 
     public GameObject   prefab_muzzleFlash;
+    public Transform    barrelTip;
     public GameObject   prefab_projectile;
     public float        projectileForce;
 
@@ -87,6 +88,8 @@ public class Gun : MonoBehaviour
         timeLastShot = Time.time;
         ammo -= ammoPerShot;
         chamber = chamberPostShot;
+
+        if(prefab_muzzleFlash != null) Instantiate(prefab_muzzleFlash, barrelTip.position, transform.rotation, null);
 
         for(int i=0; i<pellets; i++)
         {

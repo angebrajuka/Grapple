@@ -81,7 +81,9 @@ public class PlayerAnimator : MonoBehaviour
         instance.gunPos.localPosition = pos;
         instance.gunPos.localRotation = rot;
     });
-    public static readonly State RECOIL_FORWARD = new State(null, () => {
+    public static readonly State RECOIL_FORWARD = new State(() => {
+        instance.gunReloadAnimator.SetInteger("state", 0);
+    }, () => {
         var pos = instance.gunPos.localPosition;
         var rot = instance.gunPos.localRotation;
         pos = Vector3.MoveTowards(pos, Vector3.zero, Time.deltaTime*instance.recoilSpeed_moveForward);

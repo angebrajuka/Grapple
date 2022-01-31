@@ -3333,7 +3333,8 @@ MonoBehaviour:
   recoil: 700
   clip_shoot: {fileID: 8300000, guid: 5731a3deca4cd204abe35d4238cca3e3, type: 3}
   vol_shoot: 1
-  prefab_muzzleFlash: {fileID: 0}
+  prefab_muzzleFlash: {fileID: 8117090277491810597, guid: 0fec3cbf8c8fe994883d21859966b2c4, type: 3}
+  barrelTip: {fileID: 1396427960}
   prefab_projectile: {fileID: 6545686767845689485, guid: 798a647a883c0044a828e9281edfbb37, type: 3}
   projectileForce: 150
   index: 0
@@ -3623,7 +3624,8 @@ MonoBehaviour:
   recoil: 200
   clip_shoot: {fileID: 8300000, guid: db9be5e9ea9a1b5498df626fccadd5f7, type: 3}
   vol_shoot: 0.5
-  prefab_muzzleFlash: {fileID: 0}
+  prefab_muzzleFlash: {fileID: 8117090277491810597, guid: 0fec3cbf8c8fe994883d21859966b2c4, type: 3}
+  barrelTip: {fileID: 1933543450}
   prefab_projectile: {fileID: 4461108514495309114, guid: 07654feb56cc95740a409922e6fdfcfa, type: 3}
   projectileForce: 50
   index: 0
@@ -4916,7 +4918,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 863355254}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.753}
+  m_LocalPosition: {x: 0, y: 0, z: 1.0216}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7564,6 +7566,37 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 222980818345627221, guid: bd7939af861fb6841a3bf8ee5ede1910, type: 3}
   m_PrefabInstance: {fileID: 1388565250}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1396427959
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1396427960}
+  m_Layer: 3
+  m_Name: BarrelTip
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1396427960
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1396427959}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.873}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 622906089}
+  m_RootOrder: 10
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1448688629 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 6363865852984966141, guid: 800ef00517d3b9c4cba4c3a6c2f63f68, type: 3}
@@ -7660,7 +7693,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1500370113}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.483}
+  m_LocalPosition: {x: 0, y: 0, z: 0.8529}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7699,14 +7732,15 @@ MonoBehaviour:
   recoil: 600
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.4
-  prefab_muzzleFlash: {fileID: 0}
+  prefab_muzzleFlash: {fileID: 5650855358854824435, guid: 0d389d102b6ac6c4a85440c707f64f99, type: 3}
+  barrelTip: {fileID: 863355255}
   prefab_projectile: {fileID: 1984140583811047628, guid: a7ef85700fa113f45aebfe8478092d64, type: 3}
   projectileForce: 100
   index: 0
   timeBetweenShots: 0
   ammo: 0
   timeLastShot: 0
-  chamber: 1
+  chamber: 0
 --- !u!4 &1521834672 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1646928359334541822, guid: fec0857d0aa48314aad2c4faf24ed056, type: 3}
@@ -9667,7 +9701,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1933543449}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.516}
+  m_LocalPosition: {x: 0, y: 0, z: 0.794}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10333,7 +10367,8 @@ MonoBehaviour:
   recoil: 1200
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.6
-  prefab_muzzleFlash: {fileID: 0}
+  prefab_muzzleFlash: {fileID: 5650855358854824435, guid: 0d389d102b6ac6c4a85440c707f64f99, type: 3}
+  barrelTip: {fileID: 1500370114}
   prefab_projectile: {fileID: 1984140583811047628, guid: a7ef85700fa113f45aebfe8478092d64, type: 3}
   projectileForce: 100
   index: 0
