@@ -3614,7 +3614,7 @@ MonoBehaviour:
   damage: 120
   rpm: 220
   chamberPostShot: 0
-  chamberPostReload: 2
+  chamberPostReload: 0
   magSize: 4
   shotgunReload: 1
   ammoPerShot: 1
