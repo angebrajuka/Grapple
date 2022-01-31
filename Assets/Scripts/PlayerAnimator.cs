@@ -109,8 +109,7 @@ public class PlayerAnimator : MonoBehaviour
         return instance.gunPosAnimator; } }
 
     public static bool CanShoot { get { 
-        return state != SWAPPING && 
-            (state != EJECTING || PlayerInventory.CurrentGun.shotgunReload) && 
+        return (state == RAISED || (state == RELOADING && PlayerInventory.CurrentGun.shotgunReload)) && 
             PlayerInventory.CurrentGunName == activeGun; }}
 
     public void Init()

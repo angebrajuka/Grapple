@@ -3333,7 +3333,7 @@ MonoBehaviour:
   recoil: 700
   clip_shoot: {fileID: 8300000, guid: 5731a3deca4cd204abe35d4238cca3e3, type: 3}
   vol_shoot: 1
-  prefab_muzzleFlash: {fileID: 0}
+  prefab_muzzleFlash: {fileID: 6625216646005247964, guid: 8aeea04c38e141f418183ca76d32b965, type: 3}
   barrelTip: {fileID: 1396427960}
   prefab_projectile: {fileID: 6545686767845689485, guid: 798a647a883c0044a828e9281edfbb37, type: 3}
   projectileForce: 150
