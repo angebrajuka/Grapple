@@ -7,14 +7,15 @@ from win32com.client import Dispatch
 
 APP_DATA = os.getenv('APPDATA')+'/'
 game_files_directory_path = APP_DATA+'.Grapple/'
-cld_game_files_id   = '1ImTlPnKqG4jlGJbAcUD2imZgdFqT4kHl'
+game_files_id = '1ImTlPnKqG4jlGJbAcUD2imZgdFqT4kHl'
 
 if(os.path.isdir(game_files_directory_path)):
     shutil.rmtree(game_files_directory_path)
 zip_file_path = './temp.zip'
-gdd.download_file_from_google_drive(file_id=cld_game_files_id, dest_path=zip_file_path, unzip=False)
+gdd.download_file_from_google_drive(file_id=game_files_id, dest_path=zip_file_path, unzip=False)
 with zipfile.ZipFile(zip_file_path, 'r') as zip_ref:
     zip_ref.extractall(APP_DATA)
+    zip_ref.close()
 os.remove(zip_file_path)
 
 print('updated to newest version')
