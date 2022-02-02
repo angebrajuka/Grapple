@@ -19,7 +19,7 @@ public class PlayerHUD : MonoBehaviour
     public Slider slider_health;
     public Slider slider_armour;
 
-    public static Dictionary<string, Texture2D> ammoImages;
+    public static Dictionary<Ammo, Texture2D> ammoImages;
     float grappleRechargeAngle;
     float compressedAirAngle;  // store angles because of Unity auto convert to positive, fucks up my logic
     float compressedAirTarget;
@@ -28,13 +28,10 @@ public class PlayerHUD : MonoBehaviour
     {
         instance = this;
 
-        ammoImages = new Dictionary<string, Texture2D>();
-        foreach(var gun in Guns.guns)
+        ammoImages = new Dictionary<Ammo, Texture2D>();
+        foreach(var image in PlayerInventory.instance.ammoDatas)
         {
-            if(!ammoImages.ContainsKey(gun.ammoType))
-            {
-                ammoImages.Add(gun.ammoType, Resources.Load<Texture2D>("ammo_"+gun.ammoType));
-            }
+            ammoImages.Add(image.ammo, image.tex);
         }
 
         compressedAirAngle = compressedAir_needle.localEulerAngles.z;

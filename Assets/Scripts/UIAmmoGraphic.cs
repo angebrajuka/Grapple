@@ -1,18 +1,26 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class UIAmmoGraphic : MonoBehaviour
 {
     // hierarchy
     public GameObject prefab_ammoTick;
-    public bool mag; // uses magSize when true, playerAmmo when false
-    public float spacing;
-    public Color color;
     public float scale;
 
-    int ammo=0;
-    string ammoType;
-    Transform lowest;
+    int mag=0, ammo=0;
+    Ammo ammoType;
+    List<RectTransform> ticks;
+    Dictionary<Ammo, float> spacings;
+    public Color color;
+
+    void Start() {
+        spacings = new Dictionary<Ammo, float>();
+        foreach(var ammoData in PlayerInventory.instance.ammoDatas) {
+            spacings.Add(ammoData.ammo, ammoData.spacing);
+        }
+        ticks = new List<RectTransform>();
+    }
 
     RawImage Image(Transform t)
     {
@@ -21,41 +29,48 @@ public class UIAmmoGraphic : MonoBehaviour
 
     void Update()
     {
-        string pAmmoType = PlayerInventory.CurrentGun.ammoType;
-        if(pAmmoType != ammoType)
+        Ammo pAmmoType = PlayerInventory.CurrentGun.ammoType;
+        int pMag = PlayerInventory.CurrentGun.magSize;
+        if(pAmmoType != ammoType || pMag != mag)
         {
             ammoType = pAmmoType;
-            Transform current = lowest;
-            for(int i=0; i<50 && current != null && current != transform; i++)
-            {
-                var image = Image(current);
-                image.texture = PlayerHUD.ammoImages[ammoType];
-                current = current.parent;
+            for(int i=0; i<50 && ticks.Count>0; i++) {
+                Destroy(ticks[0].gameObject);
+                ticks.RemoveAt(0);
             }
+
+            mag = pMag;
+            for(int i=0; i<mag; i++) {
+                var go = Instantiate(prefab_ammoTick, transform);
+                var rect = go.GetComponent<RectTransform>();
+                rect.anchoredPosition += Vector2.left*spacings[ammoType]*i;
+                ticks.Add(rect);
+
+                for(int c=0; c<2; c++) {
+                    var ri = go.transform.GetChild(c).GetComponent<RawImage>();
+                    ri.texture = PlayerHUD.ammoImages[ammoType];
+                    var col = ri.color;
+                    for(var rgb=0; rgb<3; rgb++) {
+                        col[rgb] = color[rgb];
+                    }
+                    ri.color = col;
+                }
+            }
+            ammo = -1;
         }
 
-        int pAmmo = mag ? PlayerInventory.CurrentGun.magSize : PlayerInventory.Ammo;
+        int pAmmo = PlayerInventory.Ammo;
         if(pAmmo != ammo)
         {
-            for(int i=0; i<ammo-pAmmo; i++)
-            {
-                Destroy(lowest.gameObject);
-                lowest = lowest.parent;
-            }
-            for(int i=0; i<pAmmo-ammo; i++)
-            {
-                if(lowest == null) lowest = transform;
-                var go = Instantiate(prefab_ammoTick, lowest);
-                var rect = go.GetComponent<RectTransform>();
-                var pos = rect.anchoredPosition;
-                pos.Set(0, 0);
-                rect.anchoredPosition = pos;
-                var image = Image(go.transform);
-                image.color = color;
-                image.texture = PlayerHUD.ammoImages[ammoType];
-                lowest = go.transform;
-            }
             ammo = pAmmo;
+            for(int i=0; i<ticks.Count; i++)
+            {
+                ticks[i].GetChild(1).gameObject.SetActive(false);
+            }
+            for(int i=0; i<ammo; i++)
+            {
+                ticks[i].GetChild(1).gameObject.SetActive(true);
+            }
         }
     }
 }

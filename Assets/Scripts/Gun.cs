@@ -1,10 +1,17 @@
 using UnityEngine;
 using UnityEngine.Pool;
 
+public enum Ammo : byte {
+    NATO556,
+    SHELLS,
+    GRENADES,
+    PLASMA
+}
+
 public class Gun : MonoBehaviour
 {
     public string       _name;
-    public string       ammoType;
+    public Ammo         ammoType;
     public float        damage;
     public int          rpm;
     public Chamber      chamberPostShot;

@@ -2,28 +2,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-class AmmoDatum
-{
-    public string name;
-    public int start;
-    public int max;
-}
-
-[System.Serializable]
-class AmmoDataJson
-{
-    public AmmoDatum[] ammoDatums;
+public class AmmoData {
+    public Ammo ammo;
+    public int start, max;
+    public Texture2D tex;
+    public float spacing;
 }
 
 public class PlayerInventory : MonoBehaviour
 {
+    public static PlayerInventory instance;
+
+    // hierarchy
+    public AmmoData[] ammoDatas;
+
     public static bool[] hasGun;
     public static int _currentGun;
     public static int _nextGun;
     public static Gun CurrentGun { get { return Guns.guns[_currentGun]; } }
-    public static Dictionary<string, int> maxAmmo;
-    public static Dictionary<string, int> startAmmo;
-    public static Dictionary<string, int> reserveAmmo;
+    public static Dictionary<Ammo, int> maxAmmo;
+    public static Dictionary<Ammo, int> startAmmo;
+    public static Dictionary<Ammo, int> reserveAmmo;
     public static int Ammo
     {
         get { return CurrentGun.ammo; }
@@ -42,18 +41,19 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    public static void Init()
+    public void Init()
     {
+        instance = this;
+
         hasGun = new bool[Guns.guns.Length];
-        maxAmmo = new Dictionary<string, int>();
-        startAmmo = new Dictionary<string, int>();
-        reserveAmmo = new Dictionary<string, int>();
-        var ammoData = JsonUtility.FromJson<AmmoDataJson>(Resources.Load<TextAsset>("AmmoData").text);
-        foreach(var datum in ammoData.ammoDatums)
+        maxAmmo = new Dictionary<Ammo, int>();
+        startAmmo = new Dictionary<Ammo, int>();
+        reserveAmmo = new Dictionary<Ammo, int>();
+        foreach(var datum in ammoDatas)
         {
-            maxAmmo.Add(datum.name, datum.max);
-            startAmmo.Add(datum.name, datum.start);
-            reserveAmmo.Add(datum.name, 0);
+            maxAmmo.Add(datum.ammo, datum.max);
+            startAmmo.Add(datum.ammo, datum.start);
+            reserveAmmo.Add(datum.ammo, 0);
         }
     }
 

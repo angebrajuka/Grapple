@@ -28,8 +28,8 @@ public class Init : MonoBehaviour
         menuHandler.Init();
 
         guns.Init();
+        player.GetComponent<PlayerInventory>().Init();
         player.GetComponent<PlayerHUD>().Init();
-        PlayerInventory.Init();
 
         player.GetComponent<PlayerAnimator>().Init();
         player.GetComponent<PlayerInput>().Init();
