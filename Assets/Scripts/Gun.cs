@@ -15,7 +15,9 @@ public class Gun : MonoBehaviour
     public float        damage;
     public int          rpm;
     public Chamber      chamberPostShot;
+    public Chamber      chamberPostLastShot;
     public Chamber      chamberPostReload;
+    public bool         magfed;
     public int          magSize;
     public bool         shotgunReload;
     public int          ammoPerShot;
@@ -94,7 +96,7 @@ public class Gun : MonoBehaviour
         PlayerMovement.rb.AddForce(PlayerMovement.instance.t_camera.TransformDirection(0, 0, -recoil));
         timeLastShot = Time.time;
         ammo -= ammoPerShot;
-        chamber = chamberPostShot;
+        chamber = (ammo == 0 ? chamberPostLastShot : chamberPostShot);
 
         if(prefab_muzzleFlash != null) Instantiate(prefab_muzzleFlash, barrelTip.position, transform.rotation, barrelTip);
 

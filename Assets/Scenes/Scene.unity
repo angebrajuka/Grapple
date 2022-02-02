@@ -3359,7 +3359,9 @@ MonoBehaviour:
   damage: 300
   rpm: 100
   chamberPostShot: 1
+  chamberPostLastShot: 1
   chamberPostReload: 0
+  magfed: 0
   magSize: 1
   shotgunReload: 0
   ammoPerShot: 1
@@ -3650,7 +3652,9 @@ MonoBehaviour:
   damage: 120
   rpm: 220
   chamberPostShot: 0
+  chamberPostLastShot: 0
   chamberPostReload: 0
+  magfed: 0
   magSize: 4
   shotgunReload: 1
   ammoPerShot: 1
@@ -7963,7 +7967,9 @@ MonoBehaviour:
   damage: 60
   rpm: 96
   chamberPostShot: 1
+  chamberPostLastShot: 1
   chamberPostReload: 0
+  magfed: 0
   magSize: 6
   shotgunReload: 1
   ammoPerShot: 1
@@ -9969,17 +9975,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: AssaultRifle
   ammoType: 0
-  damage: 8
-  rpm: 400
+  damage: 12
+  rpm: 600
   chamberPostShot: 2
+  chamberPostLastShot: 1
   chamberPostReload: 2
+  magfed: 1
   magSize: 30
   shotgunReload: 0
   ammoPerShot: 1
   pellets: 1
   range: 200
   spread: 0.5
-  recoil: 60
+  recoil: 50
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.3
   prefab_muzzleFlash: {fileID: 5650855358854824435, guid: 0d389d102b6ac6c4a85440c707f64f99, type: 3}
@@ -10607,7 +10615,9 @@ MonoBehaviour:
   damage: 140
   rpm: 140
   chamberPostShot: 1
+  chamberPostLastShot: 1
   chamberPostReload: 2
+  magfed: 0
   magSize: 2
   shotgunReload: 0
   ammoPerShot: 2

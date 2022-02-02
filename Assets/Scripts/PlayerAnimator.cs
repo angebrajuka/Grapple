@@ -48,10 +48,11 @@ public class PlayerAnimator : MonoBehaviour
             SetState(EJECTING);
             return;
         }
-        if(PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY && PlayerInventory.Ammo >= PlayerInventory.CurrentGun.ammoPerShot) {
+        if(PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY && PlayerInventory.Ammo >= PlayerInventory.CurrentGun.ammoPerShot && !PlayerInventory.CurrentGun.magfed) {
             SetState(PRIMING);
             return;
         }
+        Debug.Log("precheck");
         instance.CheckReload();
     });
     public static readonly State SWAPPING = new State(() => {
@@ -133,9 +134,13 @@ public class PlayerAnimator : MonoBehaviour
 
     public void CheckReload(bool force=false)
     {
-        if(CanReload && PlayerInventory.CanReload && (ShotgunAutoReload || force || PlayerInventory.Ammo <= 0))
+        Debug.Log("check");
+        Debug.Log(state == PRIMING);
+        Debug.Log(CanReload+","+PlayerInventory.CanReload+","+(PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY));
+        if(CanReload && PlayerInventory.CanReload && (ShotgunAutoReload || force || PlayerInventory.Ammo <= 0 || PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY))
         {
-            SetState(RELOADING);
+            Debug.Log("reload");
+            SetState((PlayerInventory.CurrentGun.magfed && PlayerInventory.CurrentGun.chamber != Gun.Chamber.EMPTY) ? EJECTING : RELOADING);
         }
     }
 

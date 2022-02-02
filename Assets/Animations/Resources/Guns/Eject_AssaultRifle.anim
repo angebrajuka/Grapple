@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Idle_AssaultRifle
+  m_Name: Eject_AssaultRifle
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -859,7 +859,7 @@ AnimationClip:
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0
+    m_StopTime: 0.016666668
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -2934,67 +2934,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_right
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_right
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_right
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid/Finger2.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid/Finger2.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid/Finger2.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left
     classID: 4
     script: {fileID: 0}
@@ -3014,7 +2954,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left
     classID: 4
     script: {fileID: 0}
@@ -3024,7 +2964,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
+    attribute: m_LocalEulerAngles.x
     path: GunPos/player_Arm_Left/Forearm
     classID: 4
     script: {fileID: 0}
@@ -3044,7 +2984,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm
     classID: 4
     script: {fileID: 0}
@@ -3054,37 +2994,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist
     classID: 4
     script: {fileID: 0}
@@ -3104,7 +3014,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist
     classID: 4
     script: {fileID: 0}
@@ -3114,8 +3024,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid
+    attribute: m_LocalEulerAngles.x
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3125,17 +3035,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3145,17 +3045,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid/Finger1.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid/Finger1.Tip
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3165,16 +3055,6 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid/Finger1.Tip
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base
     classID: 4
     script: {fileID: 0}
@@ -3194,7 +3074,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base
     classID: 4
     script: {fileID: 0}
@@ -3204,7 +3084,97 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.x
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.y
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.x
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid/Finger1.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.y
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid/Finger1.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger1.Base/Finger1.Mid/Finger1.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.x
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.y
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.x
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid
     classID: 4
     script: {fileID: 0}
@@ -3224,7 +3194,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid
     classID: 4
     script: {fileID: 0}
@@ -3234,8 +3204,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base
+    attribute: m_LocalEulerAngles.x
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid/Finger2.Tip
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3245,7 +3215,17 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid/Finger2.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base/Finger2.Mid/Finger2.Tip
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3255,7 +3235,27 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger2.Base
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.y
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3294,37 +3294,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base/Finger3.Mid/Finger3.Tip
     classID: 4
     script: {fileID: 0}
@@ -3344,7 +3314,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger3.Base/Finger3.Mid/Finger3.Tip
     classID: 4
     script: {fileID: 0}
@@ -3354,7 +3324,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
+    attribute: m_LocalEulerAngles.x
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base
     classID: 4
     script: {fileID: 0}
@@ -3374,7 +3344,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base
     classID: 4
     script: {fileID: 0}
@@ -3384,7 +3354,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
+    attribute: m_LocalEulerAngles.x
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid
     classID: 4
     script: {fileID: 0}
@@ -3404,7 +3374,7 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.x
+    attribute: m_LocalEulerAngles.z
     path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid
     classID: 4
     script: {fileID: 0}
@@ -3414,38 +3384,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand
-    classID: 4
-    script: {fileID: 0}
-  - curve:
-      serializedVersion: 2
-      m_Curve: []
-      m_PreInfinity: 2
-      m_PostInfinity: 2
-      m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid/Finger4.Tip
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3455,7 +3395,17 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid/Finger4.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid/Finger4.Tip
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3474,8 +3424,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_right/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
+    attribute: m_LocalEulerAngles.y
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3484,8 +3434,8 @@ AnimationClip:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_right/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3495,7 +3445,57 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_right/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.y
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.x
+    path: GunPos/player_Arm_right
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.y
+    path: GunPos/player_Arm_right
+    classID: 4
+    script: {fileID: 0}
+  - curve:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    attribute: m_LocalEulerAngles.z
+    path: GunPos/player_Arm_right
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3985,7 +3985,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.x
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid/Finger4.Tip
+    path: GunPos/player_Arm_right/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -3995,7 +3995,7 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.y
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid/Finger4.Tip
+    path: GunPos/player_Arm_right/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
     classID: 4
     script: {fileID: 0}
   - curve:
@@ -4005,9 +4005,37 @@ AnimationClip:
       m_PostInfinity: 2
       m_RotationOrder: 4
     attribute: m_LocalEulerAngles.z
-    path: GunPos/player_Arm_Left/Forearm/Wrist/Hand/Finger4.Base/Finger4.Mid/Finger4.Tip
+    path: GunPos/player_Arm_right/Forearm/Wrist/Hand/Thumb.Base/Thumb.Tip
     classID: 4
     script: {fileID: 0}
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0
+    functionName: Ejected
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: Sound
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: bad9170812b75fb45a2c5d7678f88aa2, type: 3}
+    floatParameter: 1
+    intParameter: 0
+    messageOptions: 0
+  - time: 0
+    functionName: ShellEjectDB
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 1
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.016666668
+    functionName: SetRaised
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
