@@ -56,11 +56,11 @@ public class Typewriter : MonoBehaviour
         switch (letter)
         {
         case '.':
-        case '\n':
             yield return new WaitForSeconds(pauseInfo.dotPause);
             ReproduceText();
             yield break;
         case ',':
+        case '\n':
         case ':':
             yield return new WaitForSeconds(pauseInfo.commaPause);
             ReproduceText();
