@@ -6,17 +6,22 @@ using UnityEngine;
 
 public class Typewriter : MonoBehaviour
 {
-    private int index;
-    private string actualText = "";
-    
+    // hierarchy
     public TextMeshProUGUI logTextBox;
     public TextAsset finalText;
     public float startDelay;
     public PauseInfo pauseInfo;
+    public AudioClip[] typeClips;
+
+    private int index;
+    private string actualText;
     public Action endFunc;
 
     private void OnEnable()
     {
+        index = 0;
+        actualText = "";
+        logTextBox.text = "";
         Invoke(nameof(ReproduceText), startDelay);
     }
 
@@ -42,6 +47,7 @@ public class Typewriter : MonoBehaviour
     private string Write(char letter)
     {
         actualText += letter;
+        AudioManager.PlayClip(typeClips[UnityEngine.Random.Range(0, typeClips.Length)], UnityEngine.Random.Range(0.5f, 1.0f));
         return actualText;
     }
 

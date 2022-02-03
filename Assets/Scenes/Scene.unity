@@ -10765,7 +10765,18 @@ MonoBehaviour:
     dotPause: 0.8
     commaPause: 0.5
     spacePause: 0
-    normalPause: 0.05
+    normalPause: 0.08
+  typeClips:
+  - {fileID: 8300000, guid: 8c580387db4635d41913a7b1c6717bc0, type: 3}
+  - {fileID: 8300000, guid: 1913ff069c8fc154eb42d88653abcadf, type: 3}
+  - {fileID: 8300000, guid: 15e3e4f2130d0fb43a8cb02f7d453a0a, type: 3}
+  - {fileID: 8300000, guid: abf5941ea8457994bb25a4519bdbd121, type: 3}
+  - {fileID: 8300000, guid: 4e80497480f8ec74b8df87990fcac863, type: 3}
+  - {fileID: 8300000, guid: 80aebb28b0d57ea4e8e9539548c85a3a, type: 3}
+  - {fileID: 8300000, guid: e020f343446bf0240a53d95c72863cd0, type: 3}
+  - {fileID: 8300000, guid: 2a42f305d580c0446a563a326a2e1bc0, type: 3}
+  - {fileID: 8300000, guid: 26082b6215cc33448b0799d0a4024c1b, type: 3}
+  - {fileID: 8300000, guid: e1b9683a11552484b86e8581d67067e2, type: 3}
 --- !u!1001 &1823099011
 PrefabInstance:
   m_ObjectHideFlags: 0
