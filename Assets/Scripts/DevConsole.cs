@@ -4,11 +4,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class DevConsole : MonoBehaviour
 {
-    public InputField inputField;
-    public Text textObject;
+    // hierarchy
+    public GameObject backing;
+    public TMP_InputField inputField;
 
     public static bool isActive=false;
     static Dictionary<string, MethodInfo> commands = new Dictionary<string, MethodInfo>();
@@ -27,21 +29,21 @@ public class DevConsole : MonoBehaviour
     {
         isActive = true;
         PauseHandler.frozenInput = true;
-        inputField.gameObject.SetActive(true);
+        backing.SetActive(true);
         inputField.ActivateInputField();
-        textObject.text = "";
+        inputField.text = "";
     }
 
     void Disable()
     {
         isActive = false;
         PauseHandler.frozenInput = false;
-        inputField.gameObject.SetActive(false);
+        backing.SetActive(false);
     }
 
     public void OnCommandEntered()
     {
-        string text = textObject.text.ToLower();
+        string text = inputField.text.ToLower();
         string[] words = text.Split(' ');
         try
         {
@@ -52,10 +54,12 @@ public class DevConsole : MonoBehaviour
         Disable();
     }
 
-    void Update()
-    {
-        if(Input.GetKeyDown(KeyCode.BackQuote))
-        {
+    void Update() {
+        if(Input.GetKeyDown(KeyCode.Escape)) {
+            Disable();
+            return;
+        }
+        if(!PauseHandler.paused && Input.GetKeyDown(KeyCode.BackQuote)) {
             if(!isActive)   Enable();
             else            Disable();
         }

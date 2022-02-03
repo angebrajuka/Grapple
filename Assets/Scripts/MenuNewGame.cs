@@ -8,7 +8,7 @@ using TMPro;
 public class MenuNewGame : MonoBehaviour
 {
     public TMP_InputField seed;
-    public Dropdown difficulty;
+    public TMP_Dropdown difficulty;
     public TMP_InputField save;
 
     const string glyphs= "abcdefghijklmnopqrstuvwxyz0123456789";
