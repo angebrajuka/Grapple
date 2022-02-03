@@ -2272,7 +2272,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6617008212008839710, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6617008212008839711, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
       propertyPath: m_Pivot.x
@@ -8076,6 +8076,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1333254399 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6617008212008839710, guid: 87ccb00fba3166d45b81fac56931f21f, type: 3}
+  m_PrefabInstance: {fileID: 422670520}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1355868842
 GameObject:
   m_ObjectHideFlags: 0
@@ -9069,13 +9074,13 @@ MonoBehaviour:
   m_text: Terminal
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 21553d76adaa6e54c9a0e2152705a8ca, type: 2}
-  m_sharedMaterial: {fileID: 0}
+  m_sharedMaterial: {fileID: -576281243781636605, guid: 21553d76adaa6e54c9a0e2152705a8ca, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
+    rgba: 4278190080
   m_fontColor: {r: 0, g: 0, b: 0, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -9088,7 +9093,7 @@ MonoBehaviour:
   m_spriteAsset: {fileID: 0}
   m_tintAllSprites: 0
   m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: 0
+  m_TextStyleHashCode: -1183493901
   m_overrideHtmlColors: 0
   m_faceColor:
     serializedVersion: 2
@@ -9119,7 +9124,7 @@ MonoBehaviour:
   checkPaddingRequired: 0
   m_isRichText: 1
   m_parseCtrlCharacters: 1
-  m_isOrthographic: 0
+  m_isOrthographic: 1
   m_isCullingEnabled: 0
   m_horizontalMapping: 0
   m_verticalMapping: 0
@@ -9132,7 +9137,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 1
+  m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1587825210
@@ -10644,13 +10649,14 @@ GameObject:
   - component: {fileID: 1804363158}
   - component: {fileID: 1804363157}
   - component: {fileID: 1804363160}
+  - component: {fileID: 1804363161}
   m_Layer: 5
   m_Name: Console
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1804363156
 RectTransform:
   m_ObjectHideFlags: 0
@@ -10740,6 +10746,26 @@ MonoBehaviour:
   m_EffectColor: {r: 0.11320752, g: 0.11320752, b: 0.11320752, a: 1}
   m_EffectDistance: {x: 1, y: -1}
   m_UseGraphicAlpha: 1
+--- !u!114 &1804363161
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1804363155}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 719b1a9d3c6dea04da78f903cf3f3697, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  logTextBox: {fileID: 100605031}
+  finalText: {fileID: 4900000, guid: a3bf8177d7478804f8b97cd552bc317d, type: 3}
+  startDelay: 0.5
+  pauseInfo:
+    dotPause: 0.8
+    commaPause: 0.5
+    spacePause: 0
+    normalPause: 0.05
 --- !u!1001 &1823099011
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11639,12 +11665,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 95c1dc7c78ec0c34a9a1809e186fc25b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  console: {fileID: 1804363156}
-  script: {fileID: 4900000, guid: a3bf8177d7478804f8b97cd552bc317d, type: 3}
-  textbox: {fileID: 100605031}
+  console: {fileID: 1804363161}
+  continueButton: {fileID: 1333254399}
   delay_popup: 0.5
-  delay_startTyping: 2
-  delay_betweenLetters: 1
+  delay_end: 1.2
+  menuNewGame: {fileID: 2037131597}
 --- !u!1001 &1985976418
 PrefabInstance:
   m_ObjectHideFlags: 0

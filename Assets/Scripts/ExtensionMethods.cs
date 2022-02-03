@@ -51,4 +51,12 @@ public static class ExtensionMethods
         col.b = b;
         col.a = a;
     }
+
+    public static int Count(this string source, char c) {
+        int count = 0;
+        foreach (char i in source) {
+            if (i == c) count++;
+        }
+        return count;
+    }
 }
