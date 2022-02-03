@@ -7,7 +7,7 @@ public class MenuHandler : MonoBehaviour
     static MenuHandler instance;
 
     // hierarchy
-    public float menuSeed;
+    public long menuSeed;
 
     private static int currentMenu;
     private static Stack<int> prevMenu;

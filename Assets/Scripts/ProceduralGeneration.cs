@@ -28,7 +28,15 @@ public class ProceduralGeneration : MonoBehaviour
 
     const int MAX_DECORS = 20;
 
-    public static float seed;
+    public static long seed;
+    public static ushort seed_ll { get { return (ushort)((seed >> 48) & 0xFFFF); } }
+    public static ushort seed_lm { get { return (ushort)((seed >> 32) & 0xFFFF); } }
+    public static ushort seed_rm { get { return (ushort)((seed >> 16) & 0xFFFF); } }
+    public static ushort seed_rr { get { return (ushort)((seed >>  0) & 0xFFFF); } } // TODO double check
+    public static float seed_temp   { get { return seed_ll+((float)seed_ll/100000.0f); } }
+    public static float seed_rain   { get { return seed_lm+((float)seed_lm/100000.0f); } }
+    public static float seed_height { get { return seed_rm+((float)seed_rm/100000.0f); } }
+    public static float seed_       { get { return seed_rr+((float)seed_rr/100000.0f); } }
 
     static LinkedList<Chunk> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
@@ -139,9 +147,9 @@ public class ProceduralGeneration : MonoBehaviour
         currPos = new Vector3Int(0, 0, 0);
     }
 
-    public static float RandomSeed()
+    public static long RandomSeed()
     {
-        seed = (float)UnityEngine.Random.value*(float)4586+UnityEngine.Random.value;
+        seed = Math.RandLong();
         return seed;
     }
 

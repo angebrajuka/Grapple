@@ -24,17 +24,9 @@ public class MenuNewGame : MonoBehaviour
 
     public void StartGame()
     {
-        if(!float.TryParse(seed.text, out ProceduralGeneration.seed))
+        if(!long.TryParse(seed.text, out ProceduralGeneration.seed))
         {
-            if(seed.text == "")
-            {
-                ProceduralGeneration.RandomSeed();
-            }
-            else
-            {
-                int hash = seed.text.GetHashCode();
-                ProceduralGeneration.seed = Mathf.Abs(4000*Mathf.Sin(90285421.3940567f*((float)hash / (float)(Mathf.Pow(10, hash.ToString().Length/2)))));
-            }
+            ProceduralGeneration.RandomSeed();
         }
 
         EnemySpawning.difficulty = difficulty.value;

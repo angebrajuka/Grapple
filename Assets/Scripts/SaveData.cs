@@ -22,7 +22,7 @@ public class SaveData
 
     public string saveName;
 
-    public float seed;
+    public long seed;
 
     public float[] player_pos;
     public float[] player_rot_rb;

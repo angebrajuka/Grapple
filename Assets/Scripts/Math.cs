@@ -101,4 +101,13 @@ public static class Math
     {
         return a - b * Mathf.Floor(a / b);
     }
+
+    public static long RandLong() {
+        ushort ll = (ushort)Random.Range(0, 65535);
+        ushort lm = (ushort)Random.Range(0, 65535);
+        ushort rm = (ushort)Random.Range(0, 65535);
+        ushort rr = (ushort)Random.Range(0, 65535);
+
+        return ll << 48 + lm << 32 + rm << 16 + rr;
+    }
 }
