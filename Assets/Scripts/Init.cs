@@ -42,7 +42,7 @@ public class Init : MonoBehaviour
         devConsole.Init();
 
         PauseHandler.Pause();
-        MenuHandler.CurrentMenu = 1;
+        MenuHandler.MainMenu(false);
 
         Destroy(gameObject);
     }

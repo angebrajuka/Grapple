@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEditor;
+using TMPro;
 
 [ExecuteInEditMode]
 public class UIColorLink : MonoBehaviour
@@ -12,7 +13,7 @@ public class UIColorLink : MonoBehaviour
     UIColorLink parentColor;
     Image image;
     RawImage rawImage;
-    Text text;
+    TextMeshProUGUI text;
     UIAmmoGraphic ammoGraphic;
 
     void CheckParent(Transform t)
@@ -28,7 +29,7 @@ public class UIColorLink : MonoBehaviour
         CheckParent(transform.parent);
         image = GetComponent<Image>();
         rawImage = GetComponent<RawImage>();
-        text = GetComponent<Text>();
+        text = GetComponent<TextMeshProUGUI>();
         ammoGraphic = GetComponent<UIAmmoGraphic>();
     }
 

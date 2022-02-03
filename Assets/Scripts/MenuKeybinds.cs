@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuKeybinds : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class MenuKeybinds : MonoBehaviour
 
     void SetButtonText(MenuButton button)
     {
-        Text keybindText = button.transform.GetChild(0).GetComponent<Text>();
+        TextMeshProUGUI keybindText = button.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         keybindText.text = "";
         for(int bind = 0; bind<PlayerInput.keybinds[button.control].Length; bind++)
         {
@@ -41,7 +42,7 @@ public class MenuKeybinds : MonoBehaviour
             MenuButton button = go.transform.GetChild(1).GetComponent<MenuButton>();
             button.control = pair.Key;
             button.menuKeybinds = this;
-            rect.transform.GetChild(0).GetComponent<Text>().text = pair.Key;
+            rect.transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = pair.Key;
 
             SetButtonText(button);
 

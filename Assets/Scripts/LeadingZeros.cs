@@ -1,16 +1,17 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class LeadingZeros : MonoBehaviour
 {
     // hierarchy
     public int numDigits;
 
-    Text text;
+    TextMeshProUGUI text;
 
     public void Check()
     {
-        if(text == null) text = GetComponent<Text>();
+        if(text == null) text = GetComponent<TextMeshProUGUI>();
 
         if(text.text.Length < numDigits)
         {

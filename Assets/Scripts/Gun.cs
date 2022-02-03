@@ -46,6 +46,7 @@ public class Gun : MonoBehaviour
         timeBetweenShots = 60f/rpm;
         ammo = 0;
         timeLastShot = 0;
+        int bullets = pellets*2*magSize;
         pool_bullets = new ObjectPool<GameObject>(
             () => {
                 // on create
@@ -67,7 +68,7 @@ public class Gun : MonoBehaviour
                 // on destroy
                 Destroy(bullet);
             },
-            false, pellets*2, pellets*2
+            false, bullets, bullets
         );
     }
 

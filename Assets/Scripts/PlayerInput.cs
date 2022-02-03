@@ -132,6 +132,8 @@ public class PlayerInput : MonoBehaviour
 
     public static bool GetKeyUp(string key)
     {
+        if(PauseHandler.frozenInput) return false;
+
         bool up = false;
         foreach(var bind in keybinds[key])
         {

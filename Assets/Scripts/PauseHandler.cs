@@ -27,14 +27,31 @@ public class PauseHandler : MonoBehaviour
         frozenInput = false;
     }
 
+    static Animator[] animators;
+    static Animation[] animations;
+
     public static void FreezePhysics()
     {
-        Time.timeScale = 0;
+        Physics.autoSimulation = false;
+        animators = Object.FindObjectsOfType<Animator>();
+        animations = Object.FindObjectsOfType<Animation>();
+        foreach(var animator in animators) {
+            animator.speed = 0;
+        }
+        foreach(var animation in animations) {
+            animation.Stop();
+        }
     }
 
     public static void UnfreezePhysics()
     {
-        Time.timeScale = 1;
+        Physics.autoSimulation = true;
+        foreach(var animator in animators) {
+            animator.speed = 1;
+        }
+        foreach(var animation in animations) {
+            animation.Play();
+        }
     }
 
     public static void HideCursor()

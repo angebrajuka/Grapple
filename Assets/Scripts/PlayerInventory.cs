@@ -115,7 +115,6 @@ public class PlayerInventory : MonoBehaviour
             }
         }
         if(CurrentGun.chamber != Gun.Chamber.FULL) CurrentGun.chamber = CurrentGun.chamberPostReload;
-        Debug.Log("bruh");
     }
 
     void Update()

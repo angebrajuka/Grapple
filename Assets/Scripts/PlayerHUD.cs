@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections.Generic;
+using TMPro;
 
 public class PlayerHUD : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class PlayerHUD : MonoBehaviour
     public RawImage crosshair_image;
     public Color crosshair_colorReady;
     public Color crosshair_colorReloading;
-    public Text ammo_reserveText;
+    public TextMeshProUGUI ammo_reserveText;
     public Transform compressedAir_needle;
     public Transform grappleRecharge_needle;
     public float compressedAir_minAngle, compressedAir_maxAngle;

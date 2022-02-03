@@ -9,6 +9,7 @@ public class PlayerAnimator : MonoBehaviour
     public static PlayerAnimator instance;
 
     // hierarchy
+    public GameObject overlay;
     public Transform gunPos;
     public Animator gunPosAnimator;
     public Animator gunReloadAnimator;
@@ -20,6 +21,15 @@ public class PlayerAnimator : MonoBehaviour
     public static Dictionary<string, Transform> guns;
     public static string activeGun="";
     public static Transform ActiveGun { get { return guns[activeGun]; } }
+
+    public static bool Overlay {
+        get {
+            return instance.overlay.activeSelf;
+        }
+        set {
+            instance.overlay.SetActive(value);
+        }
+    }
 
     public class State {
         private Action set, update;
@@ -52,7 +62,6 @@ public class PlayerAnimator : MonoBehaviour
             SetState(PRIMING);
             return;
         }
-        Debug.Log("precheck");
         instance.CheckReload();
     });
     public static readonly State SWAPPING = new State(() => {
@@ -134,12 +143,8 @@ public class PlayerAnimator : MonoBehaviour
 
     public void CheckReload(bool force=false)
     {
-        Debug.Log("check");
-        Debug.Log(state == PRIMING);
-        Debug.Log(CanReload+","+PlayerInventory.CanReload+","+(PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY));
         if(CanReload && PlayerInventory.CanReload && (ShotgunAutoReload || force || PlayerInventory.Ammo <= 0 || PlayerInventory.CurrentGun.chamber == Gun.Chamber.EMPTY))
         {
-            Debug.Log("reload");
             SetState((PlayerInventory.CurrentGun.magfed && PlayerInventory.CurrentGun.chamber != Gun.Chamber.EMPTY) ? EJECTING : RELOADING);
         }
     }

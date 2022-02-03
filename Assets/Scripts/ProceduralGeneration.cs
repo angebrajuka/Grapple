@@ -330,10 +330,7 @@ public class ProceduralGeneration : MonoBehaviour
         }
 
         prevPos.Set(currPos.x, 0, currPos.z);
-    }
 
-    void FixedUpdate()
-    {
         var offset = new Vector3(chunkSize/2, 0, chunkSize/2);
         for(int i=0; loadingChunks.Count > 0 && i < chunksPerFrame; i++)
         {
@@ -363,5 +360,10 @@ public class ProceduralGeneration : MonoBehaviour
                 chunk.decorRefs[di] = decor;
             }
         }
+    }
+
+    void FixedUpdate()
+    {
+        
     }
 }

@@ -6,6 +6,9 @@ public class MenuHandler : MonoBehaviour
 {
     static MenuHandler instance;
 
+    // hierarchy
+    public float menuSeed;
+
     private static int currentMenu;
     private static Stack<int> prevMenu;
     public static bool anyMenu;
@@ -49,18 +52,26 @@ public class MenuHandler : MonoBehaviour
         SaveData.Save();
     }
 
-    public static void MainMenu()
+    public static void MainMenu(bool save=true)
     {
-        Save();
-        SaveData.currentSaveFileName = "";
-        SaveData.currentSaveName = "";
+        if(save) {
+            Save();
+            SaveData.currentSaveFileName = "";
+            SaveData.currentSaveName = "";
+        }
 
         prevMenu.Clear();
         CurrentMenu = 1;
+        PauseHandler.blurred = false;
+        ProceduralGeneration.seed = instance.menuSeed;
+        ProceduralGeneration.UnloadAll();
+
+        PlayerAnimator.Overlay = false;
     }
 
     public static void StartGame()
     {
+        PlayerAnimator.Overlay = true;
         ProceduralGeneration.UnloadAll();
         prevMenu.Clear();
         Close();

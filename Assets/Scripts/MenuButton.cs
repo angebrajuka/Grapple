@@ -4,20 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using TMPro;
 
 public class MenuButton : MonoBehaviour
 {
     public AudioClip clipHover;
     public AudioClip clipClick;
-    public int diff;
+    public float diff;
     public bool toggle, atLeastOne, defaultSelected;
     public Color selectedColor;
     public bool deselectSiblings;
     public MenuButton[] deselectOnClick;
 
 
-    Text textComp;
-    int originalTextSize;
+    TextMeshProUGUI textComp;
+    float originalTextSize;
     Color originalColor;
 
     [HideInInspector] public string load;
@@ -48,7 +49,7 @@ public class MenuButton : MonoBehaviour
     public void LoadGame()
     {
         SaveData.currentSaveFileName = load;
-        SaveData.currentSaveName = transform.GetChild(0).GetComponent<Text>().text;
+        SaveData.currentSaveName = transform.GetChild(0).GetComponent<TextMeshProUGUI>().text;
         SaveData.TryLoad();
         MenuHandler.StartGame();
     }
@@ -66,7 +67,7 @@ public class MenuButton : MonoBehaviour
 
     void Start()
     {
-        textComp = transform.GetChild(0).GetComponent<Text>();
+        textComp = transform.GetChild(0).GetComponent<TextMeshProUGUI>();
         if(textComp != null) originalTextSize = textComp.fontSize;
         var img = GetComponent<Image>();
         if(img != null) originalColor = img.color;

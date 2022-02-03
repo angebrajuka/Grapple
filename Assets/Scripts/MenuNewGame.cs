@@ -3,12 +3,13 @@ using UnityEngine.UI;
 using System;
 using System.IO;
 using System.Text;
+using TMPro;
 
 public class MenuNewGame : MonoBehaviour
 {
-    public InputField seed;
+    public TMP_InputField seed;
     public Dropdown difficulty;
-    public InputField save;
+    public TMP_InputField save;
 
     const string glyphs= "abcdefghijklmnopqrstuvwxyz0123456789";
     static string RandString(int length)
@@ -39,7 +40,7 @@ public class MenuNewGame : MonoBehaviour
         EnemySpawning.difficulty = difficulty.value;
 
         SaveData.currentSaveName = save.text;
-        if(SaveData.currentSaveName == "") SaveData.currentSaveName = save.placeholder.GetComponent<Text>().text;
+        if(SaveData.currentSaveName == "") SaveData.currentSaveName = save.placeholder.GetComponent<TextMeshProUGUI>().text;
 
         int i=0;
         do

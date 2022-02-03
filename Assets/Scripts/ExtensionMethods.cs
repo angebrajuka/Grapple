@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public static class ExtensionMethods
 {
@@ -37,7 +38,7 @@ public static class ExtensionMethods
         return rb.transform.InverseTransformDirection(rb.velocity);
     }
 
-    public static void SetText(this Text textElement, string text)
+    public static void SetText(this TextMeshProUGUI textElement, string text)
     {
         textElement.text = text;
         textElement.gameObject.GetComponent<LeadingZeros>().Check();

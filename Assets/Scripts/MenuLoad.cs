@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class MenuLoad : MonoBehaviour
 {
@@ -23,9 +24,9 @@ public class MenuLoad : MonoBehaviour
             var rect = go.GetComponent<RectTransform>();
             rect.anchoredPosition -= new Vector2(0, i*60 + 15);
             go = go.transform.GetChild(0).gameObject;
-            var buttonText = go.transform.GetChild(0).GetComponent<Text>();
+            var buttonText = go.transform.GetChild(0).GetComponent<TextMeshProUGUI>();
             buttonText.text = save.saveName;
-            var lastPlayed = go.transform.GetChild(1).GetComponent<Text>();
+            var lastPlayed = go.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
             lastPlayed.text = save.date;
             go.GetComponent<MenuButton>().load = save.fileName;
             go.GetComponent<MenuButton>().menuLoad = this;

@@ -52,7 +52,6 @@ public class ReloadAnimationEvents : MonoBehaviour
     public void SetRaised() {
         if(PlayerAnimator.state != PlayerAnimator.PRIMING && PlayerAnimator.state != PlayerAnimator.EJECTING) return;
         PlayerAnimator.SetState(PlayerAnimator.RAISED);
-        Debug.Log("raised");
     }
 
     public void Primed() {
@@ -63,7 +62,6 @@ public class ReloadAnimationEvents : MonoBehaviour
     public void Ejected() {
         if(PlayerAnimator.state != PlayerAnimator.EJECTING) return;
         PlayerInventory.CurrentGun.chamber = Gun.Chamber.EMPTY;
-        Debug.Log("ejected");
     }
 
     public void UpdateAmmo()
@@ -74,7 +72,6 @@ public class ReloadAnimationEvents : MonoBehaviour
 
     public void Finish()
     {
-        Debug.Log("uuu");
         if(PlayerAnimator.state != PlayerAnimator.RELOADING) return;
 
         if(PlayerInventory._nextGun == PlayerInventory._currentGun && PlayerInventory.CurrentGun.shotgunReload && PlayerInventory.CurrentGun.chamber == Gun.Chamber.FULL && PlayerInventory.Ammo < PlayerInventory.CurrentGun.magSize && PlayerInventory.ReserveAmmo >= PlayerInventory.CurrentGun.ammoPerShot)
@@ -87,7 +84,6 @@ public class ReloadAnimationEvents : MonoBehaviour
         }
         else
         {
-            Debug.Log("riased?");
             PlayerAnimator.SetState(PlayerAnimator.RAISED);
         }
     }
