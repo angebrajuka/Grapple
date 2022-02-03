@@ -8,6 +8,8 @@ using TMPro;
 
 public class DevConsole : MonoBehaviour
 {
+    public static DevConsole instance;
+
     // hierarchy
     public GameObject backing;
     public TMP_InputField inputField;
@@ -17,6 +19,8 @@ public class DevConsole : MonoBehaviour
 
     public void Init()
     {
+        instance = this;
+
         foreach(var methodInfo in typeof(Commands).GetMethods(BindingFlags.Static | BindingFlags.Public))
         {
             commands.Add(methodInfo.Name, methodInfo);
@@ -34,7 +38,7 @@ public class DevConsole : MonoBehaviour
         inputField.text = "";
     }
 
-    void Disable()
+    public void Disable()
     {
         isActive = false;
         PauseHandler.frozenInput = false;
@@ -55,10 +59,6 @@ public class DevConsole : MonoBehaviour
     }
 
     void Update() {
-        if(Input.GetKeyDown(KeyCode.Escape)) {
-            Disable();
-            return;
-        }
         if(!PauseHandler.paused && Input.GetKeyDown(KeyCode.BackQuote)) {
             if(!isActive)   Enable();
             else            Disable();

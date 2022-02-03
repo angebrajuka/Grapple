@@ -3786,7 +3786,7 @@ MonoBehaviour:
   ammoPerShot: 1
   pellets: 60
   range: 100
-  spread: 2
+  spread: 1.5
   recoil: 700
   clip_shoot: {fileID: 8300000, guid: 5731a3deca4cd204abe35d4238cca3e3, type: 3}
   vol_shoot: 1

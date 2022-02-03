@@ -15,6 +15,7 @@ public class ArmSway : MonoBehaviour
 
     void Update()
     {
+        if(PauseHandler.paused) return;
         transform.localPosition = initialPos+Vector3.up*(Mathf.Sin(Time.time*timeScale))*amount;
     }
 }

@@ -68,6 +68,7 @@ public class PauseHandler : MonoBehaviour
 
     public static void Pause()
     {
+        DevConsole.instance.Disable();
         blurred = true;
         PlayerHUD.instance.t_HUD.gameObject.SetActive(false);
         ShowCursor();
@@ -100,7 +101,6 @@ public class PauseHandler : MonoBehaviour
         {
             Pause();
             MenuHandler.CurrentMenu = 0;
-            return;
         }
 
         dofComponent.focalLength.value = Mathf.Lerp(dofComponent.focalLength.value, blurred ? blurredFocalLength : unblurredFocalLength, Time.unscaledDeltaTime*(blurred ? blurSpeed : unblurSpeed));
