@@ -1,7 +1,7 @@
 Year: 31069
 Earth Population: 2.9 trillion
 
-The oxygen levels are reaching dangerously low levels.
+The oxygen levels are dangerously low.
 An earth-like planet 2.8 lightyears away is habitable, except for the hostile alien population.
 
 Your job is simple:

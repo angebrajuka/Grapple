@@ -60,6 +60,7 @@ public class Bullet : MonoBehaviour
         var target = c.gameObject.GetComponent<Target>();
         if(target != null)
         {
+            if(target.dead) return;
             if(!grenade)
             {
                 target.Damage(damage, transform.forward, 50);
