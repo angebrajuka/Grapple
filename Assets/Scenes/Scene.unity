@@ -6911,7 +6911,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 1
-  pos: {x: 0, y: 40, z: 0}
+  pos: {x: 20, y: 40, z: 20}
 --- !u!1 &1127008440
 GameObject:
   m_ObjectHideFlags: 0
