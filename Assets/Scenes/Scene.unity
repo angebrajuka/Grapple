@@ -1849,7 +1849,7 @@ MonoBehaviour:
   transform_chunks: {fileID: 311379121}
   transform_decor: {fileID: 126835631}
   chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
-  renderDistance: 12
+  renderDistance: 20
   chunkSize: 40
   chunkWidthVertices: 7
   offset: 0.04
@@ -3453,11 +3453,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!1 &544225046 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2078996655745251303, guid: a526d31e4549f9f44819820623e33e32, type: 3}
-  m_PrefabInstance: {fileID: 1123515910}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &546853963
 GameObject:
   m_ObjectHideFlags: 0
@@ -6158,6 +6153,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1036144108}
   - component: {fileID: 1036144109}
+  - component: {fileID: 1036144110}
   m_Layer: 5
   m_Name: MenuHandler
   m_TagString: Untagged
@@ -6209,6 +6205,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuSeed: 0
+  menuSpin: {fileID: 1036144110}
+--- !u!114 &1036144110
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1036144107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acb73e5c305df174eb727ec7dc7566e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 1
+  pos: {x: 20, y: 70, z: 20}
+  eul: {x: 15, y: 0, z: 0}
 --- !u!1 &1040054161
 GameObject:
   m_ObjectHideFlags: 0
@@ -6882,6 +6894,14 @@ PrefabInstance:
       propertyPath: m_text
       value: main menu
       objectReference: {fileID: 0}
+    - target: {fileID: 7894756571781443425, guid: a526d31e4549f9f44819820623e33e32, type: 3}
+      propertyPath: m_fontSize
+      value: 70
+      objectReference: {fileID: 0}
+    - target: {fileID: 7894756571781443425, guid: a526d31e4549f9f44819820623e33e32, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 70
+      objectReference: {fileID: 0}
     - target: {fileID: 8226649570949343268, guid: a526d31e4549f9f44819820623e33e32, type: 3}
       propertyPath: m_IsActive
       value: 0
@@ -6898,20 +6918,6 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6867525598015001750, guid: a526d31e4549f9f44819820623e33e32, type: 3}
   m_PrefabInstance: {fileID: 1123515910}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1123515914
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 544225046}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ebddd953472abee41bcfc52c7408975b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotateSpeed: 1
-  pos: {x: 20, y: 40, z: 20}
 --- !u!1 &1127008440
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,10 +8,12 @@ public class MenuHandler : MonoBehaviour
 
     // hierarchy
     public long menuSeed;
+    public MenuSpin menuSpin;
 
     private static int currentMenu;
     private static Stack<int> prevMenu;
     public static bool anyMenu;
+    public static bool mainMenu;
 
     public void Init()
     {
@@ -24,6 +26,7 @@ public class MenuHandler : MonoBehaviour
             instance.transform.GetChild(i).gameObject.SetActive(false);
         }
         anyMenu = false;
+        mainMenu = false;
     }
 
     public static void Close()
@@ -60,6 +63,8 @@ public class MenuHandler : MonoBehaviour
             SaveData.currentSaveName = "";
         }
 
+        mainMenu = true;
+        instance.menuSpin.Init();
         prevMenu.Clear();
         CurrentMenu = 1;
         PauseHandler.blurred = false;
@@ -71,6 +76,7 @@ public class MenuHandler : MonoBehaviour
 
     public static void StartGame()
     {
+        mainMenu = false;
         PlayerAnimator.Overlay = true;
         ProceduralGeneration.UnloadAll();
         prevMenu.Clear();
