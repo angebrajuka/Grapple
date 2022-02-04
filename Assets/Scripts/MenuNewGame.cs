@@ -22,11 +22,27 @@ public class MenuNewGame : MonoBehaviour
         return sb.ToString();
     }
 
+    public void CapSeed() {
+        string value = this.seed.text;
+        if(!long.TryParse(value, out long seed)) {
+            if(value.Length <= 1) return;
+            if(value[0] == '-') {
+                this.seed.text = long.MinValue.ToString();
+            } else {
+                this.seed.text = long.MaxValue.ToString();
+            }
+        }
+    }
+
     public void StartGame()
     {
         if(!long.TryParse(seed.text, out ProceduralGeneration.seed))
         {
-            ProceduralGeneration.RandomSeed();
+            if(seed.text == "-") {
+                ProceduralGeneration.seed = -1;
+            } else {
+                ProceduralGeneration.RandomSeed();
+            }
         }
 
         EnemySpawning.difficulty = difficulty.value;

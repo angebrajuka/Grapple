@@ -3453,6 +3453,11 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &544225046 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2078996655745251303, guid: a526d31e4549f9f44819820623e33e32, type: 3}
+  m_PrefabInstance: {fileID: 1123515910}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &546853963
 GameObject:
   m_ObjectHideFlags: 0
@@ -6893,6 +6898,20 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6867525598015001750, guid: a526d31e4549f9f44819820623e33e32, type: 3}
   m_PrefabInstance: {fileID: 1123515910}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1123515914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 544225046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ebddd953472abee41bcfc52c7408975b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotateSpeed: 1
+  pos: {x: 0, y: 40, z: 0}
 --- !u!1 &1127008440
 GameObject:
   m_ObjectHideFlags: 0
@@ -8097,8 +8116,40 @@ PrefabInstance:
       value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_CharacterLimit
+      value: 22
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
       propertyPath: m_CharacterValidation
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 2037131597}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: CapSeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MenuNewGame, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667752949532614, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 1787667752949532615, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
       propertyPath: m_Pivot.x
@@ -8191,6 +8242,10 @@ PrefabInstance:
     - target: {fileID: 1787667754809082011, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
       propertyPath: m_text
       value: enter a seed or leave blank for a random seed
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787667754809082011, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1810c4d247e2ea440b730b3a65220f43, type: 3}

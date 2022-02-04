@@ -83,7 +83,7 @@ public class EnemySpawning : MonoBehaviour
 
     void Update()
     {
-        
+        if(PauseHandler.paused) return;
         if(Time.time >= lastSpawnTime+delayTime)
         {
             delayTime = Random.Range(minDelay, maxDelay);
