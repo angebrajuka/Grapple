@@ -100,7 +100,7 @@ public class ProceduralGeneration : MonoBehaviour
                     // on destroy
                     Destroy(decor);
                 },
-                false, 100, 1000
+                false, maxChunks, maxChunks*MAX_DECORS
             );
         }
 
@@ -166,8 +166,8 @@ public class ProceduralGeneration : MonoBehaviour
             biome = PerlinBiome(x, z, chunkX, chunkZ);
         }
         var b = biomes[biome];
-        return Perlin(seed, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
-                +Perlin(seed, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
+        return Perlin(seed_height, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
+                +Perlin(seed_height, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
     }
 
     public static byte MapClamped(byte[,] map, int x, int y)
@@ -177,17 +177,14 @@ public class ProceduralGeneration : MonoBehaviour
 
     public static int PerlinBiome(float x, float z, float chunkX=0, float chunkZ=0)
     {
-        const float rainSeedOffset = 21674253.165235f;
-        const float tempSeedOffset = 3567567.6345678f;
-
         const float perlinScaleRain = 0.003f;
         const float perlinScaleTemp = 0.003f;
 
-        float perlinValRain = Perlin(seed+rainSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
-        float perlinValTemp = Perlin(seed+tempSeedOffset, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
+        float perlinValRain = Perlin(seed_rain, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
+        float perlinValTemp = Perlin(seed_temp, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
 
         float perlinScaleFine = 0.1f;
-        float fineNoise = Perlin(seed, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
+        float fineNoise = Perlin(seed_, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
         perlinValTemp -= fineNoise;
         perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);

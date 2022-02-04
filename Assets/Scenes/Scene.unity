@@ -11747,7 +11747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: AssaultRifle
   ammoType: 0
-  damage: 12
+  damage: 6
   rpm: 600
   chamberPostShot: 2
   chamberPostLastShot: 1
