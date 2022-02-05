@@ -1817,9 +1817,9 @@ MonoBehaviour:
   prefab_chunk: {fileID: 3503962515745383730, guid: 52a51bf7e370df244ab47e4c486f2bc8, type: 3}
   transform_chunks: {fileID: 311379121}
   chunkSize: 32
-  chunkHeight: 64
-  chunkWidthVertices: 7
-  chunkHeightVertices: 0
+  chunkWidthCubes: 10
+  chunkHeightCubes: 10
+  groundThreshhold: 0.3
   offset: 0.04
   chunksPerFrame: 3
   rainTempMap: {fileID: 2800000, guid: 8ef5e476acbfa214b958ea74651cf0aa, type: 3}

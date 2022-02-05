@@ -63,7 +63,7 @@ public class EnemySpawning : MonoBehaviour
         pos2D.x += PlayerMovement.rb.position.x;
         pos2D.y += PlayerMovement.rb.position.z;
 
-        return new Vector3(pos2D.x, ProceduralGeneration.Height(pos2D.x, pos2D.y)+5, pos2D.y);
+        return new Vector3(pos2D.x, /*ProceduralGeneration.Height(pos2D.x, pos2D.y)+5*/100, pos2D.y);
     }
 
     public void Spawn(float frequency, Vector3 position=default(Vector3))

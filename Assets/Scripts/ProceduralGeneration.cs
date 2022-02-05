@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine.Pool;
 using System.Threading.Tasks;
 using System;
+using System.Linq;
 
 public class ProceduralGeneration : MonoBehaviour
 {
@@ -13,16 +14,19 @@ public class ProceduralGeneration : MonoBehaviour
     public GameObject prefab_chunk;
     public Transform transform_chunks;
     public float chunkSize;
-    public float chunkHeight;
-    public int chunkWidthVertices;
-    public int chunkHeightVertices;
+    public int chunkWidthCubes;
+    public int chunkHeightCubes;
+    public float groundThreshhold;
     public float offset;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
     public BiomeData[] biomesData;
 
     const int RESOLUTION = 64;
-    float vertexSpacing { get { return (float)chunkSize/(float)(chunkWidthVertices-1); } }
+    static float cubeWidth { get { return instance.chunkSize/instance.chunkWidthCubes; } }
+    static float chunkHeight { get { return cubeWidth * instance.chunkHeightCubes; } }
+    // float vertexSpacing { get { return (float)chunkSize/(float)(chunkWidthVertices-1); } }
+
     static int diameter { get { return instance.renderDistance*2+1; } }
     static int maxChunks { get { return (int)Math.Sqr(diameter); } }
     private int renderDistance;
@@ -41,10 +45,10 @@ public class ProceduralGeneration : MonoBehaviour
     public static ushort seed_lm { get { return (ushort)((seed >> 32) & 0xFFFF); } }
     public static ushort seed_rm { get { return (ushort)((seed >> 16) & 0xFFFF); } }
     public static ushort seed_rr { get { return (ushort)((seed >>  0) & 0xFFFF); } } // TODO double check
-    public static float seed_temp   { get { return seed_ll+((float)seed_ll/100000.0f); } }
-    public static float seed_rain   { get { return seed_lm+((float)seed_lm/100000.0f); } }
-    public static float seed_height { get { return seed_rm+((float)seed_rm/100000.0f); } }
-    public static float seed_       { get { return seed_rr+((float)seed_rr/100000.0f); } }
+    public static float seed_temp { get { return seed_ll+((float)seed_ll/100000.0f); } }
+    public static float seed_rain { get { return seed_lm+((float)seed_lm/100000.0f); } }
+    public static float seed_grnd { get { return seed_rm+((float)seed_rm/100000.0f); } }
+    public static float seed_     { get { return seed_rr+((float)seed_rr/100000.0f); } }
 
     static LinkedList<Chunk> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
@@ -172,15 +176,19 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
-    public static float Height(float x, float z, float chunkX=0, float chunkZ=0, int biome=-1)
-    {
-        if(biome == -1)
-        {
-            biome = PerlinBiome(x, z, chunkX, chunkZ);
-        }
-        var b = biomes[biome];
-        return Perlin(seed_height, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
-                +Perlin(seed_height, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
+    // public static float Height(float x, float z, float chunkX=0, float chunkZ=0, int biome=-1)
+    // {
+    //     if(biome == -1)
+    //     {
+    //         biome = PerlinBiome(x, z, chunkX, chunkZ);
+    //     }
+    //     var b = biomes[biome];
+    //     return Perlin(seed_height, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
+    //             +Perlin(seed_height, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
+    // }
+
+    public static bool IsGround(float x, float y, float z, float chunkX=0, float chunkZ=0) {
+        return Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize) > instance.groundThreshhold;
     }
 
     public static byte MapClamped(byte[,] map, int x, int y)
@@ -227,38 +235,60 @@ public class ProceduralGeneration : MonoBehaviour
         // int[] decors = chunk.decors;
         // int numOfDecors = 0;
 
+        var v = new Vector3(0, 0, 0);
+        int AddVertex(float x, float y, float z) {
+            v.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
+            chunk.vertices.Add(v);
+            return chunk.vertices.Count-1;
+        }
+
+        void AddTriangle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+            chunk.triangles.Add(AddVertex(x1, y1, z1));
+            chunk.triangles.Add(AddVertex(x2, y2, z2));
+            chunk.triangles.Add(AddVertex(x3, y3, z3));
+        }
+
         await Task.Run(() => {
             chunk.vertices.Clear();
             chunk.triangles.Clear();
-            Vector3 v = new Vector3(0, 0, 0);
-            for(int x=0; x<chunkWidthVertices; ++x) /*for(int y=0; y<MAX_HEIGHT; y++)*/ for(int z=0; z<chunkWidthVertices; ++z)
-            {
-                int biome = PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ);
 
-                v.Set(
-                    (float)x*vertexSpacing+Perlin(154.2643f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset), 
-                    Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ, biome), 
-                    (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset)
-                );
-                chunk.vertices.Add(v);
-                
-                if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
-                {
-                    chunk.triangles.Add(chunkWidthVertices*x+z);
-                    chunk.triangles.Add(chunkWidthVertices*x+z+1);
-                    chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
-                    chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
-                    chunk.triangles.Add(chunkWidthVertices*x+z+1);
-                    chunk.triangles.Add(chunkWidthVertices*(x+1)+z+1);
+            for(int x=0; x<chunkWidthCubes; ++x) for(int y=0; y<chunkHeightCubes; ++y) for(int z=0; z<chunkWidthCubes; ++z)
+            {
+                // int biome = PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ);
+
+                if(IsGround(x*cubeWidth, y*cubeWidth, z*cubeWidth, chunkX, chunkZ)) {
+                    AddTriangle(
+                        x, y, z,
+                        x, y, z+1,
+                        x+1, y, z
+                    );
+                    
                 }
+
+                // v.Set(
+                //     (float)x*vertexSpacing+Perlin(154.2643f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset), 
+                //     Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ, biome), 
+                //     (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset)
+                // );
+                // chunk.vertices.Add(v);
+                
+                // if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
+                // {
+                //     chunk.triangles.Add(chunkWidthVertices*x+z);
+                //     chunk.triangles.Add(chunkWidthVertices*x+z+1);
+                //     chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
+                //     chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
+                //     chunk.triangles.Add(chunkWidthVertices*x+z+1);
+                //     chunk.triangles.Add(chunkWidthVertices*(x+1)+z+1);
+                // }
             }
         });
-
 
         // numOfDecors = 1;
         // decors[0] = 0;
         // decorPositions[0].Set(chunkX*chunkSize, Height(0, 0, chunkX, chunkZ), chunkZ*chunkSize);
 
+        chunk.meshFilter.mesh.Clear();
         chunk.meshFilter.mesh.SetVertices(chunk.vertices);
         chunk.meshFilter.mesh.SetTriangles(chunk.triangles, 0, false);
 
