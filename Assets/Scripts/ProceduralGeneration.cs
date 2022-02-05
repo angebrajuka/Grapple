@@ -10,12 +10,12 @@ public class ProceduralGeneration : MonoBehaviour
     public static ProceduralGeneration instance;
 
     // hierarchy
+    public GameObject prefab_chunk;
     public Transform transform_chunks;
-    public Transform transform_decor;
-    public Material chunkMaterial;
-    public int renderDistance;
     public float chunkSize;
+    public float chunkHeight;
     public int chunkWidthVertices;
+    public int chunkHeightVertices;
     public float offset;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
@@ -25,6 +25,14 @@ public class ProceduralGeneration : MonoBehaviour
     float vertexSpacing { get { return (float)chunkSize/(float)(chunkWidthVertices-1); } }
     static int diameter { get { return instance.renderDistance*2+1; } }
     static int maxChunks { get { return (int)Math.Sqr(diameter); } }
+    private int renderDistance;
+    public int RenderDistance {
+        set {
+            renderDistance = value;
+            
+        }
+        get { return renderDistance; }
+    }
 
     const int MAX_DECORS = 20;
 
@@ -40,7 +48,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     static LinkedList<Chunk> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
-    public static ObjectPool<GameObject>[] pool_decor;
+    // public static ObjectPool<GameObject>[] pool_decor;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
     static int scrollX { get { return currPos.x; } }
@@ -51,6 +59,8 @@ public class ProceduralGeneration : MonoBehaviour
 
     public void Init()
     {
+        RenderDistance = 8;
+
         instance = this;
 
         rain_temp_map_width = rainTempMap.width;
@@ -77,54 +87,57 @@ public class ProceduralGeneration : MonoBehaviour
                 }
             }
         }
+        biomesData = null;
 
-        pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
-        foreach(var pair in Biome.s_indexes)
-        {
-            pool_decor[pair.Value] = new ObjectPool<GameObject>(
-                () => {
-                    // on create
-                    var decor = Instantiate(Biome.s_decorations[pair.Value], transform_decor);
+        // pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
+        // foreach(var pair in Biome.s_indexes)
+        // {
+        //     pool_decor[pair.Value] = new ObjectPool<GameObject>(
+        //         () => {
+        //             // on create
+        //             var decor = Instantiate(Biome.s_decorations[pair.Value], transform_decor);
 
-                    return decor;
-                },
-                (decor) => {
-                    // on get
-                    decor.SetActive(true);
-                },
-                (decor) => {
-                    // on return
-                    decor.SetActive(false);
-                },
-                (decor) => {
-                    // on destroy
-                    Destroy(decor);
-                },
-                false, maxChunks, maxChunks*MAX_DECORS
-            );
-        }
+        //             return decor;
+        //         },
+        //         (decor) => {
+        //             // on get
+        //             decor.SetActive(true);
+        //         },
+        //         (decor) => {
+        //             // on return
+        //             decor.SetActive(false);
+        //         },
+        //         (decor) => {
+        //             // on destroy
+        //             Destroy(decor);
+        //         },
+        //         false, maxChunks, maxChunks*MAX_DECORS
+        //     );
+        // }
 
         loadingChunks = new LinkedList<Chunk>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
                 // on create
-                var go = new GameObject("chunk", typeof(Chunk), typeof(MeshFilter), typeof(MeshCollider), typeof(MeshRenderer));
-                go.transform.SetParent(transform_chunks);
+                var go = Instantiate(prefab_chunk, transform_chunks);
                 var chunk = go.GetComponent<Chunk>();
-                chunk.meshFilter = chunk.gameObject.GetComponent<MeshFilter>();
-                chunk.meshCollider = chunk.gameObject.GetComponent<MeshCollider>();
-                chunk.meshRenderer = chunk.gameObject.GetComponent<MeshRenderer>();
                 var mesh = new Mesh();
-                mesh.vertices = new Vector3[(int)Math.Sqr(chunkWidthVertices)];
-                mesh.colors = new Color[mesh.vertices.Length];
-                mesh.triangles = new int[(int)Math.Sqr(chunkWidthVertices-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
+                // mesh.vertices = new Vector3[(int)Math.Sqr(chunkWidthVertices)*(chunkHeightVertices+1)];
+                // mesh.triangles = new int[(int)Math.Sqr(chunkWidthVertices-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
+                mesh.bounds = new Bounds(new Vector3(chunkSize/2, chunkHeight/2, chunkSize/2), new Vector3(chunkSize, chunkHeight, chunkSize));
+                chunk.vertices = new List<Vector3>(100);
+                chunk.triangles = new List<int>(100);
                 chunk.meshFilter.mesh = mesh;
-                chunk.meshCollider.convex = false;
-                chunk.meshRenderer.material = chunkMaterial;
-                chunk.decorPositions = new Vector3[MAX_DECORS];
-                chunk.decors = new int[MAX_DECORS];
-                chunk.decorRefs = new GameObject[MAX_DECORS];
+                // chunk.meshRenderer.materials = new Material[biomes.Length];
+                // for(int i=0; i<biomes.Length; i++) {
+                //     chunk.meshRenderer.materials[i] = biomes[i].material;
+                // }
+                // mesh.subMeshCount = biomes.Length;
+
+                // chunk.decorPositions = new Vector3[MAX_DECORS];
+                // chunk.decors = new int[MAX_DECORS];
+                // chunk.decorRefs = new GameObject[MAX_DECORS];
 
                 return chunk;
             },
@@ -210,55 +223,48 @@ public class ProceduralGeneration : MonoBehaviour
         loadedChunks.Add((chunkX, chunkZ), chunk);
         chunk.transform.SetPositionAndRotation(new Vector3(chunkX*chunkSize, 0, chunkZ*chunkSize), Quaternion.identity);
 
-        var meshFilter = chunk.meshFilter;
-        var meshCollider = chunk.meshCollider;
-        var meshRenderer = chunk.meshRenderer;
-
-        var mesh = meshFilter.mesh;
-        Vector3[] vertices = mesh.vertices;
-        int[] triangles = mesh.triangles;
-        Color[] cols = mesh.colors;
-        Vector3[] decorPositions = chunk.decorPositions;
-        int[] decors = chunk.decors;
-        int numOfDecors = 0;
+        // Vector3[] decorPositions = chunk.decorPositions;
+        // int[] decors = chunk.decors;
+        // int numOfDecors = 0;
 
         await Task.Run(() => {
-            int i=0;
-            for(int x=0; x<chunkWidthVertices; ++x) for(int z=0; z<chunkWidthVertices; ++z)
+            chunk.vertices.Clear();
+            chunk.triangles.Clear();
+            Vector3 v = new Vector3(0, 0, 0);
+            for(int x=0; x<chunkWidthVertices; ++x) /*for(int y=0; y<MAX_HEIGHT; y++)*/ for(int z=0; z<chunkWidthVertices; ++z)
             {
                 int biome = PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ);
 
-                vertices[chunkWidthVertices*x+z].Set(
+                v.Set(
                     (float)x*vertexSpacing+Perlin(154.2643f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset), 
                     Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ, biome), 
-                    (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset));
-
-                cols[chunkWidthVertices*x+z] = biomes[biome].color;
-
+                    (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset)
+                );
+                chunk.vertices.Add(v);
+                
                 if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
                 {
-                    triangles[6*i+0] = chunkWidthVertices*x+z;
-                    triangles[6*i+1] = chunkWidthVertices*x+z+1;
-                    triangles[6*i+2] = chunkWidthVertices*(x+1)+z;
-                    triangles[6*i+3] = chunkWidthVertices*(x+1)+z;
-                    triangles[6*i+4] = chunkWidthVertices*x+z+1;
-                    triangles[6*i+5] = chunkWidthVertices*(x+1)+z+1;
-                    ++i;
+                    chunk.triangles.Add(chunkWidthVertices*x+z);
+                    chunk.triangles.Add(chunkWidthVertices*x+z+1);
+                    chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
+                    chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
+                    chunk.triangles.Add(chunkWidthVertices*x+z+1);
+                    chunk.triangles.Add(chunkWidthVertices*(x+1)+z+1);
                 }
             }
         });
 
-        numOfDecors = 1;
-        decors[0] = 0;
-        decorPositions[0].Set(chunkX*chunkSize, Height(0, 0, chunkX, chunkZ), chunkZ*chunkSize);
 
-        mesh.vertices = vertices;
-        mesh.triangles = triangles;
-        mesh.colors = cols;
+        // numOfDecors = 1;
+        // decors[0] = 0;
+        // decorPositions[0].Set(chunkX*chunkSize, Height(0, 0, chunkX, chunkZ), chunkZ*chunkSize);
 
-        chunk.decorPositions = decorPositions;
-        chunk.decors = decors;
-        chunk.numOfDecors = numOfDecors;
+        chunk.meshFilter.mesh.SetVertices(chunk.vertices);
+        chunk.meshFilter.mesh.SetTriangles(chunk.triangles, 0, false);
+
+        // chunk.decorPositions = decorPositions;
+        // chunk.decors = decors;
+        // chunk.numOfDecors = numOfDecors;
 
         float dist = Math.Dist(currPos.x, currPos.z, chunkX, chunkZ);
 
@@ -271,10 +277,10 @@ public class ProceduralGeneration : MonoBehaviour
 
         var chunk = loadedChunks[(x, z)];
         loadedChunks.Remove((x, z));
-        for(int i=0; i<chunk.numOfDecors; i++)
-        {
-            if(chunk.decorRefs[i] != null) pool_decor[chunk.decors[i]].Release(chunk.decorRefs[i]);
-        }
+        // for(int i=0; i<chunk.numOfDecors; i++)
+        // {
+        //     if(chunk.decorRefs[i] != null) pool_decor[chunk.decors[i]].Release(chunk.decorRefs[i]);
+        // }
         pool_chunks.Release(chunk);
     }
 
@@ -354,16 +360,15 @@ public class ProceduralGeneration : MonoBehaviour
             var chunk = closest.Value;
             loadingChunks.Remove(closest);
 
-            chunk.meshFilter.mesh.RecalculateBounds();
             chunk.meshFilter.mesh.RecalculateNormals();
             chunk.meshCollider.sharedMesh = chunk.meshFilter.mesh;
 
-            for(int di=0; di<chunk.numOfDecors; di++)
-            {
-                var decor = pool_decor[chunk.decors[di]].Get();
-                decor.transform.position = chunk.decorPositions[di];
-                chunk.decorRefs[di] = decor;
-            }
+            // for(int di=0; di<chunk.numOfDecors; di++)
+            // {
+            //     var decor = pool_decor[chunk.decors[di]].Get();
+            //     decor.transform.position = chunk.decorPositions[di];
+            //     chunk.decorRefs[di] = decor;
+            // }
         }
     }
 

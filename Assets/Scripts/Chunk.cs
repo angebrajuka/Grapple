@@ -1,12 +1,14 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class Chunk : MonoBehaviour
 {
     public MeshFilter meshFilter;
     public MeshRenderer meshRenderer;
     public MeshCollider meshCollider;
-    public Vector3[] decorPositions;
-    public int[] decors;
-    public int numOfDecors;
-    public GameObject[] decorRefs;
+    public List<Vector3> vertices;
+    public List<int> triangles;
+    // public Vector3[] decorPositions;
+    // public int[] decors;
+    // public int numOfDecors;
 }

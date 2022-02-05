@@ -672,37 +672,6 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!1 &126835630
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 126835631}
-  m_Layer: 0
-  m_Name: Decor
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &126835631
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 126835630}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 338339131}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &127895631 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: d6662b68a2d7b374390ec8824a33c371, type: 3}
@@ -1830,7 +1799,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 311379121}
-  - {fileID: 126835631}
   m_Father: {fileID: 1103312753}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1846,18 +1814,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5824ff40f5241e489feb8cce5a5f7aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab_chunk: {fileID: 3503962515745383730, guid: 52a51bf7e370df244ab47e4c486f2bc8, type: 3}
   transform_chunks: {fileID: 311379121}
-  transform_decor: {fileID: 126835631}
-  chunkMaterial: {fileID: 2100000, guid: 39c160aa8e99bac4c976cf221e803b99, type: 2}
-  renderDistance: 20
-  chunkSize: 40
+  chunkSize: 32
+  chunkHeight: 64
   chunkWidthVertices: 7
+  chunkHeightVertices: 0
   offset: 0.04
   chunksPerFrame: 3
   rainTempMap: {fileID: 2800000, guid: 8ef5e476acbfa214b958ea74651cf0aa, type: 3}
   biomesData:
   - name: plains
-    color: '#70a35c'
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     height_min: 10
     height_max: 20
     rain_temp_map_color: '#FF6161'
@@ -1872,7 +1840,7 @@ MonoBehaviour:
       frequency: 1
     density: 1
   - name: forest
-    color: '#5CA041'
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     height_min: 8
     height_max: 24
     rain_temp_map_color: '#BF40FF'
@@ -1883,7 +1851,7 @@ MonoBehaviour:
       frequency: 3
     density: 1
   - name: desert
-    color: '#CCBC92'
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     height_min: 12
     height_max: 18
     rain_temp_map_color: '#FF0000'
@@ -1896,7 +1864,7 @@ MonoBehaviour:
       frequency: 7
     density: 1
   - name: taiga
-    color: '#FFFAFA'
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     height_min: 10
     height_max: 20
     rain_temp_map_color: '#FF80FF'
@@ -1909,7 +1877,7 @@ MonoBehaviour:
       frequency: 3
     density: 1
   - name: tundra
-    color: '#FFFAFA'
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     height_min: 10
     height_max: 20
     rain_temp_map_color: '#FFBFD4'
@@ -1920,7 +1888,7 @@ MonoBehaviour:
       frequency: 2
     density: 1
   - name: rainforest
-    color: '#4EA828'
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     height_min: 10
     height_max: 20
     rain_temp_map_color: '#0000FF'
@@ -1937,7 +1905,7 @@ MonoBehaviour:
       frequency: 30
     density: 1
   - name: savanna
-    color: '#8CA552'
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     height_min: 10
     height_max: 20
     rain_temp_map_color: '#FF00AA'

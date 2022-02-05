@@ -13,7 +13,7 @@ public class Decor
 public class BiomeData
 {
     public string name;
-    public string color;
+    public Material material;
     public float height_min, height_max;
     // public float scale
     public string rain_temp_map_color;
@@ -40,13 +40,13 @@ public struct Biome
 
     public int[] decorationIndexes;
     public float[] decorationThreshholds;
-    public Color color;
+    public Material material;
     public float minHeight, maxHeight;
 
     public Biome(BiomeData biomeData)
     {
         decorationIndexes = new int[biomeData.decorations.Length];
-        ColorUtility.TryParseHtmlString(biomeData.color, out color);
+        material = biomeData.material;
         decorationThreshholds = new float[biomeData.decorations.Length];
 
         minHeight = biomeData.height_min;
