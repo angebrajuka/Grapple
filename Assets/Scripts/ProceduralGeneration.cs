@@ -17,6 +17,7 @@ public class ProceduralGeneration : MonoBehaviour
     public int chunkWidthCubes;
     public int chunkHeightCubes;
     public float groundThreshhold;
+    public float groundScale;
     public float offset;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
@@ -188,7 +189,7 @@ public class ProceduralGeneration : MonoBehaviour
     // }
 
     public static bool IsGround(float x, float y, float z, float chunkX=0, float chunkZ=0) {
-        return Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize) > instance.groundThreshhold;
+        return Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.groundScale) > instance.groundThreshhold;
     }
 
     public static byte MapClamped(byte[,] map, int x, int y)
@@ -236,16 +237,25 @@ public class ProceduralGeneration : MonoBehaviour
         // int numOfDecors = 0;
 
         var v = new Vector3(0, 0, 0);
-        int AddVertex(float x, float y, float z) {
+        int AddVertex(int x, int y, int z) {
             v.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
             chunk.vertices.Add(v);
             return chunk.vertices.Count-1;
         }
 
-        void AddTriangle(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3) {
+        void AddTriangle(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
             chunk.triangles.Add(AddVertex(x1, y1, z1));
             chunk.triangles.Add(AddVertex(x2, y2, z2));
             chunk.triangles.Add(AddVertex(x3, y3, z3));
+        }
+
+        // void AddSquare(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
+        //     AddTriangle();
+        //     AddTriangle();
+        // }
+
+        bool IsGround_(int x, int y, int z) {
+            return IsGround(x*cubeWidth, y*cubeWidth, z*cubeWidth, chunkX, chunkZ);
         }
 
         await Task.Run(() => {
@@ -256,13 +266,31 @@ public class ProceduralGeneration : MonoBehaviour
             {
                 // int biome = PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ);
 
-                if(IsGround(x*cubeWidth, y*cubeWidth, z*cubeWidth, chunkX, chunkZ)) {
-                    AddTriangle(
-                        x, y, z,
-                        x, y, z+1,
-                        x+1, y, z
-                    );
-                    
+                if(IsGround_(x, y, z)) {
+                    if(!IsGround_(x+1, y, z)) {
+                        AddTriangle(x+1, y, z, x+1, y+1, z, x+1, y, z+1);
+                        AddTriangle(x+1, y+1, z, x+1, y+1, z+1, x+1, y, z+1);
+                    }
+                    if(!IsGround_(x-1, y, z)) {
+                        AddTriangle(x, y, z, x, y, z+1, x, y+1, z);
+                        AddTriangle(x, y+1, z, x, y, z+1, x, y+1, z+1);
+                    }
+                    if(!IsGround_(x, y+1, z)) {
+                        AddTriangle(x, y+1, z, x, y+1, z+1, x+1, y+1, z);
+                        AddTriangle(x+1, y+1, z, x, y+1, z+1, x+1, y+1, z+1);
+                    }
+                    if(!IsGround_(x, y-1, z)) {
+                        AddTriangle(x, y, z, x+1, y, z, x, y, z+1);
+                        AddTriangle(x+1, y, z, x+1, y, z+1, x, y, z+1);
+                    }
+                    if(!IsGround_(x, y, z+1)) {
+                        AddTriangle(x, y, z+1, x+1, y, z+1, x, y+1, z+1);
+                        AddTriangle(x, y+1, z+1, x+1, y, z+1, x+1, y+1, z+1);
+                    }
+                    if(!IsGround_(x, y, z-1)) {
+                        AddTriangle(x, y, z, x, y+1, z, x+1, y, z);
+                        AddTriangle(x, y+1, z, x+1, y+1, z, x+1, y, z);
+                    }
                 }
 
                 // v.Set(

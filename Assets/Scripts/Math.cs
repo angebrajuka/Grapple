@@ -111,21 +111,23 @@ public static class Math
         return ll << 48 + lm << 32 + rm << 16 + rr;
     }
 
-    // https://answers.unity.com/questions/938178/3d-perlin-noise.html
-    public static float Perlin3D(float seed, float x, float y, float z)
-    {
-        y += 1;
-        z += 2;
-        float xy = _perlin3DFixed(seed, x, y);
-        float xz = _perlin3DFixed(seed, x, z);
-        float yz = _perlin3DFixed(seed, y, z);
-        float yx = _perlin3DFixed(seed, y, x);
-        float zx = _perlin3DFixed(seed, z, x);
-        float zy = _perlin3DFixed(seed, z, y);
-        return xy * xz * yz * yx * zx * zy;
-    }
-    static float _perlin3DFixed(float seed, float a, float b)
-    {
-        return Mathf.Sin(Mathf.PI * Mathf.PerlinNoise(seed+a, seed+b));
+    public static float Perlin3D(float seed, float x, float y, float z, float scale=1.0f) {
+        x *= scale;
+        y *= scale;
+        z *= scale;
+        x += seed+123.321f;
+        y += seed+123.321f;
+        z += seed+123.321f;
+
+        float ab = Mathf.PerlinNoise(x, y);
+        float bc = Mathf.PerlinNoise(y, z);
+        float ac = Mathf.PerlinNoise(x, z);
+
+        float ba = Mathf.PerlinNoise(y, x);
+        float cb = Mathf.PerlinNoise(z, y);
+        float ca = Mathf.PerlinNoise(z, x);
+
+        float abc = ab + bc + ac + ba + cb + ca;
+        return abc / 6f;
     }
 }
