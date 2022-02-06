@@ -240,9 +240,9 @@ public class ProceduralGeneration : MonoBehaviour
         public int[] e;
     }
 
-    readonly byte[] flipx = {2, 0, 0, 0, 6, 0, 0, 0, 11, 10};
-    readonly byte[] flipy = {4, 5, 6, 7};
-    readonly byte[] flipz = {0, 0, 0, 1, 0, 0, 0, 5, 9, 0, 0, 10};
+    readonly sbyte[] flipx = {2, -1, -1, -1, 6, -1, -1, -1, 11, 10};
+    readonly sbyte[] flipy = {4, 5, 6, 7};
+    readonly sbyte[] flipz = {-1, -1, -1, 1, -1, -1, -1, 5, 9, -1, -1, 10};
 
     async void Load(int chunkX, int chunkZ)
     {
@@ -252,25 +252,6 @@ public class ProceduralGeneration : MonoBehaviour
         loadedChunks.Add((chunkX, chunkZ), chunk);
         chunk.transform.SetPositionAndRotation(new Vector3(chunkX*chunkSize, 0, chunkZ*chunkSize), Quaternion.identity);
 
-        // Vector3[] decorPositions = chunk.decorPositions;
-        // int[] decors = chunk.decors;
-        // int numOfDecors = 0;
-
-        // var v = new Vector3(0, 0, 0);
-        // int AddVertex(int x, int y, int z) {
-        //     v.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
-        //     chunk.vertices.Add(v);
-        //     return chunk.vertices.Count-1;
-        // }
-
-
-        // void AddTriangle(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
-        //     chunk.triangles.Add(AddVertex(x1, y1, z1));
-        //     chunk.triangles.Add(AddVertex(x2, y2, z2));
-        //     chunk.triangles.Add(AddVertex(x3, y3, z3));
-        // }
-
-
         CubeInfo[,,] cubeInfos = new CubeInfo[chunkWidthCubes,chunkHeightCubes,chunkWidthCubes];
 
         Vector3 of = new Vector3(0, 0, 0);
@@ -278,15 +259,13 @@ public class ProceduralGeneration : MonoBehaviour
         int AddVertex(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
             chunk.vertices.Add(vertList[i]+of);
-            cubeInfos[x,y,z].e[i] = chunk.vertices.Count-1;
-            return cubeInfos[x,y,z].e[i];
+            return chunk.vertices.Count-1;
         }
 
         int GetVertex(int i, int x, int y, int z) {
-            if     (x > 0 && ((1 << i) & 0b001100010001) != 0) return cubeInfos[x-1, y, z].e[flipx[i]];
-            else if(y > 0 && ((1 << i) & 0b000000001111) != 0) return cubeInfos[x, y-1, z].e[flipy[i]];
-            else if(z > 0 && ((1 << i) & 0b100110001000) != 0) return cubeInfos[x, y, z-1].e[flipz[i]];
-
+            if(x > 0 && ((1 << i) & 0b001100010001) != 0) return cubeInfos[x-1, y, z].e[flipx[i]];
+            if(y > 0 && ((1 << i) & 0b000000001111) != 0) return cubeInfos[x, y-1, z].e[flipy[i]];
+            if(z > 0 && ((1 << i) & 0b100110001000) != 0) return cubeInfos[x, y, z-1].e[flipz[i]];
             return AddVertex(i, x, y, z);
         }
 
@@ -295,16 +274,6 @@ public class ProceduralGeneration : MonoBehaviour
             chunk.triangles.Add(b);
             chunk.triangles.Add(c);
         }
-
-        // void AddTrianglev(Vector3 a, Vector3 b, Vector3 c, int x, int y, int z) {
-        //     of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
-        //     chunk.vertices.Add(a+of);
-        //     chunk.vertices.Add(b+of);
-        //     chunk.vertices.Add(c+of);
-        //     chunk.triangles.Add(chunk.vertices.Count-3);
-        //     chunk.triangles.Add(chunk.vertices.Count-2);
-        //     chunk.triangles.Add(chunk.vertices.Count-1);
-        // }
 
         int biome=0;
         bool IsGround_(int x, int y, int z) {
@@ -339,6 +308,7 @@ public class ProceduralGeneration : MonoBehaviour
                     for(int i=0, n=1; i<12; i++, n*=2) {
                         if((edgeTable[cubeindex] & n) != 0) {
                             vertIndices[i] = GetVertex(i, x, y, z);
+                            cubeInfos[x,y,z].e[i] = vertIndices[i];
                         }
                     }
 
