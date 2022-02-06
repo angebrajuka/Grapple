@@ -20,6 +20,8 @@ public class ProceduralGeneration : MonoBehaviour
     public int chunkHeightCubes;
     public float groundThreshhold;
     public float groundScale;
+    public float waveScale;
+    public float waveAmount;
     public float offset;
     public byte chunksPerFrame;
     public Texture2D rainTempMap;
@@ -51,7 +53,7 @@ public class ProceduralGeneration : MonoBehaviour
     public static float seed_temp { get { return seed_ll+((float)seed_ll/100000.0f); } }
     public static float seed_rain { get { return seed_lm+((float)seed_lm/100000.0f); } }
     public static float seed_grnd { get { return seed_rm+((float)seed_rm/100000.0f); } }
-    public static float seed_     { get { return seed_rr+((float)seed_rr/100000.0f); } }
+    public static float seed_wave { get { return seed_rr+((float)seed_rr/100000.0f); } }
 
     static Dictionary<(int x, int z), Chunk> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
@@ -204,6 +206,10 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale) > threshhold;
     }
 
+    public static float Wavy(float x, float y, float z, int chunkX=0, int chunkZ=0) {
+        return Math.Remap(Math.Perlin3D(seed_wave, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.waveScale), 0, 1, -instance.waveAmount, instance.waveAmount);
+    }
+
     public static byte MapClamped(byte[,] map, int x, int y)
     {
         return map[Mathf.Clamp(x, 0, map.GetLength(0)-1), Mathf.Clamp(y, 0, map.GetLength(1)-1)];
@@ -218,7 +224,7 @@ public class ProceduralGeneration : MonoBehaviour
         float perlinValTemp = Perlin(seed_temp, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
 
         float perlinScaleFine = 0.1f;
-        float fineNoise = Perlin(seed_, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
+        float fineNoise = 0.0f;//Perlin(seed_, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
         perlinValTemp -= fineNoise;
         perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
@@ -258,7 +264,9 @@ public class ProceduralGeneration : MonoBehaviour
         int[] vertIndices = new int[12];
         int AddVertex(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
-            chunk.vertices.Add(vertList[i]+of);
+            of += vertList[i];
+            of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
+            chunk.vertices.Add(of);
             return chunk.vertices.Count-1;
         }
 

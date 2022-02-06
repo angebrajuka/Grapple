@@ -1821,6 +1821,8 @@ MonoBehaviour:
   chunkHeightCubes: 32
   groundThreshhold: 0.5
   groundScale: 0.03
+  waveScale: 0.2
+  waveAmount: 1.5
   offset: 0.04
   chunksPerFrame: 1
   rainTempMap: {fileID: 2800000, guid: 8ef5e476acbfa214b958ea74651cf0aa, type: 3}
