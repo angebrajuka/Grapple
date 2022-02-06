@@ -149,6 +149,10 @@ public class PlayerMovement : MonoBehaviour
             }
         }
 
+        if(grounded) {
+            rb.AddForce(-groundedNormal*groundedMagnet);
+        }
+
         var center = colliderDefault.center+rb.position;
         var halfHeight = Vector3.up*(colliderDefault.height/2);
         var point0 = center + halfHeight;

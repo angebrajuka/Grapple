@@ -53,7 +53,7 @@ public class ProceduralGeneration : MonoBehaviour
     public static float seed_grnd { get { return seed_rm+((float)seed_rm/100000.0f); } }
     public static float seed_     { get { return seed_rr+((float)seed_rr/100000.0f); } }
 
-    static LinkedList<Chunk> loadingChunks;
+    static Dictionary<(int x, int z), Chunk> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
     // public static ObjectPool<GameObject>[] pool_decor;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
@@ -126,7 +126,7 @@ public class ProceduralGeneration : MonoBehaviour
         //     );
         // }
 
-        loadingChunks = new LinkedList<Chunk>();
+        loadingChunks = new Dictionary<(int x, int z), Chunk>();
 
         pool_chunks = new ObjectPool<Chunk>(
             () => {
@@ -329,15 +329,22 @@ public class ProceduralGeneration : MonoBehaviour
 
         float dist = Math.Dist(currPos.x, currPos.z, chunkX, chunkZ);
 
-        loadingChunks.AddLast(chunk);
+        loadingChunks.Add((chunkX, chunkZ), chunk);
     }
 
     static void Unload(int x, int z)
     {
-        if(!loadedChunks.ContainsKey((x, z))) return;
+        if(!loadedChunks.ContainsKey((x, z)) && !loadingChunks.ContainsKey((x, z))) return;
 
-        var chunk = loadedChunks[(x, z)];
-        loadedChunks.Remove((x, z));
+        Chunk chunk;
+        if(loadingChunks.ContainsKey((x, z))) {
+            chunk = loadingChunks[(x, z)];
+            loadingChunks.Remove((x, z));
+        } else {
+            chunk = loadedChunks[(x, z)];
+            loadedChunks.Remove((x, z));
+        }
+
         // for(int i=0; i<chunk.numOfDecors; i++)
         // {
         //     if(chunk.decorRefs[i] != null) pool_decor[chunk.decors[i]].Release(chunk.decorRefs[i]);
@@ -406,19 +413,18 @@ public class ProceduralGeneration : MonoBehaviour
         var offset = new Vector3(chunkSize/2, 0, chunkSize/2);
         for(int i=0; loadingChunks.Count > 0 && i < chunksPerFrame; i++)
         {
-            var closest = loadingChunks.First;
+            (int x, int z) closest = (0, 0);
             var closestDist = Mathf.Infinity;
-            for(var node = loadingChunks.First; node != null; node = node.Next)
-            {
-                var dist = Vector3.Distance(PlayerMovement.rb.position, node.Value.transform.position+offset);
+            foreach(var pair in loadingChunks) {
+                var dist = Vector3.Distance(PlayerMovement.rb.position, pair.Value.transform.position+offset);
                 if(dist < closestDist)
                 {
                     closestDist = dist;
-                    closest = node;
+                    closest = pair.Key;
                 }
             }
 
-            var chunk = closest.Value;
+            var chunk = loadingChunks[closest];
             loadingChunks.Remove(closest);
             
             chunk.meshFilter.sharedMesh.Clear();

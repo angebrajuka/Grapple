@@ -70,6 +70,8 @@ public class GrappleHook : MonoBehaviour
             else
             {
                 PlayerThreeDM.instance.source_cableSpinning.Stop();
+                // Destroy(fixedJoint);
+                // fixedJoint = null;
             }
         }
 
@@ -117,6 +119,7 @@ public class GrappleHook : MonoBehaviour
             fixedJoint.enableCollision = false;
             fixedJoint.breakForce = PlayerThreeDM.instance.fixedJointBreakForce;
             fixedJoint.breakTorque = PlayerThreeDM.instance.fixedJointBreakForce;
+            Retract();
             addJoint = false;
         }
 

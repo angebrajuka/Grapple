@@ -91,10 +91,6 @@ public class PlayerThreeDM : MonoBehaviour
         }
         else if(GetKeyUp("shoot grapple hook") && IsGrappling)
         {
-            hook.Retract();
-        }
-        else if(IsGrappling && GetKeyDown("shoot grapple hook"))
-        {
             Destroy(hook.fixedJoint);
             hook.Retract();
         }
