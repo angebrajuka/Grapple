@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 3503962515745383734}
   - component: {fileID: 3503962515745383733}
   - component: {fileID: 3503962515745383732}
-  - component: {fileID: 3503962515745383731}
   - component: {fileID: 4243815576184885820}
+  - component: {fileID: 676481427425668567}
   m_Layer: 0
   m_Name: P_Chunk
   m_TagString: Untagged
@@ -85,20 +85,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &3503962515745383731
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3503962515745383730}
-  m_Material: {fileID: 13400000, guid: cfe15c061c14b4446aebf6319b13da26, type: 2}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!114 &4243815576184885820
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -113,4 +99,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 3503962515745383733}
   meshRenderer: {fileID: 3503962515745383732}
-  meshCollider: {fileID: 3503962515745383731}
+  meshCollider: {fileID: 676481427425668567}
+  vertices: []
+  triangles: 
+--- !u!64 &676481427425668567
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3503962515745383730}
+  m_Material: {fileID: 13400000, guid: cfe15c061c14b4446aebf6319b13da26, type: 2}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 0}

@@ -128,6 +128,7 @@ public class ProceduralGeneration : MonoBehaviour
                 var go = Instantiate(prefab_chunk, transform_chunks);
                 var chunk = go.GetComponent<Chunk>();
                 var mesh = new Mesh();
+                mesh.MarkDynamic();
                 // mesh.vertices = new Vector3[(int)Math.Sqr(chunkWidthVertices)*(chunkHeightVertices+1)];
                 // mesh.triangles = new int[(int)Math.Sqr(chunkWidthVertices-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
                 mesh.bounds = new Bounds(new Vector3(chunkSize/2, chunkHeight/2, chunkSize/2), new Vector3(chunkSize, chunkHeight, chunkSize));
@@ -316,9 +317,12 @@ public class ProceduralGeneration : MonoBehaviour
         // decors[0] = 0;
         // decorPositions[0].Set(chunkX*chunkSize, Height(0, 0, chunkX, chunkZ), chunkZ*chunkSize);
 
-        chunk.meshFilter.mesh.Clear();
-        chunk.meshFilter.mesh.SetVertices(chunk.vertices);
-        chunk.meshFilter.mesh.SetTriangles(chunk.triangles, 0, false);
+        chunk.meshFilter.sharedMesh.Clear();
+        chunk.meshFilter.sharedMesh.SetVertices(chunk.vertices);
+        chunk.meshFilter.sharedMesh.SetTriangles(chunk.triangles, 0, false);
+        chunk.meshFilter.sharedMesh.UploadMeshData(false);
+
+        Debug.Log(chunk.meshFilter.sharedMesh.isReadable);
 
         // chunk.decorPositions = decorPositions;
         // chunk.decors = decors;
@@ -419,7 +423,7 @@ public class ProceduralGeneration : MonoBehaviour
             loadingChunks.Remove(closest);
 
             chunk.meshFilter.mesh.RecalculateNormals();
-            chunk.meshCollider.sharedMesh = chunk.meshFilter.mesh;
+            chunk.meshCollider.sharedMesh = chunk.meshFilter.sharedMesh;
 
             // for(int di=0; di<chunk.numOfDecors; di++)
             // {
