@@ -236,6 +236,14 @@ public class ProceduralGeneration : MonoBehaviour
         c.a = a;
     }
 
+    struct CubeInfo {
+        public int[] e;
+    }
+
+    readonly byte[] flipx = {2, 0, 0, 0, 6, 0, 0, 0, 11, 10};
+    readonly byte[] flipy = {4, 5, 6, 7};
+    readonly byte[] flipz = {0, 0, 0, 1, 0, 0, 0, 5, 9, 0, 0, 10};
+
     async void Load(int chunkX, int chunkZ)
     {
         if(loadedChunks.ContainsKey((chunkX, chunkZ))) return;
@@ -262,12 +270,24 @@ public class ProceduralGeneration : MonoBehaviour
         //     chunk.triangles.Add(AddVertex(x3, y3, z3));
         // }
 
+
+        CubeInfo[,,] cubeInfos = new CubeInfo[chunkWidthCubes,chunkHeightCubes,chunkWidthCubes];
+
         Vector3 of = new Vector3(0, 0, 0);
         int[] vertIndices = new int[12];
         int AddVertex(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
             chunk.vertices.Add(vertList[i]+of);
-            return chunk.vertices.Count-1;
+            cubeInfos[x,y,z].e[i] = chunk.vertices.Count-1;
+            return cubeInfos[x,y,z].e[i];
+        }
+
+        int GetVertex(int i, int x, int y, int z) {
+            if     (x > 0 && ((1 << i) & 0b001100010001) != 0) return cubeInfos[x-1, y, z].e[flipx[i]];
+            else if(y > 0 && ((1 << i) & 0b000000001111) != 0) return cubeInfos[x, y-1, z].e[flipy[i]];
+            else if(z > 0 && ((1 << i) & 0b100110001000) != 0) return cubeInfos[x, y, z-1].e[flipz[i]];
+
+            return AddVertex(i, x, y, z);
         }
 
         void AddTriangle(int a, int b, int c) {
@@ -301,8 +321,6 @@ public class ProceduralGeneration : MonoBehaviour
 
                 for(int y=0; y<chunkHeightCubes; ++y)
                 {
-                    // if(!IsGround_(x, y, z)) continue;
-
                     var cubeindex = CubeIndex(
                         !IsGround_(x, y, z),
                         !IsGround_(x, y, z+1),
@@ -316,9 +334,11 @@ public class ProceduralGeneration : MonoBehaviour
 
                     if(edgeTable[cubeindex] == 0) continue;
 
+                    cubeInfos[x,y,z].e = new int[12];
+
                     for(int i=0, n=1; i<12; i++, n*=2) {
                         if((edgeTable[cubeindex] & n) != 0) {
-                            vertIndices[i] = AddVertex(i, x, y, z);
+                            vertIndices[i] = GetVertex(i, x, y, z);
                         }
                     }
 
