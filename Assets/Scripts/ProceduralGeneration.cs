@@ -255,11 +255,6 @@ public class ProceduralGeneration : MonoBehaviour
         //     return chunk.vertices.Count-1;
         // }
 
-        // void AddTrianglei(int a, int b, int c) {
-        //     chunk.triangles.Add(a);
-        //     chunk.triangles.Add(b);
-        //     chunk.triangles.Add(c);
-        // }
 
         // void AddTriangle(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
         //     chunk.triangles.Add(AddVertex(x1, y1, z1));
@@ -267,16 +262,29 @@ public class ProceduralGeneration : MonoBehaviour
         //     chunk.triangles.Add(AddVertex(x3, y3, z3));
         // }
 
-        var offset = new Vector3(0, 0 ,0);
-        void AddTrianglev(Vector3 a, Vector3 b, Vector3 c, int x, int y, int z) {
-            offset.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
-            chunk.vertices.Add(a+offset);
-            chunk.vertices.Add(b+offset);
-            chunk.vertices.Add(c+offset);
-            chunk.triangles.Add(chunk.vertices.Count-3);
-            chunk.triangles.Add(chunk.vertices.Count-2);
-            chunk.triangles.Add(chunk.vertices.Count-1);
+        Vector3 of = new Vector3(0, 0, 0);
+        int[] vertIndices = new int[12];
+        int AddVertex(int i, int x, int y, int z) {
+            of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
+            chunk.vertices.Add(vertList[i]+of);
+            return chunk.vertices.Count-1;
         }
+
+        void AddTriangle(int a, int b, int c) {
+            chunk.triangles.Add(a);
+            chunk.triangles.Add(b);
+            chunk.triangles.Add(c);
+        }
+
+        // void AddTrianglev(Vector3 a, Vector3 b, Vector3 c, int x, int y, int z) {
+        //     of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
+        //     chunk.vertices.Add(a+of);
+        //     chunk.vertices.Add(b+of);
+        //     chunk.vertices.Add(c+of);
+        //     chunk.triangles.Add(chunk.vertices.Count-3);
+        //     chunk.triangles.Add(chunk.vertices.Count-2);
+        //     chunk.triangles.Add(chunk.vertices.Count-1);
+        // }
 
         int biome=0;
         bool IsGround_(int x, int y, int z) {
@@ -306,8 +314,16 @@ public class ProceduralGeneration : MonoBehaviour
                         !IsGround_(x+1, y+1, z)
                     );
 
+                    if(edgeTable[cubeindex] == 0) continue;
+
+                    for(int i=0, n=1; i<12; i++, n*=2) {
+                        if((edgeTable[cubeindex] & n) != 0) {
+                            vertIndices[i] = AddVertex(i, x, y, z);
+                        }
+                    }
+
                     for(int i=0; triTable[cubeindex,i] != -1; i+=3) {
-                        AddTrianglev(vertList[triTable[cubeindex,i]], vertList[triTable[cubeindex,i+1]], vertList[triTable[cubeindex,i+2]], x, y, z);
+                        AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]]);
                     }
                 }
             }
