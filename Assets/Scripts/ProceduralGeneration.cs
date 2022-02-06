@@ -198,12 +198,22 @@ public class ProceduralGeneration : MonoBehaviour
     //             +Perlin(seed_height, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
     // }
 
-    public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
+    public static float isoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
+        return Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
+    }
+
+    public static float Threshhold(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
         int min=10, max=20;
         float threshhold = instance.groundThreshhold;
         if(y >= min && y <= max) threshhold = Math.Remap(y, min, max, instance.groundThreshhold, 0.3f);
         else if(y > max) threshhold = Math.Remap(y, max, instance.chunkHeightCubes, 0.3f, 0.9f);
-        return Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale) > threshhold;
+        return threshhold;
+    }
+
+    public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0, float isolevel=-1, float threshhold=-1) {
+        if(isolevel == -1) isolevel = isoLevel(x, y, z, chunkX, chunkZ);
+        if(threshhold == -1) threshhold = Threshhold(x, y, z, chunkX, chunkZ, biome);
+        return isolevel > threshhold;
     }
 
     public static float Wavy(float x, float y, float z, int chunkX=0, int chunkZ=0) {
