@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using System;
 using System.Linq;
 
+using static MarchingCubes;
+
 public class ProceduralGeneration : MonoBehaviour
 {
     public static ProceduralGeneration instance;
@@ -64,9 +66,13 @@ public class ProceduralGeneration : MonoBehaviour
 
     public void Init()
     {
-        RenderDistance = 8;
+        RenderDistance = 7;
 
         instance = this;
+
+        for(int i=0; i<vertList.Length; i++) {
+            vertList[i] *= cubeWidth;
+        }
 
         rain_temp_map_width = rainTempMap.width;
         rain_temp_map = new byte[rain_temp_map_width,rain_temp_map_width];
@@ -153,6 +159,7 @@ public class ProceduralGeneration : MonoBehaviour
             },
             (chunk) => {
                 // on return
+                chunk.meshCollider.enabled = false;
                 chunk.gameObject.SetActive(false);
             },
             (chunk) => {
@@ -189,8 +196,12 @@ public class ProceduralGeneration : MonoBehaviour
     //             +Perlin(seed_height, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
     // }
 
-    public static bool IsGround(float x, float y, float z, float chunkX=0, float chunkZ=0) {
-        return Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.groundScale) > instance.groundThreshhold;
+    public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
+        int min=10, max=20;
+        float threshhold = instance.groundThreshhold;
+        if(y >= min && y <= max) threshhold = Math.Remap(y, min, max, instance.groundThreshhold, 0.3f);
+        else if(y > max) threshhold = Math.Remap(y, max, instance.chunkHeightCubes, 0.3f, 0.9f);
+        return Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale) > threshhold;
     }
 
     public static byte MapClamped(byte[,] map, int x, int y)
@@ -237,92 +248,74 @@ public class ProceduralGeneration : MonoBehaviour
         // int[] decors = chunk.decors;
         // int numOfDecors = 0;
 
-        var v = new Vector3(0, 0, 0);
-        int AddVertex(int x, int y, int z) {
-            v.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
-            chunk.vertices.Add(v);
-            return chunk.vertices.Count-1;
-        }
-
-        void AddTriangle(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
-            chunk.triangles.Add(AddVertex(x1, y1, z1));
-            chunk.triangles.Add(AddVertex(x2, y2, z2));
-            chunk.triangles.Add(AddVertex(x3, y3, z3));
-        }
-
-        // void AddSquare(float x1, float y1, float z1, float x2, float y2, float z2, float x3, float y3, float z3, float x4, float y4, float z4) {
-        //     AddTriangle();
-        //     AddTriangle();
+        // var v = new Vector3(0, 0, 0);
+        // int AddVertex(int x, int y, int z) {
+        //     v.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
+        //     chunk.vertices.Add(v);
+        //     return chunk.vertices.Count-1;
         // }
 
+        // void AddTrianglei(int a, int b, int c) {
+        //     chunk.triangles.Add(a);
+        //     chunk.triangles.Add(b);
+        //     chunk.triangles.Add(c);
+        // }
+
+        // void AddTriangle(int x1, int y1, int z1, int x2, int y2, int z2, int x3, int y3, int z3) {
+        //     chunk.triangles.Add(AddVertex(x1, y1, z1));
+        //     chunk.triangles.Add(AddVertex(x2, y2, z2));
+        //     chunk.triangles.Add(AddVertex(x3, y3, z3));
+        // }
+
+        var offset = new Vector3(0, 0 ,0);
+        void AddTrianglev(Vector3 a, Vector3 b, Vector3 c, int x, int y, int z) {
+            offset.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
+            chunk.vertices.Add(a+offset);
+            chunk.vertices.Add(b+offset);
+            chunk.vertices.Add(c+offset);
+            chunk.triangles.Add(chunk.vertices.Count-3);
+            chunk.triangles.Add(chunk.vertices.Count-2);
+            chunk.triangles.Add(chunk.vertices.Count-1);
+        }
+
+        int biome=0;
         bool IsGround_(int x, int y, int z) {
-            return IsGround(x*cubeWidth, y*cubeWidth, z*cubeWidth, chunkX, chunkZ);
+            return IsGround(x, y, z, chunkX, chunkZ, biome);
         }
 
         await Task.Run(() => {
             chunk.vertices.Clear();
             chunk.triangles.Clear();
 
-            for(int x=0; x<chunkWidthCubes; ++x) for(int y=0; y<chunkHeightCubes; ++y) for(int z=0; z<chunkWidthCubes; ++z)
+            for(int x=0; x<chunkWidthCubes; ++x) for(int z=0; z<chunkWidthCubes; ++z)
             {
-                // int biome = PerlinBiome(x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ);
+                biome = PerlinBiome(x*cubeWidth, z*cubeWidth, chunkX, chunkZ);
 
-                if(IsGround_(x, y, z)) {
-                    if(!IsGround_(x+1, y, z)) {
-                        AddTriangle(x+1, y, z, x+1, y+1, z, x+1, y, z+1);
-                        AddTriangle(x+1, y+1, z, x+1, y+1, z+1, x+1, y, z+1);
-                    }
-                    if(!IsGround_(x-1, y, z)) {
-                        AddTriangle(x, y, z, x, y, z+1, x, y+1, z);
-                        AddTriangle(x, y+1, z, x, y, z+1, x, y+1, z+1);
-                    }
-                    if(!IsGround_(x, y+1, z)) {
-                        AddTriangle(x, y+1, z, x, y+1, z+1, x+1, y+1, z);
-                        AddTriangle(x+1, y+1, z, x, y+1, z+1, x+1, y+1, z+1);
-                    }
-                    if(!IsGround_(x, y-1, z)) {
-                        AddTriangle(x, y, z, x+1, y, z, x, y, z+1);
-                        AddTriangle(x+1, y, z, x+1, y, z+1, x, y, z+1);
-                    }
-                    if(!IsGround_(x, y, z+1)) {
-                        AddTriangle(x, y, z+1, x+1, y, z+1, x, y+1, z+1);
-                        AddTriangle(x, y+1, z+1, x+1, y, z+1, x+1, y+1, z+1);
-                    }
-                    if(!IsGround_(x, y, z-1)) {
-                        AddTriangle(x, y, z, x, y+1, z, x+1, y, z);
-                        AddTriangle(x, y+1, z, x+1, y+1, z, x+1, y, z);
+                for(int y=0; y<chunkHeightCubes; ++y)
+                {
+                    // if(!IsGround_(x, y, z)) continue;
+
+                    var cubeindex = CubeIndex(
+                        !IsGround_(x, y, z),
+                        !IsGround_(x, y, z+1),
+                        !IsGround_(x+1, y, z+1),
+                        !IsGround_(x+1, y, z),
+                        !IsGround_(x, y+1, z),
+                        !IsGround_(x, y+1, z+1),
+                        !IsGround_(x+1, y+1, z+1),
+                        !IsGround_(x+1, y+1, z)
+                    );
+
+                    for(int i=0; triTable[cubeindex,i] != -1; i+=3) {
+                        AddTrianglev(vertList[triTable[cubeindex,i]], vertList[triTable[cubeindex,i+1]], vertList[triTable[cubeindex,i+2]], x, y, z);
                     }
                 }
-
-                // v.Set(
-                //     (float)x*vertexSpacing+Perlin(154.2643f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset), 
-                //     Height((float)x*vertexSpacing, (float)z*vertexSpacing, chunkX, chunkZ, biome), 
-                //     (float)z*vertexSpacing+Perlin(56743.2534525f, x*vertexSpacing, z*vertexSpacing, chunkX, chunkZ, -offset, offset)
-                // );
-                // chunk.vertices.Add(v);
-                
-                // if(x<chunkWidthVertices-1 && z<chunkWidthVertices-1)
-                // {
-                //     chunk.triangles.Add(chunkWidthVertices*x+z);
-                //     chunk.triangles.Add(chunkWidthVertices*x+z+1);
-                //     chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
-                //     chunk.triangles.Add(chunkWidthVertices*(x+1)+z);
-                //     chunk.triangles.Add(chunkWidthVertices*x+z+1);
-                //     chunk.triangles.Add(chunkWidthVertices*(x+1)+z+1);
-                // }
             }
         });
 
         // numOfDecors = 1;
         // decors[0] = 0;
         // decorPositions[0].Set(chunkX*chunkSize, Height(0, 0, chunkX, chunkZ), chunkZ*chunkSize);
-
-        chunk.meshFilter.sharedMesh.Clear();
-        chunk.meshFilter.sharedMesh.SetVertices(chunk.vertices);
-        chunk.meshFilter.sharedMesh.SetTriangles(chunk.triangles, 0, false);
-        chunk.meshFilter.sharedMesh.UploadMeshData(false);
-
-        Debug.Log(chunk.meshFilter.sharedMesh.isReadable);
 
         // chunk.decorPositions = decorPositions;
         // chunk.decors = decors;
@@ -421,9 +414,16 @@ public class ProceduralGeneration : MonoBehaviour
 
             var chunk = closest.Value;
             loadingChunks.Remove(closest);
+            
+            chunk.meshFilter.sharedMesh.Clear();
+            chunk.meshFilter.sharedMesh.SetVertices(chunk.vertices);
+            chunk.meshFilter.sharedMesh.SetTriangles(chunk.triangles, 0, false);
+            chunk.meshFilter.sharedMesh.UploadMeshData(false);
 
             chunk.meshFilter.mesh.RecalculateNormals();
             chunk.meshCollider.sharedMesh = chunk.meshFilter.sharedMesh;
+            chunk.meshCollider.enabled = true;
+
 
             // for(int di=0; di<chunk.numOfDecors; di++)
             // {

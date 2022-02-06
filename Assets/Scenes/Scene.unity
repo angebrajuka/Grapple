@@ -1817,12 +1817,12 @@ MonoBehaviour:
   prefab_chunk: {fileID: 3503962515745383730, guid: 52a51bf7e370df244ab47e4c486f2bc8, type: 3}
   transform_chunks: {fileID: 311379121}
   chunkSize: 32
-  chunkWidthCubes: 10
-  chunkHeightCubes: 10
+  chunkWidthCubes: 8
+  chunkHeightCubes: 64
   groundThreshhold: 0.5
   groundScale: 0.03
   offset: 0.04
-  chunksPerFrame: 3
+  chunksPerFrame: 1
   rainTempMap: {fileID: 2800000, guid: 8ef5e476acbfa214b958ea74651cf0aa, type: 3}
   biomesData:
   - name: plains
@@ -6188,7 +6188,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 1
-  pos: {x: 20, y: 70, z: 20}
+  pos: {x: 20, y: 200, z: 20}
   eul: {x: 15, y: 0, z: 0}
 --- !u!1 &1040054161
 GameObject:
