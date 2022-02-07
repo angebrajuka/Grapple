@@ -1817,7 +1817,7 @@ MonoBehaviour:
   prefab_chunk: {fileID: 3503962515745383730, guid: 52a51bf7e370df244ab47e4c486f2bc8, type: 3}
   transform_chunks: {fileID: 311379121}
   chunkSize: 32
-  chunkWidthCubes: 16
+  chunkWidthCubes: 8
   chunkHeightCubes: 32
   groundThreshhold: 0.5
   groundScale: 0.03

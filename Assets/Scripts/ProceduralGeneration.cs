@@ -187,13 +187,15 @@ public class ProceduralGeneration : MonoBehaviour
     public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
         float val = Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
 
-        if(y <= 10) {
-            val += Mathf.InverseLerp(10, 0, y);
+        if(y <= 8) {
+            val += Math.Remap(y, 0, 8, instance.groundThreshhold, 0);
         }
-
-        // if(y >= 22) {
-        //     val += Mathf.InverseLerp(22, 32, y)*0.3f;
-        // }
+        else if(y >= 18 && y <= 26) {
+            val += Math.Remap(y, 18, 26, 0, instance.groundThreshhold*0.4f);
+        }
+        else if(y >= 27) {
+            val += Math.Remap(y, 27, 32, instance.groundThreshhold*0.4f, -instance.groundThreshhold);
+        }
 
         val = Mathf.Clamp(val, 0, 1);
 
@@ -202,7 +204,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0, float isolevel=-1) {
         if(isolevel == -1) isolevel = IsoLevel(x, y, z, chunkX, chunkZ);
-        return isolevel > instance.groundThreshhold;
+        return isolevel >= instance.groundThreshhold;
     }
 
     public static float Wavy(float x, float y, float z, int chunkX=0, int chunkZ=0) {
@@ -292,7 +294,7 @@ public class ProceduralGeneration : MonoBehaviour
         int AddVertexi(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
             of += vertList[i];
-            // of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
+            of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
             return AddVertex(of);
         }
 
