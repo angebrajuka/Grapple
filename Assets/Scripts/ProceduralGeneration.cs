@@ -54,6 +54,7 @@ public class ProceduralGeneration : MonoBehaviour
     public static float seed_rain { get { return seed_lm+((float)seed_lm/100000.0f); } }
     public static float seed_grnd { get { return seed_rm+((float)seed_rm/100000.0f); } }
     public static float seed_wave { get { return seed_rr+((float)seed_rr/100000.0f); } }
+    public static float seed_fine { get { return (seed_rain+seed_temp)/2; } }
 
     static Dictionary<(int x, int z), Chunk> loadingChunks;
     public static ObjectPool<Chunk> pool_chunks;
@@ -183,33 +184,25 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
-    // public static float Height(float x, float z, float chunkX=0, float chunkZ=0, int biome=-1)
-    // {
-    //     if(biome == -1)
-    //     {
-    //         biome = PerlinBiome(x, z, chunkX, chunkZ);
-    //     }
-    //     var b = biomes[biome];
-    //     return Perlin(seed_height, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f)
-    //             +Perlin(seed_height, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
-    // }
-
     public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
-        return Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
+        float val = Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
+
+        if(y <= 10) {
+            val += Mathf.InverseLerp(10, 0, y);
+        }
+
+        // if(y >= 22) {
+        //     val += Mathf.InverseLerp(22, 32, y)*0.3f;
+        // }
+
+        val = Mathf.Clamp(val, 0, 1);
+
+        return val;
     }
 
-    public static float Threshhold(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
-        // int min=10, max=20;
-        // float threshhold = instance.groundThreshhold;
-        // if(y >= min && y <= max) threshhold = Math.Remap(y, min, max, instance.groundThreshhold, 0.3f);
-        // else if(y > max) threshhold = Math.Remap(y, max, instance.chunkHeightCubes, 0.3f, 0.9f);
-        return instance.groundThreshhold;
-    }
-
-    public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0, float isolevel=-1, float threshhold=-1) {
+    public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0, float isolevel=-1) {
         if(isolevel == -1) isolevel = IsoLevel(x, y, z, chunkX, chunkZ);
-        if(threshhold == -1) threshhold = Threshhold(x, y, z, chunkX, chunkZ, biome);
-        return isolevel > threshhold;
+        return isolevel > instance.groundThreshhold;
     }
 
     public static float Wavy(float x, float y, float z, int chunkX=0, int chunkZ=0) {
@@ -230,7 +223,7 @@ public class ProceduralGeneration : MonoBehaviour
         float perlinValTemp = Perlin(seed_temp, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
 
         float perlinScaleFine = 0.1f;
-        float fineNoise = 0.0f;//Perlin(seed_, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
+        float fineNoise = Perlin(seed_fine, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
         perlinValTemp -= fineNoise;
         perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
