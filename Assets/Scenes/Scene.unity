@@ -1817,7 +1817,7 @@ MonoBehaviour:
   prefab_chunk: {fileID: 3503962515745383730, guid: 52a51bf7e370df244ab47e4c486f2bc8, type: 3}
   transform_chunks: {fileID: 311379121}
   chunkSize: 32
-  chunkWidthCubes: 8
+  chunkWidthCubes: 4
   chunkHeightCubes: 32
   groundThreshhold: 0.5
   groundScale: 0.03
@@ -6190,7 +6190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotateSpeed: 1
-  pos: {x: 20, y: 200, z: 20}
+  pos: {x: 20, y: 300, z: 20}
   eul: {x: 15, y: 0, z: 0}
 --- !u!1 &1040054161
 GameObject:
@@ -11289,11 +11289,11 @@ ReflectionProbe:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1854703077}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 0
+  m_RefreshMode: 1
   m_TimeSlicingMode: 0
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -11302,17 +11302,17 @@ ReflectionProbe:
   m_NearClip: 0.01
   m_FarClip: 1000
   m_ShadowDistance: 100
-  m_ClearFlags: 2
+  m_ClearFlags: 1
   m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 2147483647
   m_IntensityMultiplier: 1
-  m_BlendDistance: 1
+  m_BlendDistance: 0
   m_HDR: 0
   m_BoxProjection: 0
   m_RenderDynamicObjects: 0
-  m_UseOcclusionCulling: 1
+  m_UseOcclusionCulling: 0
   m_Importance: 1
   m_CustomBakedTexture: {fileID: 0}
 --- !u!1 &1887390182
@@ -13118,8 +13118,8 @@ Light:
     m_Type: 2
     m_Resolution: -1
     m_CustomResolution: -1
-    m_Strength: 0.59
-    m_Bias: 3.6
+    m_Strength: 0.48
+    m_Bias: 5
     m_NormalBias: 0
     m_NearPlane: 0.1
     m_CullingMatrixOverride:

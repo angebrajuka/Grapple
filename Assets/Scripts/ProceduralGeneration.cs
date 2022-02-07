@@ -188,7 +188,7 @@ public class ProceduralGeneration : MonoBehaviour
         float val = Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
 
         if(y <= 8) {
-            val += Math.Remap(y, 0, 8, instance.groundThreshhold, 0);
+            val += Math.Remap(y, 0, 9, instance.groundThreshhold, 0);
         }
         else if(y >= 18 && y <= 26) {
             val += Math.Remap(y, 18, 26, 0, instance.groundThreshhold*0.4f);
