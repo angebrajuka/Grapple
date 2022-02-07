@@ -72,10 +72,6 @@ public class ProceduralGeneration : MonoBehaviour
 
         instance = this;
 
-        for(int i=0; i<vertList.Length; i++) {
-            vertList[i] *= cubeWidth;
-        }
-
         rain_temp_map_width = rainTempMap.width;
         rain_temp_map = new byte[rain_temp_map_width,rain_temp_map_width];
         biomes = new Biome[biomesData.Length];
@@ -198,20 +194,20 @@ public class ProceduralGeneration : MonoBehaviour
     //             +Perlin(seed_height, x, z, chunkX, chunkZ, b.minHeight, b.maxHeight, 0.04f);
     // }
 
-    public static float isoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
+    public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
         return Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
     }
 
     public static float Threshhold(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
-        int min=10, max=20;
-        float threshhold = instance.groundThreshhold;
-        if(y >= min && y <= max) threshhold = Math.Remap(y, min, max, instance.groundThreshhold, 0.3f);
-        else if(y > max) threshhold = Math.Remap(y, max, instance.chunkHeightCubes, 0.3f, 0.9f);
-        return threshhold;
+        // int min=10, max=20;
+        // float threshhold = instance.groundThreshhold;
+        // if(y >= min && y <= max) threshhold = Math.Remap(y, min, max, instance.groundThreshhold, 0.3f);
+        // else if(y > max) threshhold = Math.Remap(y, max, instance.chunkHeightCubes, 0.3f, 0.9f);
+        return instance.groundThreshhold;
     }
 
     public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0, float isolevel=-1, float threshhold=-1) {
-        if(isolevel == -1) isolevel = isoLevel(x, y, z, chunkX, chunkZ);
+        if(isolevel == -1) isolevel = IsoLevel(x, y, z, chunkX, chunkZ);
         if(threshhold == -1) threshhold = Threshhold(x, y, z, chunkX, chunkZ, biome);
         return isolevel > threshhold;
     }
@@ -260,6 +256,17 @@ public class ProceduralGeneration : MonoBehaviour
     readonly sbyte[] flipy = {4, 5, 6, 7};
     readonly sbyte[] flipz = {-1, -1, -1, 1, -1, -1, -1, 5, 9, -1, -1, 10};
 
+    readonly Vector3Int[] corners = {
+        new Vector3Int(0, 0, 0),
+        new Vector3Int(0, 0, 1),
+        new Vector3Int(1, 0, 1),
+        new Vector3Int(1, 0 ,0),
+        new Vector3Int(0, 1, 0),
+        new Vector3Int(0, 1, 1),
+        new Vector3Int(1, 1, 1),
+        new Vector3Int(1, 1 ,0),
+    };
+
     async void Load(int chunkX, int chunkZ)
     {
         if(loadedChunks.ContainsKey((chunkX, chunkZ))) return;
@@ -270,21 +277,37 @@ public class ProceduralGeneration : MonoBehaviour
 
         CubeInfo[,,] cubeInfos = new CubeInfo[chunkWidthCubes,chunkHeightCubes,chunkWidthCubes];
 
+        int AddVertex(Vector3 v) {
+            chunk.vertices.Add(v);
+            return chunk.vertices.Count-1;
+        }
+
+        float[] isos = new float[12];
+        Vector3 VertexInterp(int i1, int i2)
+        {
+            float valp1 = isos[i1];
+            float valp2 = isos[i2];
+            var p1 = corners[i1];
+            var p2 = corners[i2];
+            float mu = (groundThreshhold - valp1) / (valp2 - valp1);
+            return new Vector3(p1.x + mu * (p2.x - p1.x), p1.y + mu * (p2.y - p1.y), p1.z + mu * (p2.z - p1.z))*cubeWidth;
+        }
+
+        Vector3[] vertList = new Vector3[12];
         Vector3 of = new Vector3(0, 0, 0);
         int[] vertIndices = new int[12];
-        int AddVertex(int i, int x, int y, int z) {
+        int AddVertexi(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
             of += vertList[i];
-            of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
-            chunk.vertices.Add(of);
-            return chunk.vertices.Count-1;
+            // of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
+            return AddVertex(of);
         }
 
         int GetVertex(int i, int x, int y, int z) {
             if(x > 0 && ((1 << i) & 0b001100010001) != 0) return cubeInfos[x-1, y, z].e[flipx[i]];
             if(y > 0 && ((1 << i) & 0b000000001111) != 0) return cubeInfos[x, y-1, z].e[flipy[i]];
             if(z > 0 && ((1 << i) & 0b100110001000) != 0) return cubeInfos[x, y, z-1].e[flipz[i]];
-            return AddVertex(i, x, y, z);
+            return AddVertexi(i, x, y, z);
         }
 
         void AddTriangle(int a, int b, int c) {
@@ -294,8 +317,8 @@ public class ProceduralGeneration : MonoBehaviour
         }
 
         int biome=0;
-        bool IsGround_(int x, int y, int z) {
-            return IsGround(x, y, z, chunkX, chunkZ, biome);
+        bool IsGround_(int x, int y, int z, float iso) {
+            return IsGround(x, y, z, chunkX, chunkZ, biome, iso);
         }
 
         await Task.Run(() => {
@@ -308,20 +331,42 @@ public class ProceduralGeneration : MonoBehaviour
 
                 for(int y=0; y<chunkHeightCubes; ++y)
                 {
+                    isos[0] = IsoLevel(x, y, z, chunkX, chunkZ, biome);
+                    isos[1] = IsoLevel(x, y, z+1, chunkX, chunkZ, biome);
+                    isos[2] = IsoLevel(x+1, y, z+1, chunkX, chunkZ, biome);
+                    isos[3] = IsoLevel(x+1, y, z, chunkX, chunkZ, biome);
+                    isos[4] = IsoLevel(x, y+1, z, chunkX, chunkZ, biome);
+                    isos[5] = IsoLevel(x, y+1, z+1, chunkX, chunkZ, biome);
+                    isos[6] = IsoLevel(x+1, y+1, z+1, chunkX, chunkZ, biome);
+                    isos[7] = IsoLevel(x+1, y+1, z, chunkX, chunkZ, biome);
+
                     var cubeindex = CubeIndex(
-                        !IsGround_(x, y, z),
-                        !IsGround_(x, y, z+1),
-                        !IsGround_(x+1, y, z+1),
-                        !IsGround_(x+1, y, z),
-                        !IsGround_(x, y+1, z),
-                        !IsGround_(x, y+1, z+1),
-                        !IsGround_(x+1, y+1, z+1),
-                        !IsGround_(x+1, y+1, z)
+                        !IsGround_(x, y, z, isos[0]),
+                        !IsGround_(x, y, z+1, isos[1]),
+                        !IsGround_(x+1, y, z+1, isos[2]),
+                        !IsGround_(x+1, y, z, isos[3]),
+                        !IsGround_(x, y+1, z, isos[4]),
+                        !IsGround_(x, y+1, z+1, isos[5]),
+                        !IsGround_(x+1, y+1, z+1, isos[6]),
+                        !IsGround_(x+1, y+1, z, isos[7])
                     );
 
                     if(edgeTable[cubeindex] == 0) continue;
 
                     cubeInfos[x,y,z].e = new int[12];
+
+                    if((edgeTable[cubeindex] & 1) != 0) vertList[0] = VertexInterp(0, 1);
+                    if((edgeTable[cubeindex] & 2) != 0) vertList[1] = VertexInterp(1, 2);
+                    if((edgeTable[cubeindex] & 4) != 0) vertList[2] = VertexInterp(2, 3);
+                    if((edgeTable[cubeindex] & 8) != 0) vertList[3] = VertexInterp(3, 0);
+                    if((edgeTable[cubeindex] & 16) != 0) vertList[4] = VertexInterp(4, 5);
+                    if((edgeTable[cubeindex] & 32) != 0) vertList[5] = VertexInterp(5, 6);
+                    if((edgeTable[cubeindex] & 64) != 0) vertList[6] = VertexInterp(6, 7);
+                    if((edgeTable[cubeindex] & 128) != 0) vertList[7] = VertexInterp(7, 4);
+                    if((edgeTable[cubeindex] & 256) != 0) vertList[8] = VertexInterp(0, 4);
+                    if((edgeTable[cubeindex] & 512) != 0) vertList[9] = VertexInterp(1, 5);
+                    if((edgeTable[cubeindex] & 1024) != 0) vertList[10] = VertexInterp(2, 6);
+                    if((edgeTable[cubeindex] & 2048) != 0) vertList[11] = VertexInterp(3, 7);
 
                     for(int i=0, n=1; i<12; i++, n*=2) {
                         if((edgeTable[cubeindex] & n) != 0) {

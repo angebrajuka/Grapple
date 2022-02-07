@@ -15,21 +15,6 @@ public static class MarchingCubes {
         return cubeindex;
     }
 
-    public static Vector3[] vertList = {
-        new Vector3(0, 0, 0.5f),
-        new Vector3(0.5f, 0, 1),
-        new Vector3(1, 0, 0.5f),
-        new Vector3(0.5f, 0, 0),
-        new Vector3(0, 1, 0.5f),
-        new Vector3(0.5f, 1, 1),
-        new Vector3(1, 1, 0.5f),
-        new Vector3(0.5f, 1, 0),
-        new Vector3(0, 0.5f, 0),
-        new Vector3(0, 0.5f, 1),
-        new Vector3(1, 0.5f, 1),
-        new Vector3(1, 0.5f, 0)
-    };
-
     public static readonly int[] edgeTable = {
         0x0  , 0x109, 0x203, 0x30a, 0x406, 0x50f, 0x605, 0x70c,
         0x80c, 0x905, 0xa0f, 0xb06, 0xc0a, 0xd03, 0xe09, 0xf00,
