@@ -5,7 +5,7 @@ public static class MarchingCubes {
     public static byte CubeIndex(float[] isos, float thresh) {
         byte cubeindex = 0;
         for(int i=0, n=1; i<8; i++) {
-            if(isos[i] > thresh) cubeindex |= n;
+            if(isos[i] >= thresh) cubeindex |= n;
             n *= 2;
         }
         return cubeindex;
