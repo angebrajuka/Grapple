@@ -2,7 +2,16 @@ using UnityEngine;
 
 public static class MarchingCubes {
 
-    public static byte CubeIndex(bool grid0, bool grid1, bool grid2, bool grid3, bool grid4, bool grid5, bool grid6, bool grid7) {
+    public static byte CubeIndex(float[] isos, float thresh) {
+        byte cubeindex = 0;
+        for(int i=0, n=1; i<8; i++) {
+            if(isos[i] > thresh) cubeindex |= n;
+            n *= 2;
+        }
+        return cubeindex;
+    }
+    
+    public static byte CubeIndex_(bool grid0, bool grid1, bool grid2, bool grid3, bool grid4, bool grid5, bool grid6, bool grid7) {
         byte cubeindex = 0;
         if(grid0) cubeindex |= 1;
         if(grid1) cubeindex |= 2;
