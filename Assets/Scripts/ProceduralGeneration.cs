@@ -261,6 +261,21 @@ public class ProceduralGeneration : MonoBehaviour
         new Vector3Int(1, 1, 1),
         new Vector3Int(1, 1 ,0),
     };
+    
+    readonly Vector2Int[] interpVals = {
+        new Vector2Int(0, 1),
+        new Vector2Int(1, 2),
+        new Vector2Int(2, 3),
+        new Vector2Int(3, 0),
+        new Vector2Int(4, 5),
+        new Vector2Int(5, 7),
+        new Vector2Int(6, 7),
+        new Vector2Int(7, 4),
+        new Vector2Int(0, 4),
+        new Vector2Int(1, 5),
+        new Vector2Int(2, 6),
+        new Vector2Int(3, 7)
+    };
 
     async void Load(int chunkX, int chunkZ)
     {
@@ -288,12 +303,11 @@ public class ProceduralGeneration : MonoBehaviour
             return new Vector3(p1.x + mu * (p2.x - p1.x), p1.y + mu * (p2.y - p1.y), p1.z + mu * (p2.z - p1.z))*cubeWidth;
         }
 
-        Vector3[] vertList = new Vector3[12];
         Vector3 of = new Vector3(0, 0, 0);
         int[] vertIndices = new int[12];
         int AddVertexi(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
-            of += vertList[i];
+            of += VertexInterp(interpVals[i].x, interpVals[i].y);
             of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
             return AddVertex(of);
         }
@@ -326,42 +340,14 @@ public class ProceduralGeneration : MonoBehaviour
 
                 for(int y=0; y<chunkHeightCubes; ++y)
                 {
-                    isos[0] = IsoLevel(x, y, z, chunkX, chunkZ, biome);
-                    isos[1] = IsoLevel(x, y, z+1, chunkX, chunkZ, biome);
-                    isos[2] = IsoLevel(x+1, y, z+1, chunkX, chunkZ, biome);
-                    isos[3] = IsoLevel(x+1, y, z, chunkX, chunkZ, biome);
-                    isos[4] = IsoLevel(x, y+1, z, chunkX, chunkZ, biome);
-                    isos[5] = IsoLevel(x, y+1, z+1, chunkX, chunkZ, biome);
-                    isos[6] = IsoLevel(x+1, y+1, z+1, chunkX, chunkZ, biome);
-                    isos[7] = IsoLevel(x+1, y+1, z, chunkX, chunkZ, biome);
-
-                    var cubeindex = CubeIndex(
-                        !IsGround_(x, y, z, isos[0]),
-                        !IsGround_(x, y, z+1, isos[1]),
-                        !IsGround_(x+1, y, z+1, isos[2]),
-                        !IsGround_(x+1, y, z, isos[3]),
-                        !IsGround_(x, y+1, z, isos[4]),
-                        !IsGround_(x, y+1, z+1, isos[5]),
-                        !IsGround_(x+1, y+1, z+1, isos[6]),
-                        !IsGround_(x+1, y+1, z, isos[7])
-                    );
+                    for(int i=0; i<8; i++) {
+                        isos[i] = IsoLevel(x+corners[i].x, y+corners[i].y, z+corners[i].z, chunkX, chunkZ, biome);
+                    }
+                    var cubeindex = CubeIndex(isos, instance.groundThreshhold);
 
                     if(edgeTable[cubeindex] == 0) continue;
 
                     cubeInfos[x,y,z].e = new int[12];
-
-                    if((edgeTable[cubeindex] & 1) != 0) vertList[0] = VertexInterp(0, 1);
-                    if((edgeTable[cubeindex] & 2) != 0) vertList[1] = VertexInterp(1, 2);
-                    if((edgeTable[cubeindex] & 4) != 0) vertList[2] = VertexInterp(2, 3);
-                    if((edgeTable[cubeindex] & 8) != 0) vertList[3] = VertexInterp(3, 0);
-                    if((edgeTable[cubeindex] & 16) != 0) vertList[4] = VertexInterp(4, 5);
-                    if((edgeTable[cubeindex] & 32) != 0) vertList[5] = VertexInterp(5, 6);
-                    if((edgeTable[cubeindex] & 64) != 0) vertList[6] = VertexInterp(6, 7);
-                    if((edgeTable[cubeindex] & 128) != 0) vertList[7] = VertexInterp(7, 4);
-                    if((edgeTable[cubeindex] & 256) != 0) vertList[8] = VertexInterp(0, 4);
-                    if((edgeTable[cubeindex] & 512) != 0) vertList[9] = VertexInterp(1, 5);
-                    if((edgeTable[cubeindex] & 1024) != 0) vertList[10] = VertexInterp(2, 6);
-                    if((edgeTable[cubeindex] & 2048) != 0) vertList[11] = VertexInterp(3, 7);
 
                     for(int i=0, n=1; i<12; i++, n*=2) {
                         if((edgeTable[cubeindex] & n) != 0) {
