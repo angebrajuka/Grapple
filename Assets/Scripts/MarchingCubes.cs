@@ -1,12 +1,12 @@
 using UnityEngine;
+using System;
 
 public static class MarchingCubes {
 
-    public static byte CubeIndex(float[] isos, float thresh) {
+    public static byte CubeIndex(float[] isos, Func<float, bool> IsGround) {
         byte cubeindex = 0;
-        for(int i=0, n=1; i<8; i++) {
-            if(isos[i] >= thresh) cubeindex |= n;
-            n *= 2;
+        for(byte i=0, n=1; i<8; i++, n*=2) {
+            if(!IsGround(isos[i])) cubeindex |= n;
         }
         return cubeindex;
     }

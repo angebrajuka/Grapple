@@ -187,8 +187,9 @@ public class ProceduralGeneration : MonoBehaviour
     public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
         float val = Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
 
-        if(y <= 8) {
-            val += Math.Remap(y, 0, 9, instance.groundThreshhold, 0);
+        if(y == 0) val = 1;
+        else if(y <= 8) {
+            val += Math.Remap(y, 0, 8, instance.groundThreshhold, 0);
         }
         else if(y >= 18 && y <= 26) {
             val += Math.Remap(y, 18, 26, 0, instance.groundThreshhold*0.4f);
@@ -202,8 +203,7 @@ public class ProceduralGeneration : MonoBehaviour
         return val;
     }
 
-    public static bool IsGround(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0, float isolevel=-1) {
-        if(isolevel == -1) isolevel = IsoLevel(x, y, z, chunkX, chunkZ);
+    public static bool IsGround(float isolevel) {
         return isolevel >= instance.groundThreshhold;
     }
 
@@ -268,7 +268,7 @@ public class ProceduralGeneration : MonoBehaviour
         new Vector2Int(2, 3),
         new Vector2Int(3, 0),
         new Vector2Int(4, 5),
-        new Vector2Int(5, 7),
+        new Vector2Int(5, 6),
         new Vector2Int(6, 7),
         new Vector2Int(7, 4),
         new Vector2Int(0, 4),
@@ -326,9 +326,6 @@ public class ProceduralGeneration : MonoBehaviour
         }
 
         int biome=0;
-        bool IsGround_(int x, int y, int z, float iso) {
-            return IsGround(x, y, z, chunkX, chunkZ, biome, iso);
-        }
 
         await Task.Run(() => {
             chunk.vertices.Clear();
@@ -343,7 +340,7 @@ public class ProceduralGeneration : MonoBehaviour
                     for(int i=0; i<8; i++) {
                         isos[i] = IsoLevel(x+corners[i].x, y+corners[i].y, z+corners[i].z, chunkX, chunkZ, biome);
                     }
-                    var cubeindex = CubeIndex(isos, instance.groundThreshhold);
+                    var cubeindex = CubeIndex(isos, IsGround);
 
                     if(edgeTable[cubeindex] == 0) continue;
 

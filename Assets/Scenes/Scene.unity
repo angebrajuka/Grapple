@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.514151, g: 0.51592994, b: 1, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.93
+  m_AmbientIntensity: 1.1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0, g: 0, b: 0, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: 0ffaa0b7117ba8c47a9d05ae701d4b4d, type: 2}
@@ -1481,13 +1481,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 311314393}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.3000002, y: -0.44599885, z: 0.5}
+  m_LocalPosition: {x: -0.3000002, y: 0.23400116, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1544013629}
-  m_Father: {fileID: 1687258585}
-  m_RootOrder: 2
+  m_Father: {fileID: 1887390183}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!82 &311314396
 AudioSource:
@@ -3457,6 +3457,7 @@ Transform:
   m_Children:
   - {fileID: 1097735634}
   - {fileID: 1854703078}
+  - {fileID: 2098937367}
   m_Father: {fileID: 1687258585}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -8389,7 +8390,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1887390183}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!23 &1360715710
 MeshRenderer:
@@ -9662,8 +9663,6 @@ Transform:
   m_Children:
   - {fileID: 654939533}
   - {fileID: 546853964}
-  - {fileID: 311314394}
-  - {fileID: 2098937367}
   m_Father: {fileID: 1887390183}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -11356,6 +11355,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1687258585}
+  - {fileID: 311314394}
   - {fileID: 1360715709}
   m_Father: {fileID: 1103312753}
   m_RootOrder: 1
@@ -11498,9 +11498,9 @@ MonoBehaviour:
   volume_shoot: 0.5
   source_cableSpinning: {fileID: 311314396}
   fixedJointBreakForce: 2000
-  shootForce: 1200
-  autoRetractSpeedFast: 100
-  autoRetractSpeedSlow: 24
+  shootForce: 2400
+  autoRetractSpeedFast: 230
+  autoRetractSpeedSlow: 25
   recoilForce: 500
   minDistance: 3
   destroyDistance: 0.5
@@ -13051,7 +13051,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2098937367
 Transform:
   m_ObjectHideFlags: 0
@@ -13059,13 +13059,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2098937366}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.120000295, z: -0.47}
+  m_LocalScale: {x: 10, y: 10, z: 10}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1687258585}
-  m_RootOrder: 3
+  m_Father: {fileID: 546853964}
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!114 &2098937368
 MonoBehaviour:
@@ -13099,10 +13099,10 @@ Light:
   m_Type: 0
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 2
-  m_Range: 138.4
-  m_SpotAngle: 179
-  m_InnerSpotAngle: 179
+  m_Intensity: 12
+  m_Range: 2000
+  m_SpotAngle: 108.67857
+  m_InnerSpotAngle: 70.32143
   m_CookieSize: 10
   m_Shadows:
     m_Type: 2
@@ -13133,12 +13133,12 @@ Light:
   m_Cookie: {fileID: 0}
   m_DrawHalo: 0
   m_Flare: {fileID: 0}
-  m_RenderMode: 0
+  m_RenderMode: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 439
   m_RenderingLayerMask: 1
-  m_Lightmapping: 4
+  m_Lightmapping: 1
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
