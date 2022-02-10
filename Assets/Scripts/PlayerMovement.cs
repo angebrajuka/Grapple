@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     // hierarchy
     public PhysicMaterial physicsMaterial;
     public Transform t_camera;
+    public Transform t_upperBody;
     public CapsuleCollider colliderDefault;
     public CapsuleCollider colliderCrouch;
     public SphereCollider colliderGrounded;
@@ -34,9 +35,9 @@ public class PlayerMovement : MonoBehaviour
     // components
     public static Rigidbody rb;
 
-    Vector3 cameraPosTarget;
-    Vector3 cameraPosDefault;
-    Vector3 cameraPosCrouch;
+    Vector3 upperPosTarger;
+    Vector3 upperPosDefault;
+    Vector3 upperPosCrouch;
     float slideHeightAdjust;
     bool grounded, wasGrounded;
     Vector3 groundedNormal;
@@ -57,9 +58,9 @@ public class PlayerMovement : MonoBehaviour
 
 
         slideHeightAdjust = colliderDefault.height - colliderCrouch.height;
-        cameraPosTarget = Vector3.up*slideHeightAdjust/2;
-        cameraPosDefault = t_camera.localPosition;
-        cameraPosCrouch = cameraPosDefault - Vector3.up*slideHeightAdjust;
+        upperPosTarger = Vector3.up*slideHeightAdjust/2;
+        upperPosDefault = t_upperBody.localPosition;
+        upperPosCrouch = upperPosDefault - Vector3.up*slideHeightAdjust;
 
         grounded = false;
         wasGrounded = false;
@@ -166,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
 
             colliderDefault.enabled = false;
             colliderCrouch.enabled = true;
-            cameraPosTarget = cameraPosCrouch;
+            upperPosTarger = upperPosCrouch;
 
             float zvel = rb.RelativeVelocity().z;
             if(crouchKeyDown && Time.time - timeLastJumped > 0.01f && (!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
@@ -182,7 +183,7 @@ public class PlayerMovement : MonoBehaviour
 
             colliderDefault.enabled = true;
             colliderCrouch.enabled = false;
-            cameraPosTarget = cameraPosDefault;
+            upperPosTarger = upperPosDefault;
         }
 
         // accelerate
@@ -205,7 +206,7 @@ public class PlayerMovement : MonoBehaviour
 
     void LateUpdate()
     {
-        t_camera.localPosition = Vector3.Lerp(t_camera.localPosition, cameraPosTarget, cameraHeightAdjustSpeed*Time.deltaTime);
+        t_upperBody.localPosition = Vector3.Lerp(t_upperBody.localPosition, upperPosTarger, cameraHeightAdjustSpeed*Time.deltaTime);
 
         Vector3 rotation;
         if(input_look.x != 0)

@@ -69,7 +69,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     public void Init()
     {
-        RenderDistance = 7;
+        RenderDistance = 8;
 
         instance = this;
 
@@ -184,7 +184,9 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
-    public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=0) {
+    public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=-1) {
+        if(biome == -1) biome = PerlinBiome(x, z, chunkX, chunkZ);
+
         float val = Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
 
         if(y == 0) val = 1;
