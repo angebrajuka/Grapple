@@ -154,7 +154,7 @@ public class ProceduralGeneration : MonoBehaviour
             },
             (chunk) => {
                 // on get
-                chunk.gameObject.SetActive(true);
+                chunk.gameObject.SetActive(false);
             },
             (chunk) => {
                 // on return
@@ -493,6 +493,8 @@ public class ProceduralGeneration : MonoBehaviour
             chunk.meshFilter.mesh.RecalculateNormals();
             chunk.meshCollider.sharedMesh = chunk.meshFilter.sharedMesh;
             chunk.meshCollider.enabled = true;
+
+            chunk.gameObject.SetActive(true);
 
 
             // for(int di=0; di<chunk.numOfDecors; di++)
