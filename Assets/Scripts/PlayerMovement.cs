@@ -78,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
     public void Reset()
     {
         var pos = rb.position;
-        pos.Set(0, 200, 0);
+        pos.Set(0, 300, 0);
         rb.position = pos;
         rb.velocity *= 0;
     }
