@@ -370,22 +370,19 @@ public class ProceduralGeneration : MonoBehaviour
         // chunk.decors = decors;
         // chunk.numOfDecors = numOfDecors;
 
-        float dist = Math.Dist(currPos.x, currPos.z, chunkX, chunkZ);
+        if(!loadedChunks.ContainsKey((chunkX, chunkZ))) return; // possible to be unloaded before even finished because async, need to check
 
         loadingChunks.Add((chunkX, chunkZ), chunk);
     }
 
     static void Unload(int x, int z)
     {
-        if(!loadedChunks.ContainsKey((x, z)) && !loadingChunks.ContainsKey((x, z))) return;
+        if(!loadedChunks.ContainsKey((x, z))) return;
 
-        Chunk chunk;
+        Chunk chunk = loadedChunks[(x, z)];
+        loadedChunks.Remove((x, z));
         if(loadingChunks.ContainsKey((x, z))) {
-            chunk = loadingChunks[(x, z)];
             loadingChunks.Remove((x, z));
-        } else {
-            chunk = loadedChunks[(x, z)];
-            loadedChunks.Remove((x, z));
         }
 
         // for(int i=0; i<chunk.numOfDecors; i++)
