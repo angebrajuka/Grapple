@@ -11448,7 +11448,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a25cfb03b243ebc4d86a663f3d47acf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  overlay: {fileID: 493726022}
+  overlay: {fileID: 654939532}
   gunPos: {fileID: 1097735634}
   gunPosAnimator: {fileID: 1097735635}
   gunReloadAnimator: {fileID: 546853965}
