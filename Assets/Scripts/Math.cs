@@ -78,7 +78,12 @@ public static class Math
 
     public static float Remap(float value, float oldMin, float oldMax, float newMin, float newMax)
     {
-        return (value - oldMin) / (oldMax - oldMin) * (newMax - newMin) + newMin;
+        return Mathf.Lerp(newMin, newMax, Mathf.InverseLerp(oldMin, oldMax, value));
+        //return (value - oldMin) / (oldMax - oldMin) * (newMax - newMin) + newMin;
+    }
+
+    public static float Avg(float val1, float val2) {
+        return (val1+val2)/2;
     }
 
     public static bool Ish(float value1, float value2, float range=0.05f)

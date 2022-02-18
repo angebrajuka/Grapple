@@ -184,12 +184,15 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
-    public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=-1) {
-        if(biome == -1) biome = PerlinBiome(x*cubeWidth, z*cubeWidth, chunkX, chunkZ);
+    // x,y,z is real position
+    public static float IsoLevel(float x, float y, float z, int chunkX=0, int chunkZ=0, int biome=-1) {
+        if(biome == -1) biome = PerlinBiome(x, z, chunkX, chunkZ);
 
-        float val = Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
+        float val = Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.groundScale);
 
         float min=biomes[biome].minHeight, max=biomes[biome].maxHeight;
+
+        y /= cubeWidth;
 
         if(y == 0) val = 1;
         else if(y <= 8) {
@@ -202,7 +205,7 @@ public class ProceduralGeneration : MonoBehaviour
             val += Math.Remap(y,  min+1,  max, instance.groundThreshhold, -instance.groundThreshhold);
         }
 
-        val = Mathf.Clamp(val, 0, 1);
+        // TODO cave entrance stuff here
 
         return val;
     }
@@ -220,6 +223,7 @@ public class ProceduralGeneration : MonoBehaviour
         return map[Mathf.Clamp(x, 0, map.GetLength(0)-1), Mathf.Clamp(y, 0, map.GetLength(1)-1)];
     }
 
+    // x,z is real position
     public static int PerlinBiome(float x, float z, float chunkX=0, float chunkZ=0)
     {
         const float perlinScaleRain = 0.003f;
@@ -231,9 +235,9 @@ public class ProceduralGeneration : MonoBehaviour
         float perlinScaleFine = 0.1f;
         float fineNoise = Perlin(seed_fine, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
-        perlinValTemp -= fineNoise;
+        // perlinValTemp -= fineNoise;
         perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
-        perlinValRain -= fineNoise;
+        // perlinValRain -= fineNoise;
         perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
 
         return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
@@ -342,7 +346,7 @@ public class ProceduralGeneration : MonoBehaviour
                 for(int y=0; y<chunkHeightCubes; ++y)
                 {
                     for(int i=0; i<8; i++) {
-                        isos[i] = IsoLevel(x+corners[i].x, y+corners[i].y, z+corners[i].z, chunkX, chunkZ);
+                        isos[i] = IsoLevel((x+corners[i].x)*cubeWidth, (y+corners[i].y)*cubeWidth, (z+corners[i].z)*cubeWidth, chunkX, chunkZ);
                     }
                     var cubeindex = CubeIndex(isos, IsGround);
 
