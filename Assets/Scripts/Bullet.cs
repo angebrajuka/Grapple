@@ -76,6 +76,16 @@ public class Bullet : MonoBehaviour
         if(!grenade) Release();
     }
 
+    void OnTriggerEnter(Collider other) {
+        var target = other.gameObject.GetComponent<Target>();
+        if(target != null)
+        {
+            target.Damage(damage, transform.forward, 50);
+        }
+
+        Release();
+    }
+
     void FixedUpdate()
     {
         mesh.SetActive(true);

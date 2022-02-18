@@ -185,19 +185,21 @@ public class ProceduralGeneration : MonoBehaviour
     }
 
     public static float IsoLevel(int x, int y, int z, int chunkX=0, int chunkZ=0, int biome=-1) {
-        if(biome == -1) biome = PerlinBiome(x, z, chunkX, chunkZ);
+        if(biome == -1) biome = PerlinBiome(x*cubeWidth, z*cubeWidth, chunkX, chunkZ);
 
         float val = Math.Perlin3D(seed_grnd, x*cubeWidth+chunkX*instance.chunkSize, y*cubeWidth, z*cubeWidth+chunkZ*instance.chunkSize, instance.groundScale);
+
+        float min=biomes[biome].minHeight, max=biomes[biome].maxHeight;
 
         if(y == 0) val = 1;
         else if(y <= 8) {
             val += Math.Remap(y, 0, 8, instance.groundThreshhold, 0);
         }
-        else if(y >= 18 && y <= 26) {
-            val += Math.Remap(y, 18, 26, 0, instance.groundThreshhold*0.4f);
+        else if(y >= min-10 && y <= min) {
+            val += Math.Remap(y, min-10, min, 0, instance.groundThreshhold);
         }
-        else if(y >= 27) {
-            val += Math.Remap(y, 27, 32, instance.groundThreshhold*0.4f, -instance.groundThreshhold);
+        else if(y >= min+1) {
+            val += Math.Remap(y,  min+1,  max, instance.groundThreshhold, -instance.groundThreshhold);
         }
 
         val = Mathf.Clamp(val, 0, 1);
@@ -310,7 +312,7 @@ public class ProceduralGeneration : MonoBehaviour
         int AddVertexi(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
             of += VertexInterp(interpVals[i].x, interpVals[i].y);
-            of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
+            // of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
             return AddVertex(of);
         }
 
@@ -327,7 +329,7 @@ public class ProceduralGeneration : MonoBehaviour
             chunk.triangles.Add(c);
         }
 
-        int biome=0;
+        // int biome=0;
 
         await Task.Run(() => {
             chunk.vertices.Clear();
@@ -335,12 +337,12 @@ public class ProceduralGeneration : MonoBehaviour
 
             for(int x=0; x<chunkWidthCubes; ++x) for(int z=0; z<chunkWidthCubes; ++z)
             {
-                biome = PerlinBiome(x*cubeWidth, z*cubeWidth, chunkX, chunkZ);
+                // biome = PerlinBiome(x*cubeWidth, z*cubeWidth, chunkX, chunkZ);
 
                 for(int y=0; y<chunkHeightCubes; ++y)
                 {
                     for(int i=0; i<8; i++) {
-                        isos[i] = IsoLevel(x+corners[i].x, y+corners[i].y, z+corners[i].z, chunkX, chunkZ, biome);
+                        isos[i] = IsoLevel(x+corners[i].x, y+corners[i].y, z+corners[i].z, chunkX, chunkZ);
                     }
                     var cubeindex = CubeIndex(isos, IsGround);
 

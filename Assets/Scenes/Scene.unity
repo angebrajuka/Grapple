@@ -1829,8 +1829,8 @@ MonoBehaviour:
   biomesData:
   - name: plains
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 10
-    height_max: 20
+    height_min: 30
+    height_max: 40
     rain_temp_map_color: '#FF6161'
     decorations:
     - name: P_Grass
@@ -1844,8 +1844,8 @@ MonoBehaviour:
     density: 1
   - name: forest
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 8
-    height_max: 24
+    height_min: 28
+    height_max: 34
     rain_temp_map_color: '#BF40FF'
     decorations:
     - name: P_Tree_Oak
@@ -1855,8 +1855,8 @@ MonoBehaviour:
     density: 1
   - name: desert
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 12
-    height_max: 18
+    height_min: 30
+    height_max: 32
     rain_temp_map_color: '#FF0000'
     decorations:
     - name: P_Cactus_0
@@ -1868,8 +1868,8 @@ MonoBehaviour:
     density: 1
   - name: taiga
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 10
-    height_max: 20
+    height_min: 30
+    height_max: 35
     rain_temp_map_color: '#FF80FF'
     decorations:
     - name: P_Tree_Pine
@@ -1881,8 +1881,8 @@ MonoBehaviour:
     density: 1
   - name: tundra
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 10
-    height_max: 20
+    height_min: 30
+    height_max: 40
     rain_temp_map_color: '#FFBFD4'
     decorations:
     - name: P_Grass
@@ -1892,8 +1892,8 @@ MonoBehaviour:
     density: 1
   - name: rainforest
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 10
-    height_max: 20
+    height_min: 35
+    height_max: 40
     rain_temp_map_color: '#0000FF'
     decorations:
     - name: P_Tree_Rainforest_Big
@@ -1909,8 +1909,8 @@ MonoBehaviour:
     density: 1
   - name: savanna
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 10
-    height_max: 20
+    height_min: 30
+    height_max: 40
     rain_temp_map_color: '#FF00AA'
     decorations:
     - name: P_Tree_Acacia
