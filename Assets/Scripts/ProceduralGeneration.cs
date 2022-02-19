@@ -30,7 +30,6 @@ public class ProceduralGeneration : MonoBehaviour
     const int RESOLUTION = 64;
     static float cubeWidth { get { return instance.chunkSize/instance.chunkWidthCubes; } }
     static float chunkHeight { get { return cubeWidth * instance.chunkHeightCubes; } }
-    // float vertexSpacing { get { return (float)chunkSize/(float)(chunkWidthVertices-1); } }
 
     static int diameter { get { return instance.renderDistance*2+1; } }
     static int maxChunks { get { return (int)Math.Sqr(diameter); } }
@@ -61,11 +60,9 @@ public class ProceduralGeneration : MonoBehaviour
     // public static ObjectPool<GameObject>[] pool_decor;
     public static Dictionary<(int x, int z), Chunk> loadedChunks;
     public static Vector3Int prevPos, currPos;
-    static int scrollX { get { return currPos.x; } }
-    static int scrollZ { get { return currPos.z; } }
-    static byte[,] rain_temp_map;
-    static int rain_temp_map_width;
+
     static Biome[] biomes;
+    static int[,] mins, maxs, inds;
 
     public void Init()
     {
@@ -73,31 +70,21 @@ public class ProceduralGeneration : MonoBehaviour
 
         instance = this;
 
-        rain_temp_map_width = rainTempMap.width;
-        rain_temp_map = new byte[rain_temp_map_width,rain_temp_map_width];
         biomes = new Biome[biomesData.Length];
 
-        for(int i=0; i<biomes.Length; i++)
-        {
-            biomes[i] = new Biome(biomesData[i]);
-            if(ColorUtility.TryParseHtmlString(biomesData[i].rain_temp_map_color, out Color color))
-            {
-                var color32 = (Color32)color;
-                for(int x=0; x<rain_temp_map_width; x++)
-                {
-                    for(int y=0; y<rain_temp_map_width; y++)
-                    {
-                        Color32 c = rainTempMap.GetPixel(x, y);
-
-                        if(c.r == color32.r && c.g == color32.g && c.b == color32.b)
-                        {
-                            rain_temp_map[x,y] = (byte)i;
-                        }
-                    }
-                }
-            }
-        }
+        for(int i=0; i<biomes.Length; i++) biomes[i] = new Biome(biomesData[i], i);
         biomesData = null;
+
+        mins = new int[rainTempMap.width, rainTempMap.height];
+        maxs = new int[mins.GetLength(0), mins.GetLength(1)];
+        inds = new int[mins.GetLength(0), mins.GetLength(1)];
+        Color32 pix;
+        for(int y=0; y<mins.GetLength(1); ++y) for(int x=0; x<mins.GetLength(0); ++x) {
+            pix = rainTempMap.GetPixel(x, y);
+            mins[x,y] = pix.r;
+            maxs[x,y] = pix.g;
+            inds[x,y] = pix.b;
+        }
 
         // pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
         // foreach(var pair in Biome.s_indexes)
@@ -134,8 +121,6 @@ public class ProceduralGeneration : MonoBehaviour
                 var chunk = go.GetComponent<Chunk>();
                 var mesh = new Mesh();
                 mesh.MarkDynamic();
-                // mesh.vertices = new Vector3[(int)Math.Sqr(chunkWidthVertices)*(chunkHeightVertices+1)];
-                // mesh.triangles = new int[(int)Math.Sqr(chunkWidthVertices-1)*2*3]; // 2 triangles per 4 vertices, 3 vertices per triangle
                 mesh.bounds = new Bounds(new Vector3(chunkSize/2, chunkHeight/2, chunkSize/2), new Vector3(chunkSize, chunkHeight, chunkSize));
                 chunk.vertices = new List<Vector3>(100);
                 chunk.triangles = new List<int>(100);
@@ -184,13 +169,17 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
-    // x,y,z is real position
-    public static float IsoLevel(float x, float y, float z, int chunkX=0, int chunkZ=0, int biome=-1) {
-        if(biome == -1) biome = PerlinBiome(x, z, chunkX, chunkZ);
+    // public static float Height(float x, float z, float chunkX=0, float chunkZ=0, int biome=-1)
+    // {
+    //     if(biome == -1) biome = PerlinBiome(x, z, chunkX, chunkZ);
+    //     var b = biomes[biome];
+    //     return Perlin(seed_grnd, x, z, chunkX, chunkZ, b.minHeight, Math.Avg(b.minHeight, b.maxHeight), 0.04f);// +Perlin(seed_grnd, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f);
+    // }
 
+    public static float IsoLevel(float x, float y, float z, int chunkX, int chunkZ, int min, int max, int index) {
         float val = Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.groundScale);
 
-        float min=biomes[biome].minHeight, max=biomes[biome].maxHeight;
+        // float min=biomes[biome].minHeight, max=biomes[biome].maxHeight;
 
         y /= cubeWidth;
 
@@ -201,8 +190,8 @@ public class ProceduralGeneration : MonoBehaviour
         else if(y >= min-10 && y <= min) {
             val += Math.Remap(y, min-10, min, 0, instance.groundThreshhold);
         }
-        else if(y >= min+1) {
-            val += Math.Remap(y,  min+1,  max, instance.groundThreshhold, -instance.groundThreshhold);
+        else if(y > min) {
+            val += Math.Remap(y,  min,  max, instance.groundThreshhold, -instance.groundThreshhold);
         }
 
         // TODO cave entrance stuff here
@@ -223,8 +212,7 @@ public class ProceduralGeneration : MonoBehaviour
         return map[Mathf.Clamp(x, 0, map.GetLength(0)-1), Mathf.Clamp(y, 0, map.GetLength(1)-1)];
     }
 
-    // x,z is real position
-    public static int PerlinBiome(float x, float z, float chunkX=0, float chunkZ=0)
+    public void PerlinBiome(float x, float z, float chunkX, float chunkZ, out int min, out int max, out int index)
     {
         const float perlinScaleRain = 0.003f;
         const float perlinScaleTemp = 0.003f;
@@ -236,11 +224,13 @@ public class ProceduralGeneration : MonoBehaviour
         float fineNoise = Perlin(seed_fine, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
         // perlinValTemp -= fineNoise;
-        perlinValTemp = Mathf.Round(perlinValTemp * rain_temp_map_width);
+        perlinValTemp = Mathf.Clamp((int)Mathf.Round(perlinValTemp * mins.GetLength(0)), 0, mins.GetLength(0)-1);
         // perlinValRain -= fineNoise;
-        perlinValRain = Mathf.Round(perlinValRain * rain_temp_map_width);
+        perlinValRain = Mathf.Clamp((int)Mathf.Round(perlinValRain * mins.GetLength(1)), 0, mins.GetLength(1)-1);
 
-        return MapClamped(rain_temp_map, (int)perlinValTemp, (int)perlinValRain);
+        min = mins[(int)perlinValTemp,(int)perlinValRain];
+        max = maxs[(int)perlinValTemp,(int)perlinValRain];
+        index = inds[(int)perlinValTemp,(int)perlinValRain];
     }
 
     void SetColor(ref Color c, float r, float g, float b, float a=1)
@@ -316,7 +306,6 @@ public class ProceduralGeneration : MonoBehaviour
         int AddVertexi(int i, int x, int y, int z) {
             of.Set(x*cubeWidth, y*cubeWidth, z*cubeWidth);
             of += VertexInterp(interpVals[i].x, interpVals[i].y);
-            // of.y += Wavy(of.x, of.y, of.z, chunkX, chunkZ);
             return AddVertex(of);
         }
 
@@ -333,37 +322,38 @@ public class ProceduralGeneration : MonoBehaviour
             chunk.triangles.Add(c);
         }
 
-        // int biome=0;
-
         await Task.Run(() => {
             chunk.vertices.Clear();
             chunk.triangles.Clear();
 
-            for(int x=0; x<chunkWidthCubes; ++x) for(int z=0; z<chunkWidthCubes; ++z)
-            {
-                // biome = PerlinBiome(x*cubeWidth, z*cubeWidth, chunkX, chunkZ);
+            int[,] lmins = new int[chunkWidthCubes+1,chunkWidthCubes+1];
+            int[,] lmaxs = new int[chunkWidthCubes+1,chunkWidthCubes+1];
+            int[,] linds = new int[chunkWidthCubes+1,chunkWidthCubes+1];
 
-                for(int y=0; y<chunkHeightCubes; ++y)
-                {
-                    for(int i=0; i<8; i++) {
-                        isos[i] = IsoLevel((x+corners[i].x)*cubeWidth, (y+corners[i].y)*cubeWidth, (z+corners[i].z)*cubeWidth, chunkX, chunkZ);
+            for(int x=0; x<=chunkWidthCubes; ++x) for(int z=0; z<=chunkWidthCubes; ++z)
+                PerlinBiome(x*cubeWidth, z*cubeWidth, chunkX, chunkZ, out lmins[x,z], out lmaxs[x,z], out linds[x,z]);
+
+            for(int x=0; x<chunkWidthCubes; ++x) for(int z=0; z<chunkWidthCubes; ++z) for(int y=0; y<chunkHeightCubes; ++y) {
+                for(int i=0; i<8; i++) {
+                    int xplus = x+corners[i].x;
+                    int zplus = z+corners[i].z;
+                    isos[i] = IsoLevel(xplus*cubeWidth, (y+corners[i].y)*cubeWidth, zplus*cubeWidth, chunkX, chunkZ, lmins[xplus,zplus], lmaxs[xplus,zplus], linds[xplus,zplus]);
+                }
+                var cubeindex = CubeIndex(isos, IsGround);
+
+                if(edgeTable[cubeindex] == 0) continue;
+
+                cubeInfos[x,y,z].e = new int[12];
+
+                for(int i=0, n=1; i<12; i++, n*=2) {
+                    if((edgeTable[cubeindex] & n) != 0) {
+                        vertIndices[i] = GetVertex(i, x, y, z);
+                        cubeInfos[x,y,z].e[i] = vertIndices[i];
                     }
-                    var cubeindex = CubeIndex(isos, IsGround);
+                }
 
-                    if(edgeTable[cubeindex] == 0) continue;
-
-                    cubeInfos[x,y,z].e = new int[12];
-
-                    for(int i=0, n=1; i<12; i++, n*=2) {
-                        if((edgeTable[cubeindex] & n) != 0) {
-                            vertIndices[i] = GetVertex(i, x, y, z);
-                            cubeInfos[x,y,z].e[i] = vertIndices[i];
-                        }
-                    }
-
-                    for(int i=0; triTable[cubeindex,i] != -1; i+=3) {
-                        AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]]);
-                    }
+                for(int i=0; triTable[cubeindex,i] != -1; i+=3) {
+                    AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]]);
                 }
             }
         });
@@ -492,10 +482,5 @@ public class ProceduralGeneration : MonoBehaviour
             //     chunk.decorRefs[di] = decor;
             // }
         }
-    }
-
-    void FixedUpdate()
-    {
-        
     }
 }
