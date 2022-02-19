@@ -1825,13 +1825,12 @@ MonoBehaviour:
   waveAmount: 0
   offset: 0.04
   chunksPerFrame: 1
-  rainTempMap: {fileID: 2800000, guid: 8ef5e476acbfa214b958ea74651cf0aa, type: 3}
+  rainTempMapHeight: {fileID: 2800000, guid: 533ebda68bd47a843a2c6e8202858927, type: 3}
+  rainTempMapDecor: {fileID: 2800000, guid: 9dd7aa4a790132c48b5dfe4ef2b377d3, type: 3}
   biomesData:
   - name: plains
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 30
-    height_max: 40
-    rain_temp_map_color: '#FF6161'
+    decor_b_value: 10
     decorations:
     - name: P_Grass
       frequency: 5
@@ -1844,9 +1843,7 @@ MonoBehaviour:
     density: 1
   - name: forest
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 28
-    height_max: 34
-    rain_temp_map_color: '#BF40FF'
+    decor_b_value: 20
     decorations:
     - name: P_Tree_Oak
       frequency: 3
@@ -1855,9 +1852,7 @@ MonoBehaviour:
     density: 1
   - name: desert
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 30
-    height_max: 32
-    rain_temp_map_color: '#FF0000'
+    decor_b_value: 30
     decorations:
     - name: P_Cactus_0
       frequency: 30
@@ -1868,9 +1863,7 @@ MonoBehaviour:
     density: 1
   - name: taiga
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 30
-    height_max: 35
-    rain_temp_map_color: '#FF80FF'
+    decor_b_value: 40
     decorations:
     - name: P_Tree_Pine
       frequency: 2
@@ -1881,9 +1874,7 @@ MonoBehaviour:
     density: 1
   - name: tundra
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 30
-    height_max: 40
-    rain_temp_map_color: '#FFBFD4'
+    decor_b_value: 50
     decorations:
     - name: P_Grass
       frequency: 2
@@ -1892,9 +1883,7 @@ MonoBehaviour:
     density: 1
   - name: rainforest
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 35
-    height_max: 40
-    rain_temp_map_color: '#0000FF'
+    decor_b_value: 60
     decorations:
     - name: P_Tree_Rainforest_Big
       frequency: 25
@@ -1909,9 +1898,7 @@ MonoBehaviour:
     density: 1
   - name: savanna
     material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
-    height_min: 30
-    height_max: 40
-    rain_temp_map_color: '#FF00AA'
+    decor_b_value: 70
     decorations:
     - name: P_Tree_Acacia
       frequency: 10

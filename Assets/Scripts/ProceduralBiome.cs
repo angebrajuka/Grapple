@@ -14,8 +14,8 @@ public class BiomeData
 {
     public string name;
     public Material material;
-    public float height_min, height_max;
     // public float scale
+    public int decor_b_value;
     public Decor[] decorations;
     public float density;
 }
@@ -41,17 +41,13 @@ public struct Biome
     public int[] decorationIndexes;
     public float[] decorationThreshholds;
     public Material material;
-    public float minHeight, maxHeight;
 
-    public Biome(BiomeData biomeData, int index)
+    public Biome(BiomeData biomeData)
     {
-        this.index = index;
+        this.index = biomeData.decor_b_value;
         decorationIndexes = new int[biomeData.decorations.Length];
         material = biomeData.material;
         decorationThreshholds = new float[biomeData.decorations.Length];
-
-        minHeight = biomeData.height_min;
-        maxHeight = biomeData.height_max;
 
         for(int i=0; i<decorationIndexes.Length; i++)
         {

@@ -24,7 +24,8 @@ public class ProceduralGeneration : MonoBehaviour
     public float waveAmount;
     public float offset;
     public byte chunksPerFrame;
-    public Texture2D rainTempMap;
+    public Texture2D rainTempMapHeight;
+    public Texture2D rainTempMapDecor;
     public BiomeData[] biomesData;
 
     const int RESOLUTION = 64;
@@ -62,7 +63,8 @@ public class ProceduralGeneration : MonoBehaviour
     public static Vector3Int prevPos, currPos;
 
     static Biome[] biomes;
-    static int[,] mins, maxs, inds;
+    static float[,] mins, maxs;
+    static int[,] inds;
 
     public void Init()
     {
@@ -72,17 +74,18 @@ public class ProceduralGeneration : MonoBehaviour
 
         biomes = new Biome[biomesData.Length];
 
-        for(int i=0; i<biomes.Length; i++) biomes[i] = new Biome(biomesData[i], i);
+        for(int i=0; i<biomes.Length; i++) biomes[i] = new Biome(biomesData[i]);
         biomesData = null;
 
-        mins = new int[rainTempMap.width, rainTempMap.height];
-        maxs = new int[mins.GetLength(0), mins.GetLength(1)];
+        mins = new float[rainTempMapHeight.width, rainTempMapHeight.height];
+        maxs = new float[mins.GetLength(0), mins.GetLength(1)];
         inds = new int[mins.GetLength(0), mins.GetLength(1)];
         Color32 pix;
         for(int y=0; y<mins.GetLength(1); ++y) for(int x=0; x<mins.GetLength(0); ++x) {
-            pix = rainTempMap.GetPixel(x, y);
-            mins[x,y] = pix.r;
-            maxs[x,y] = pix.g;
+            pix = rainTempMapHeight.GetPixel(x, y);
+            mins[x,y] = (float)pix.r/4;
+            maxs[x,y] = (float)pix.g/4;
+            pix = rainTempMapDecor.GetPixel(x, y);
             inds[x,y] = pix.b;
         }
 
@@ -176,7 +179,7 @@ public class ProceduralGeneration : MonoBehaviour
     //     return Perlin(seed_grnd, x, z, chunkX, chunkZ, b.minHeight, Math.Avg(b.minHeight, b.maxHeight), 0.04f);// +Perlin(seed_grnd, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f);
     // }
 
-    public static float IsoLevel(float x, float y, float z, int chunkX, int chunkZ, int min, int max, int index) {
+    public static float IsoLevel(float x, float y, float z, int chunkX, int chunkZ, float min, float max, int index) {
         float val = Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.groundScale);
 
         // float min=biomes[biome].minHeight, max=biomes[biome].maxHeight;
@@ -212,10 +215,10 @@ public class ProceduralGeneration : MonoBehaviour
         return map[Mathf.Clamp(x, 0, map.GetLength(0)-1), Mathf.Clamp(y, 0, map.GetLength(1)-1)];
     }
 
-    public void PerlinBiome(float x, float z, float chunkX, float chunkZ, out int min, out int max, out int index)
+    public void PerlinBiome(float x, float z, float chunkX, float chunkZ, out float min, out float max, out int index)
     {
-        const float perlinScaleRain = 0.003f;
-        const float perlinScaleTemp = 0.003f;
+        const float perlinScaleRain = 0.002f;
+        const float perlinScaleTemp = 0.002f;
 
         float perlinValRain = Perlin(seed_rain, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
         float perlinValTemp = Perlin(seed_temp, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
@@ -326,8 +329,8 @@ public class ProceduralGeneration : MonoBehaviour
             chunk.vertices.Clear();
             chunk.triangles.Clear();
 
-            int[,] lmins = new int[chunkWidthCubes+1,chunkWidthCubes+1];
-            int[,] lmaxs = new int[chunkWidthCubes+1,chunkWidthCubes+1];
+            float[,] lmins = new float[chunkWidthCubes+1,chunkWidthCubes+1];
+            float[,] lmaxs = new float[chunkWidthCubes+1,chunkWidthCubes+1];
             int[,] linds = new int[chunkWidthCubes+1,chunkWidthCubes+1];
 
             for(int x=0; x<=chunkWidthCubes; ++x) for(int z=0; z<=chunkWidthCubes; ++z)

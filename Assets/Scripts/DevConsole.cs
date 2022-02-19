@@ -59,7 +59,7 @@ public class DevConsole : MonoBehaviour
     }
 
     void Update() {
-        if(!PauseHandler.paused && Input.GetKeyDown(KeyCode.BackQuote)) {
+        if(!PauseHandler.paused && Input.GetKeyDown(KeyCode.Slash)) {
             if(!isActive)   Enable();
             else            Disable();
         }
@@ -108,12 +108,11 @@ public static class Commands
 
     public static void tp(string[] args)
     {
-        if(float.TryParse(args[1], out float x) && float.TryParse(args[2], out float y) && float.TryParse(args[3], out float z))
-        {
-            Vector3 pos = PlayerMovement.rb.position;
-            pos.Set(x, y, z);
-            PlayerMovement.rb.position = pos;
-        }
+        Vector3 pos = PlayerMovement.rb.position;
+        float.TryParse(args[1], out pos.x);
+        float.TryParse(args[2], out pos.y);
+        float.TryParse(args[3], out pos.z);
+        PlayerMovement.rb.position = pos;
     }
 
     public static void kfa(string[] args)
