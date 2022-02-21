@@ -180,22 +180,14 @@ public class ProceduralGeneration : MonoBehaviour
     // }
 
     public static float IsoLevel(float x, float y, float z, int chunkX, int chunkZ, float min, float max, int index) {
+        if(y <= 0.5f) return 1;
         float val = Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.groundScale);
 
-        // float min=biomes[biome].minHeight, max=biomes[biome].maxHeight;
-
         y /= cubeWidth;
-
-        if(y == 0) val = 1;
-        else if(y <= 8) {
-            val += Math.Remap(y, 0, 8, instance.groundThreshhold, 0);
-        }
-        else if(y >= min-10 && y <= min) {
-            val += Math.Remap(y, min-10, min, 0, instance.groundThreshhold);
-        }
-        else if(y > min) {
-            val += Math.Remap(y,  min,  max, instance.groundThreshhold, -instance.groundThreshhold);
-        }
+        if(y <= 8)          val += Math.Remap(y, 0, 8, instance.groundThreshhold, 0);
+        else if(y < min-10) ;// caves
+        else if(y <= min)   val += Math.Remap(y, min-10, min, 0, instance.groundThreshhold);
+        else if(y > min)    val += Math.Remap(y,  min,  max, instance.groundThreshhold, -instance.groundThreshhold);
 
         // TODO cave entrance stuff here
 
