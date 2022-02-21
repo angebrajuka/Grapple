@@ -1738,7 +1738,7 @@ MonoBehaviour:
       frequency: 1
     density: 1
   - name: forest
-    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
+    material: {fileID: 2100000, guid: e25d65dea6c849b4583639c381a85c03, type: 2}
     decor_b_value: 20
     decorations:
     - name: P_Tree_Oak

@@ -32,7 +32,7 @@
 //     public static ushort seed_ll { get { return (ushort)((seed >> 48) & 0xFFFF); } }
 //     public static ushort seed_lm { get { return (ushort)((seed >> 32) & 0xFFFF); } }
 //     public static ushort seed_rm { get { return (ushort)((seed >> 16) & 0xFFFF); } }
-//     public static ushort seed_rr { get { return (ushort)((seed >>  0) & 0xFFFF); } } // TODO double check
+//     public static ushort seed_rr { get { return (ushort)((seed >>  0) & 0xFFFF); } }
 //     public static float seed_temp   { get { return seed_ll+((float)seed_ll/100000.0f); } }
 //     public static float seed_rain   { get { return seed_lm+((float)seed_lm/100000.0f); } }
 //     public static float seed_height { get { return seed_rm+((float)seed_rm/100000.0f); } }

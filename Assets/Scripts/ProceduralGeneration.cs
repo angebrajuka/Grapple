@@ -49,7 +49,7 @@ public class ProceduralGeneration : MonoBehaviour
     public static ushort seed_ll { get { return (ushort)((seed >> 48) & 0xFFFF); } }
     public static ushort seed_lm { get { return (ushort)((seed >> 32) & 0xFFFF); } }
     public static ushort seed_rm { get { return (ushort)((seed >> 16) & 0xFFFF); } }
-    public static ushort seed_rr { get { return (ushort)((seed >>  0) & 0xFFFF); } } // TODO double check
+    public static ushort seed_rr { get { return (ushort)((seed >>  0) & 0xFFFF); } }
     public static float seed_temp { get { return seed_ll+((float)seed_ll/100000.0f); } }
     public static float seed_rain { get { return seed_lm+((float)seed_lm/100000.0f); } }
     public static float seed_grnd { get { return seed_rm+((float)seed_rm/100000.0f); } }
@@ -126,13 +126,16 @@ public class ProceduralGeneration : MonoBehaviour
                 mesh.MarkDynamic();
                 mesh.bounds = new Bounds(new Vector3(chunkSize/2, chunkHeight/2, chunkSize/2), new Vector3(chunkSize, chunkHeight, chunkSize));
                 chunk.vertices = new List<Vector3>(100);
-                chunk.triangles = new List<int>(100);
+                chunk.triangles = new List<int>[biomes.Length];
+                mesh.subMeshCount = biomes.Length;
                 chunk.meshFilter.mesh = mesh;
-                // chunk.meshRenderer.materials = new Material[biomes.Length];
-                // for(int i=0; i<biomes.Length; i++) {
-                //     chunk.meshRenderer.materials[i] = biomes[i].material;
-                // }
-                // mesh.subMeshCount = biomes.Length;
+                var mats = new Material[biomes.Length];
+                for(int i=0; i<biomes.Length; i++) {
+                    mesh.SetSubMesh(i, new UnityEngine.Rendering.SubMeshDescriptor(0, 0, MeshTopology.Triangles), UnityEngine.Rendering.MeshUpdateFlags.Default);
+                    mats[i] = biomes[i].material;
+                    chunk.triangles[i] = new List<int>(300); // almost no resizes
+                }
+                chunk.meshRenderer.materials = mats;
 
                 // chunk.decorPositions = new Vector3[MAX_DECORS];
                 // chunk.decors = new int[MAX_DECORS];
@@ -304,15 +307,15 @@ public class ProceduralGeneration : MonoBehaviour
             return AddVertexi(i, x, y, z);
         }
 
-        void AddTriangle(int a, int b, int c) {
-            chunk.triangles.Add(a);
-            chunk.triangles.Add(b);
-            chunk.triangles.Add(c);
+        void AddTriangle(int a, int b, int c, int s) {
+            chunk.triangles[s].Add(a);
+            chunk.triangles[s].Add(b);
+            chunk.triangles[s].Add(c);
         }
 
         await Task.Run(() => {
             chunk.vertices.Clear();
-            chunk.triangles.Clear();
+            for(int i=0; i<biomes.Length; i++) chunk.triangles[i].Clear();
 
             float[,] lmins = new float[chunkWidthCubes+1,chunkWidthCubes+1];
             float[,] lmaxs = new float[chunkWidthCubes+1,chunkWidthCubes+1];
@@ -341,7 +344,7 @@ public class ProceduralGeneration : MonoBehaviour
                 }
 
                 for(int i=0; triTable[cubeindex,i] != -1; i+=3) {
-                    AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]]);
+                    AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]], y%2==0 ? 1 : 0); // TODO material index
                 }
             }
         });
@@ -450,10 +453,10 @@ public class ProceduralGeneration : MonoBehaviour
 
             var chunk = loadingChunks[closest];
             loadingChunks.Remove(closest);
-            
-            chunk.meshFilter.sharedMesh.Clear();
+
+            for(int j=0; j<biomes.Length; j++) chunk.meshFilter.sharedMesh.SetTriangles(new int[0], j, false);
             chunk.meshFilter.sharedMesh.SetVertices(chunk.vertices);
-            chunk.meshFilter.sharedMesh.SetTriangles(chunk.triangles, 0, false);
+            for(int j=0; j<biomes.Length; j++) chunk.meshFilter.sharedMesh.SetTriangles(chunk.triangles[j], j, false);
             chunk.meshFilter.sharedMesh.UploadMeshData(false);
 
             chunk.meshFilter.mesh.RecalculateNormals();
