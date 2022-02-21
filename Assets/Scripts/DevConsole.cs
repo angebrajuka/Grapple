@@ -51,7 +51,7 @@ public class DevConsole : MonoBehaviour
         string[] words = text.Split(' ');
         try
         {
-            commands[words[0]].Invoke(null, new object[]{words});
+            commands[words[0]].Invoke(null, new object[]{words}); // null because static
         }
         catch {}
 
@@ -70,22 +70,17 @@ public static class Commands
 {
     public static void time(string[] args)
     {
-        // float amount = float.Parse(args[2]);
+        float amount = float.Parse(args[2]);
 
-        // switch(args[1])
-        // {
-        // case "set":
-        //     DaylightCycle.time = amount;
-        //     break;
-        // case "add":
-        //     DaylightCycle.time += amount;
-        //     break;
-        // case "subtract":
-        //     DaylightCycle.time -= amount;
-        //     break;
-        // default:
-        //     return;
-        // }
+        switch(args[1])
+        {
+        case "set":
+            DaylightCycle.time = amount;
+            break;
+        case "add":
+            DaylightCycle.time += amount;
+            break;
+        }
     }
 
     public static void health(string[] args)
