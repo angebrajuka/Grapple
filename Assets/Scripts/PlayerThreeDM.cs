@@ -22,41 +22,24 @@ public class PlayerThreeDM : MonoBehaviour
     public float minDistance;
     public float destroyDistance;
     public float reloadTime;
-    public float ammo;
 
     public GrappleHook hook;
     public float reloadStartTime;
 
-    static float p_compressedAir;
-    public static float CompressedAir
-    {
-        get { return p_compressedAir; }
-        set
-        {
-            p_compressedAir = value;
-            instance.CheckReload();
-            PlayerHUD.UpdateCompressedAir();
-        }
-    }
-    static float airPerShot;
-
     public void Init()
     {
         instance = this;
-        CompressedAir = 1;
-        airPerShot = 1f/ammo;
     }
 
 
     public static bool IsLoaded { get { return Time.time > instance.reloadStartTime + instance.reloadTime && instance.hook == null; } }
     public static bool IsReloading { get { return Time.time > instance.reloadStartTime && Time.time <= instance.reloadStartTime + instance.reloadTime; } }
-    public static bool HasGas { get { return CompressedAir >= airPerShot-0.001f; } }
     public static bool IsGrappling { get { return instance.hook != null; } }
-    public static bool CanShoot { get { return IsLoaded && HasGas; } }
+    public static bool CanShoot { get { return IsLoaded; } }
 
     public void CheckReload()
     {
-        if(!IsGrappling && HasGas && !IsLoaded && !IsReloading)
+        if(!IsGrappling && !IsLoaded && !IsReloading)
         {
             AudioManager.PlayClip(clip_reload);
             instance.reloadStartTime = Time.time;
@@ -77,8 +60,6 @@ public class PlayerThreeDM : MonoBehaviour
         hook = obj.GetComponent<GrappleHook>();
         hook.configJoint.connectedBody = PlayerMovement.rb;
         rb.AddForce(direction*shootForce);
-        // PlayerMovement.rb.AddRelativeForce(0, 0, -recoilForce);
-        CompressedAir -= airPerShot;
         reloadStartTime = Mathf.Infinity;
     }
 
