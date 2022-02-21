@@ -172,13 +172,6 @@ public class ProceduralGeneration : MonoBehaviour
         return Math.Remap(Mathf.PerlinNoise((perlinOffset+seed+x+instance.chunkSize*chunkX)*scale, (perlinOffset+seed+z+instance.chunkSize*chunkZ)*scale), 0, 1, min, max);
     }
 
-    // public static float Height(float x, float z, float chunkX=0, float chunkZ=0, int biome=-1)
-    // {
-    //     if(biome == -1) biome = PerlinBiome(x, z, chunkX, chunkZ);
-    //     var b = biomes[biome];
-    //     return Perlin(seed_grnd, x, z, chunkX, chunkZ, b.minHeight, Math.Avg(b.minHeight, b.maxHeight), 0.04f);// +Perlin(seed_grnd, x, z, chunkX, chunkZ, 0, 0.5f, 0.2f);
-    // }
-
     public static float IsoLevel(float x, float y, float z, int chunkX, int chunkZ, float min, float max, int index) {
         if(y <= 0.5f) return 1;
         float val = Math.Perlin3D(seed_grnd, x+chunkX*instance.chunkSize, y, z+chunkZ*instance.chunkSize, instance.groundScale);
