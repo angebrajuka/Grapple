@@ -26,6 +26,7 @@ public class ProceduralGeneration : MonoBehaviour
     public byte chunksPerFrame;
     public Texture2D rainTempMapHeight;
     public Texture2D rainTempMapDecor;
+    public Material caveMat;
     public BiomeData[] biomesData;
 
     const int RESOLUTION = 64;
@@ -86,7 +87,7 @@ public class ProceduralGeneration : MonoBehaviour
             mins[x,y] = (float)pix.r/4;
             maxs[x,y] = (float)pix.g/4;
             pix = rainTempMapDecor.GetPixel(x, y);
-            inds[x,y] = pix.b;
+            for(int i=0; i<biomes.Length; i++) if(biomes[i].index == pix.b) inds[x,y] = i;
         }
 
         // pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
@@ -126,13 +127,13 @@ public class ProceduralGeneration : MonoBehaviour
                 mesh.MarkDynamic();
                 mesh.bounds = new Bounds(new Vector3(chunkSize/2, chunkHeight/2, chunkSize/2), new Vector3(chunkSize, chunkHeight, chunkSize));
                 chunk.vertices = new List<Vector3>(100);
-                chunk.triangles = new List<int>[biomes.Length];
-                mesh.subMeshCount = biomes.Length;
+                chunk.triangles = new List<int>[biomes.Length+1];
+                mesh.subMeshCount = biomes.Length+1;
                 chunk.meshFilter.mesh = mesh;
-                var mats = new Material[biomes.Length];
-                for(int i=0; i<biomes.Length; i++) {
+                var mats = new Material[biomes.Length+1];
+                for(int i=0; i<biomes.Length+1; i++) {
                     mesh.SetSubMesh(i, new UnityEngine.Rendering.SubMeshDescriptor(0, 0, MeshTopology.Triangles), UnityEngine.Rendering.MeshUpdateFlags.Default);
-                    mats[i] = biomes[i].material;
+                    mats[i] = i == 0 ? caveMat : biomes[i-1].material;
                     chunk.triangles[i] = new List<int>(300); // almost no resizes
                 }
                 chunk.meshRenderer.materials = mats;
@@ -315,7 +316,7 @@ public class ProceduralGeneration : MonoBehaviour
 
         await Task.Run(() => {
             chunk.vertices.Clear();
-            for(int i=0; i<biomes.Length; i++) chunk.triangles[i].Clear();
+            for(int i=0; i<biomes.Length+1; i++) chunk.triangles[i].Clear();
 
             float[,] lmins = new float[chunkWidthCubes+1,chunkWidthCubes+1];
             float[,] lmaxs = new float[chunkWidthCubes+1,chunkWidthCubes+1];
@@ -344,7 +345,7 @@ public class ProceduralGeneration : MonoBehaviour
                 }
 
                 for(int i=0; triTable[cubeindex,i] != -1; i+=3) {
-                    AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]], y%2==0 ? 1 : 0); // TODO material index
+                    AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]], (y<lmins[x,z]) ? 0 : linds[x,z]); // TODO material index
                 }
             }
         });
@@ -454,9 +455,9 @@ public class ProceduralGeneration : MonoBehaviour
             var chunk = loadingChunks[closest];
             loadingChunks.Remove(closest);
 
-            for(int j=0; j<biomes.Length; j++) chunk.meshFilter.sharedMesh.SetTriangles(new int[0], j, false);
+            for(int j=0; j<biomes.Length+1; j++) chunk.meshFilter.sharedMesh.SetTriangles(new int[0], j, false);
             chunk.meshFilter.sharedMesh.SetVertices(chunk.vertices);
-            for(int j=0; j<biomes.Length; j++) chunk.meshFilter.sharedMesh.SetTriangles(chunk.triangles[j], j, false);
+            for(int j=0; j<biomes.Length+1; j++) chunk.meshFilter.sharedMesh.SetTriangles(chunk.triangles[j], j, false);
             chunk.meshFilter.sharedMesh.UploadMeshData(false);
 
             chunk.meshFilter.mesh.RecalculateNormals();
