@@ -14,6 +14,7 @@ public class DaylightCycle : MonoBehaviour
     void Update()
     {
         time += PauseHandler.paused ? 0 : Time.deltaTime;
-        time = time % k_MORNING;
+        time %= k_MORNING;
+        transform.rotation = Quaternion.Euler(Math.Remap(time, 0, k_MORNING, 0, 180), transform.rotation.y, transform.rotation.z);
     }
 }
