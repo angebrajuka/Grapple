@@ -6,7 +6,6 @@ public class PlayerMovement : MonoBehaviour
     public static PlayerMovement instance;
 
     // hierarchy
-    public PhysicMaterial physicsMaterial;
     public Transform t_camera;
     public Transform t_upperBody;
     public CapsuleCollider colliderDefault;
@@ -18,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     public float walkMaxSpeed;
     public float crouchMaxSpeed;
     public float friction_normal;
-    public float friction_slide;
+    public float friction_crouch;
     public float jumpVelocity;
     public float jumpForceForward;
     public float jumpTimeLeeway;
@@ -27,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
     public float minGroundedNormalY;
     public float slideForce;
     public float slideStartThreshhold;
+    public float slideEndThreshhold;
     public float slideMaxSpeed;
     public float slideJumpDelay;
     public float minSlideTime;
@@ -41,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
     float slideHeightAdjust;
     bool grounded, wasGrounded;
     Vector3 groundedNormal;
+    bool sliding;
     bool crouching;
     bool crouchKeyDown;
     Vector3 input_move;
@@ -66,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         wasGrounded = false;
         groundedNormal = new Vector3(0, 0, 0);
         crouching = false;
+        sliding = false;
         input_move = new Vector3(0, 0);
         input_look = new Vector2(0, 0);
         input_crouch = false;
@@ -154,32 +156,47 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(-groundedNormal*groundedMagnet);
         }
 
+        Vector3 f = grounded ? Vector3.Cross(rb.transform.right, groundedNormal) : rb.transform.forward;
+        Vector3 r = grounded ? Vector3.Cross(groundedNormal, rb.transform.forward) : rb.transform.right;
+
         var center = colliderDefault.center+rb.position;
         var halfHeight = Vector3.up*(colliderDefault.height/2);
         var point0 = center + halfHeight;
         var point1 = center; // dont subtract half height for ignoring floor
         float threshhold = walkMaxSpeed*slideStartThreshhold;
-        bool slideForward = false;
         if(input_crouch)
         {
-            bool wasCrouching = crouching;
-            crouching = true;
-
             colliderDefault.enabled = false;
             colliderCrouch.enabled = true;
             upperPosTarger = upperPosCrouch;
 
             float zvel = rb.RelativeVelocity().z;
-            if(crouchKeyDown && Time.time - timeLastJumped > 0.01f && (!wasCrouching || !wasGrounded) && grounded && input_move.z > 0 && zvel < slideMaxSpeed)
+            if(crouchKeyDown && Time.time - timeLastJumped > 0.01f && (!crouching || !wasGrounded) && !sliding && grounded && input_move.z > threshhold)
             {
-                slideForward = true;
+                if(zvel < slideMaxSpeed) {
+                    rb.AddForce(slideForce*f);
+                    if(rb.velocity.magnitude > slideMaxSpeed) {
+                        var vel = rb.velocity;
+                        vel.Normalize();
+                        vel *= slideMaxSpeed;
+                        rb.velocity = vel;
+                    }
+                }
+
+                sliding = true;
                 crouchKeyDown = false;
                 timeLastSlid = Time.time;
             }
+            else if(sliding && zvel < slideEndThreshhold*walkMaxSpeed) {
+                sliding = false;
+            }
+
+            crouching = true;
         }
         else if(Time.time - timeLastSlid > minSlideTime && Physics.OverlapCapsule(point0, point1, colliderDefault.radius, Layers.PLAYER_ALL, QueryTriggerInteraction.Ignore).Length == 0)
         {
             crouching = false;
+            sliding = false;
 
             colliderDefault.enabled = true;
             colliderCrouch.enabled = false;
@@ -187,21 +204,23 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // accelerate
-        if(input_move.x != 0 || input_move.z != 0)
+        if(!sliding && (input_move.x != 0 || input_move.z != 0))
         {
             var accel = Time.fixedDeltaTime * (grounded ? (crouching ? walkAccelCrouch : walkAccelDefault) : walkAccelAir);
             var maxSpeed = crouching ? crouchMaxSpeed : walkMaxSpeed;
 
-            Vector3 f = grounded ? Vector3.Cross(rb.transform.right, groundedNormal) : rb.transform.forward;
-            Vector3 r = grounded ? Vector3.Cross(groundedNormal, rb.transform.forward) : rb.transform.right;
-
             rb.AddForce((Mathf.Abs(Vector3.Dot(rb.velocity, r)) < maxSpeed ? input_move.x*accel : 0)*r);
-            rb.AddForce(((Mathf.Abs(Vector3.Dot(rb.velocity, f)) < maxSpeed ? input_move.z*accel : 0) + (slideForward ? slideForce : 0))*f);
+            rb.AddForce((Mathf.Abs(Vector3.Dot(rb.velocity, f)) < maxSpeed ? input_move.z*accel : 0)*f);
         }
 
         // friction
-        physicsMaterial.staticFriction = crouching ? friction_slide : friction_normal;
-        physicsMaterial.dynamicFriction = crouching ? friction_slide : friction_normal;
+        if(grounded && !sliding) {
+            var vel = rb.velocity;
+            float friction = crouching ? friction_crouch : friction_normal;
+            vel.x *= friction;
+            vel.z *= friction;
+            rb.velocity = vel;
+        }
     }
 
     void LateUpdate()

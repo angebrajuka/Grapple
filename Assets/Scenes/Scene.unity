@@ -10811,7 +10811,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 855b9269003f52047a380c241ac4a20d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  physicsMaterial: {fileID: 13400000, guid: 1596c5cdfcb1d5843885de29731f00f8, type: 2}
   t_camera: {fileID: 1687258585}
   t_upperBody: {fileID: 2091459876}
   colliderDefault: {fileID: 1887390187}
@@ -10822,8 +10821,8 @@ MonoBehaviour:
   walkAccelAir: 1000
   walkMaxSpeed: 6
   crouchMaxSpeed: 6
-  friction_normal: 0.9
-  friction_slide: 0
+  friction_normal: 0.99
+  friction_crouch: 0.93
   jumpVelocity: 14
   jumpForceForward: 300
   jumpTimeLeeway: 0.01
@@ -10831,8 +10830,9 @@ MonoBehaviour:
   groundedMagnet: 0.5
   minGroundedNormalY: 0.1
   slideForce: 1200
-  slideStartThreshhold: 0.1
-  slideMaxSpeed: 20
+  slideStartThreshhold: 0
+  slideEndThreshhold: 0.4
+  slideMaxSpeed: 24
   slideJumpDelay: 0.2
   minSlideTime: 0.3
   cameraHeightAdjustSpeed: 12
@@ -10885,7 +10885,7 @@ CapsuleCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1887390182}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 1596c5cdfcb1d5843885de29731f00f8, type: 2}
   m_IsTrigger: 0
   m_Enabled: 0
   m_Radius: 0.3
