@@ -209,8 +209,10 @@ public class PlayerMovement : MonoBehaviour
             var accel = Time.fixedDeltaTime * (grounded ? (crouching ? walkAccelCrouch : walkAccelDefault) : walkAccelAir);
             var maxSpeed = crouching ? crouchMaxSpeed : walkMaxSpeed;
 
-            rb.AddForce((Mathf.Abs(Vector3.Dot(rb.velocity, r)) < maxSpeed ? input_move.x*accel : 0)*r);
-            rb.AddForce((Mathf.Abs(Vector3.Dot(rb.velocity, f)) < maxSpeed ? input_move.z*accel : 0)*f);
+            var dotr = Vector3.Dot(rb.velocity, r);
+            var dotf = Vector3.Dot(rb.velocity, f);
+            rb.AddForce((Mathf.Sign(dotr) != Mathf.Sign(input_move.x) || Mathf.Abs(dotr) < maxSpeed ? input_move.x*accel : 0)*r);
+            rb.AddForce((Mathf.Sign(dotf) != Mathf.Sign(input_move.z) || Mathf.Abs(dotf) < maxSpeed ? input_move.z*accel : 0)*f);
         }
 
         // friction
