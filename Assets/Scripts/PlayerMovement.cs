@@ -156,8 +156,8 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(-groundedNormal*groundedMagnet);
         }
 
-        Vector3 f = grounded ? Vector3.Cross(rb.transform.right, groundedNormal) : rb.transform.forward;
-        Vector3 r = grounded ? Vector3.Cross(groundedNormal, rb.transform.forward) : rb.transform.right;
+        Vector3 f = grounded ? Vector3.Cross(rb.transform.right, groundedNormal).normalized : rb.transform.forward;
+        Vector3 r = grounded ? Vector3.Cross(groundedNormal, rb.transform.forward).normalized : rb.transform.right;
 
         var center = colliderDefault.center+rb.position;
         var halfHeight = Vector3.up*(colliderDefault.height/2);
