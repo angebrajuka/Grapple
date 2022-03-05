@@ -69,7 +69,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     public void Init()
     {
-        RenderDistance = 8;
+        RenderDistance = 7;
 
         instance = this;
 
@@ -87,7 +87,7 @@ public class ProceduralGeneration : MonoBehaviour
             mins[x,y] = (float)pix.r/4;
             maxs[x,y] = (float)pix.g/4;
             pix = rainTempMapDecor.GetPixel(x, y);
-            for(int i=0; i<biomes.Length; i++) if(biomes[i].index == pix.b) inds[x,y] = i;
+            for(int i=0; i<biomes.Length; i++) if(biomes[i].index == pix.b) inds[x,y] = i+1;
         }
 
         // pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
@@ -345,7 +345,7 @@ public class ProceduralGeneration : MonoBehaviour
                 }
 
                 for(int i=0; triTable[cubeindex,i] != -1; i+=3) {
-                    AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]], (y<lmins[x,z]) ? 0 : linds[x,z]); // TODO material index
+                    AddTriangle(vertIndices[triTable[cubeindex,i]], vertIndices[triTable[cubeindex,i+1]], vertIndices[triTable[cubeindex,i+2]], (y<lmins[x,z]-2) ? 0 : linds[x,z]); // TODO material index
                 }
             }
         });

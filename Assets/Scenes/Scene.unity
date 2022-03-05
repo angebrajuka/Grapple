@@ -1801,7 +1801,7 @@ MonoBehaviour:
       frequency: 3
     density: 1
   - name: desert
-    material: {fileID: 2100000, guid: 6d80740f9a7b9954fa6d71941270b59a, type: 2}
+    material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
     decor_b_value: 30
     decorations:
     - name: P_Cactus_0
