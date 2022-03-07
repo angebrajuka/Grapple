@@ -24,10 +24,9 @@ public class ProceduralGeneration : MonoBehaviour
     public float waveAmount;
     public float offset;
     public byte chunksPerFrame;
-    public Texture2D rainTempMapHeight;
-    public Texture2D rainTempMapDecor;
     public Material caveMat;
-    public BiomeData[] biomesData;
+    public Transform rainTempMap;
+    public CircleCollider2D circle;
 
     const int RESOLUTION = 64;
     static float cubeWidth { get { return instance.chunkSize/instance.chunkWidthCubes; } }
@@ -64,6 +63,7 @@ public class ProceduralGeneration : MonoBehaviour
     public static Vector3Int prevPos, currPos;
 
     static Biome[] biomes;
+    static int rainTempMapWidth=128;
     static float[,] mins, maxs;
     static int[,] inds;
 
@@ -73,21 +73,47 @@ public class ProceduralGeneration : MonoBehaviour
 
         instance = this;
 
-        biomes = new Biome[biomesData.Length];
+        biomes = new Biome[rainTempMap.childCount];
+        int c=0;
+        for(int i=0; i<rainTempMap.childCount; i++) {
+            var biomeData = rainTempMap.GetChild(i).GetComponent<BiomeData>();
+            if(biomeData != null) {
+                biomeData.rainTempArea = biomeData.transform.GetComponent<PolygonCollider2D>();
+                biomes[i] = new Biome(biomeData);
+                c++;
+            }
+        }
+        Array.Resize(ref biomes, c);
 
-        for(int i=0; i<biomes.Length; i++) biomes[i] = new Biome(biomesData[i]);
-        biomesData = null;
-
-        mins = new float[rainTempMapHeight.width, rainTempMapHeight.height];
-        maxs = new float[mins.GetLength(0), mins.GetLength(1)];
-        inds = new int[mins.GetLength(0), mins.GetLength(1)];
-        Color32 pix;
-        for(int y=0; y<mins.GetLength(1); ++y) for(int x=0; x<mins.GetLength(0); ++x) {
-            pix = rainTempMapHeight.GetPixel(x, y);
-            mins[x,y] = (float)pix.r/4;
-            maxs[x,y] = (float)pix.g/4;
-            pix = rainTempMapDecor.GetPixel(x, y);
-            for(int i=0; i<biomes.Length; i++) if(biomes[i].index == pix.b) inds[x,y] = i+1;
+        mins = new float[rainTempMapWidth, rainTempMapWidth];
+        maxs = new float[rainTempMapWidth, rainTempMapWidth];
+        inds = new   int[rainTempMapWidth, rainTempMapWidth];
+        var colliders = new Collider2D[biomes.Length];
+        var contactFilter = new ContactFilter2D();
+        int numCollisions;
+        Vector2 f;
+        for(int y=0; y<rainTempMapWidth; ++y) for(int x=0; x<rainTempMapWidth; ++x) {
+            f.x = Math.Remap(x, 0, rainTempMapWidth-1, -0.5f, 0.5f);
+            f.y = Math.Remap(y, 0, rainTempMapWidth-1, 0.5f, -0.5f);
+            var pos = circle.transform.localPosition;
+            pos.Set(f.x, f.y, 0);
+            circle.transform.localPosition = pos;
+            Physics2D.Simulate(0);
+            numCollisions = circle.OverlapCollider(contactFilter, colliders);
+            float shortest = 2;
+            int closest=0;
+            for(int i=0; i<numCollisions; i++) {
+                var biomeData = colliders[i].transform.GetComponent<BiomeData>();
+                float dist = Vector2.Distance(colliders[i].ClosestPoint(f), f);
+                float mult = (circle.radius - dist)/circle.radius;
+                mins[x,y] += mult*biomeData.min/numCollisions;
+                maxs[x,y] += mult*biomeData.max/numCollisions;
+                if(dist < shortest) {
+                    shortest = dist;
+                    closest = colliders[i].transform.GetSiblingIndex();
+                }
+            }
+            inds[x,y] = closest;
         }
 
         // pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
@@ -216,9 +242,9 @@ public class ProceduralGeneration : MonoBehaviour
         float fineNoise = Perlin(seed_fine, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
 
         // perlinValTemp -= fineNoise;
-        perlinValTemp = Mathf.Clamp((int)Mathf.Round(perlinValTemp * mins.GetLength(0)), 0, mins.GetLength(0)-1);
+        perlinValTemp = Mathf.Clamp((int)Mathf.Round(perlinValTemp * rainTempMapWidth), 0, rainTempMapWidth-1);
         // perlinValRain -= fineNoise;
-        perlinValRain = Mathf.Clamp((int)Mathf.Round(perlinValRain * mins.GetLength(1)), 0, mins.GetLength(1)-1);
+        perlinValRain = Mathf.Clamp((int)Mathf.Round(perlinValRain * rainTempMapWidth), 0, rainTempMapWidth-1);
 
         min = mins[(int)perlinValTemp,(int)perlinValRain];
         max = maxs[(int)perlinValTemp,(int)perlinValRain];

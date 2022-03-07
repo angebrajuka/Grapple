@@ -10,12 +10,13 @@ public class Decor
 }
 
 [System.Serializable]
-public class BiomeData
+public class BiomeData : MonoBehaviour
 {
-    public string name;
+    public string biome_name;
     public Material material;
     // public float scale
-    public int decor_b_value;
+    [HideInInspector] public PolygonCollider2D rainTempArea;
+    public float min, max;
     public Decor[] decorations;
     public float density;
 }
@@ -37,14 +38,12 @@ public struct Biome
         }
     }
 
-    public int index;
     public int[] decorationIndexes;
     public float[] decorationThreshholds;
     public Material material;
 
     public Biome(BiomeData biomeData)
     {
-        this.index = biomeData.decor_b_value;
         decorationIndexes = new int[biomeData.decorations.Length];
         material = biomeData.material;
         decorationThreshholds = new float[biomeData.decorations.Length];

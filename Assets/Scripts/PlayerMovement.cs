@@ -216,7 +216,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // friction
-        if(grounded && !sliding) {
+        if(grounded && !sliding && !PlayerThreeDM.IsGrappling) {
             var vel = rb.velocity;
             float friction = crouching ? friction_crouch : friction_normal;
             vel.x *= friction;

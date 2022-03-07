@@ -1,0 +1,17 @@
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.csproj.AssemblyReference.cache
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.AssemblyInfoInputs.cache
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.AssemblyInfo.cs
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.csproj.CoreCompileInputs.cache
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\AutoUpdate.exe
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\AutoUpdate.deps.json
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\AutoUpdate.runtimeconfig.json
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\AutoUpdate.dll
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\AutoUpdate.pdb
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.dll
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\refint\AutoUpdate.dll
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.pdb
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.genruntimeconfig.cache
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\ref\AutoUpdate.dll
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\Interop.IWshRuntimeLibrary.dll
+C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\obj\Debug\net6.0\AutoUpdate.csproj.CopyComplete
