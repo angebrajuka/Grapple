@@ -1,2 +1,0 @@
-C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\win-x64\publish\AutoUpdate.pdb
-C:\Users\braju\workspaces\Unity-workspace\Procedural-Shooter\AutoUpdate\bin\Debug\net6.0\win-x64\publish\AutoUpdate.exe

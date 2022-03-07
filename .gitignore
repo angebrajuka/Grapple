@@ -73,6 +73,4 @@ crashlytics-build.properties
 # other
 .vscode/
 AutoUpdate/bin
-AutoUpdate/build
-AutoUpdate/dist
-AutoUpdate/AutoUpdate.spec
+AutoUpdate/obj
