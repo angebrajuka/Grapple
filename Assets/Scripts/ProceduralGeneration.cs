@@ -5,6 +5,7 @@ using UnityEngine.Pool;
 using System.Threading.Tasks;
 using System;
 using System.Linq;
+using UnityEditor;
 
 using static MarchingCubes;
 
@@ -27,6 +28,7 @@ public class ProceduralGeneration : MonoBehaviour
     public Material caveMat;
     public Transform rainTempMap;
     public CircleCollider2D circle;
+    // public Texture2D biomeTex;
 
     const int RESOLUTION = 64;
     static float cubeWidth { get { return instance.chunkSize/instance.chunkWidthCubes; } }
@@ -85,11 +87,11 @@ public class ProceduralGeneration : MonoBehaviour
         }
         Array.Resize(ref biomes, c);
 
-        mins = new float[rainTempMapWidth, rainTempMapWidth];
-        maxs = new float[rainTempMapWidth, rainTempMapWidth];
-        inds = new   int[rainTempMapWidth, rainTempMapWidth];
+        var tmins = new float[rainTempMapWidth, rainTempMapWidth];
+        var tmaxs = new float[rainTempMapWidth, rainTempMapWidth];
+        inds      = new   int[rainTempMapWidth, rainTempMapWidth];
         var colliders = new Collider2D[biomes.Length];
-        var contactFilter = new ContactFilter2D();
+        var contactFilter = new ContactFilter2D().NoFilter();
         int numCollisions;
         Vector2 f;
         for(int y=0; y<rainTempMapWidth; ++y) for(int x=0; x<rainTempMapWidth; ++x) {
@@ -102,19 +104,37 @@ public class ProceduralGeneration : MonoBehaviour
             numCollisions = circle.OverlapCollider(contactFilter, colliders);
             float shortest = 2;
             int closest=0;
-            for(int i=0; i<numCollisions; i++) {
+            BiomeData cbd = null;
+            for(int i=0; i<numCollisions; ++i) {
                 var biomeData = colliders[i].transform.GetComponent<BiomeData>();
                 float dist = Vector2.Distance(colliders[i].ClosestPoint(f), f);
-                float mult = (circle.radius - dist)/circle.radius;
-                mins[x,y] += mult*biomeData.min/numCollisions;
-                maxs[x,y] += mult*biomeData.max/numCollisions;
                 if(dist < shortest) {
                     shortest = dist;
                     closest = colliders[i].transform.GetSiblingIndex();
+                    cbd = biomeData;
                 }
             }
-            inds[x,y] = closest;
+            inds [x,y] = closest+1;
+            tmins[x,y] = cbd.min;
+            tmaxs[x,y] = cbd.max;
         }
+
+        mins = new float[rainTempMapWidth, rainTempMapWidth];
+        maxs = new float[rainTempMapWidth, rainTempMapWidth];
+
+        int blurRadius = 9;
+        for(int y=0; y<rainTempMapWidth; ++y) for(int x=0; x<rainTempMapWidth; ++x) {
+            int i=0;
+            for(int iy=Mathf.Max(0, y-blurRadius); iy<=y+blurRadius && iy < rainTempMapWidth; ++iy) for(int ix=Mathf.Max(0, x-blurRadius); ix<=x+blurRadius && ix < rainTempMapWidth; ++ix) {
+                ++i;
+                mins[x,y] += tmins[ix,iy];
+                maxs[x,y] += tmaxs[ix,iy];
+            }
+            mins[x,y] /= i;
+            maxs[x,y] /= i;
+        }
+
+        rainTempMap.gameObject.SetActive(false);
 
         // pool_decor = new ObjectPool<GameObject>[Biome.s_decorations.Length];
         // foreach(var pair in Biome.s_indexes)
@@ -188,6 +208,15 @@ public class ProceduralGeneration : MonoBehaviour
         loadedChunks = new Dictionary<(int x, int z), Chunk>();
         prevPos = new Vector3Int(0, 0, 0);
         currPos = new Vector3Int(0, 0, 0);
+
+        // biomeTex = new Texture2D(10000, 10000);
+        // int t;
+        // float min, max;
+        // for(int y=0; y<biomeTex.height; ++y) for(int x=0; x<biomeTex.width; ++x) {
+        //     PerlinBiome(x, y, -10, -10, out min, out max, out t);
+        //     biomeTex.SetPixel(x, y, new Color32(0, (byte)(t*20), 0, 255));
+        // }
+        // biomeTex.Apply();
     }
 
     public static long RandomSeed()
@@ -232,8 +261,8 @@ public class ProceduralGeneration : MonoBehaviour
 
     public void PerlinBiome(float x, float z, float chunkX, float chunkZ, out float min, out float max, out int index)
     {
-        const float perlinScaleRain = 0.002f;
-        const float perlinScaleTemp = 0.002f;
+        const float perlinScaleRain = 0.0006f;
+        const float perlinScaleTemp = 0.0006f;
 
         float perlinValRain = Perlin(seed_rain, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
         float perlinValTemp = Perlin(seed_temp, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);

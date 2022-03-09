@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_13ffffdb230c4089a190bea4732cf6a7:
-        m_Texture: {fileID: 2800000, guid: 6217f9a845c9a744c961c810d9fda6c5, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f49adcb478f1b243869b51e0a6a3a14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_5e238cfa83264033bc7c388696dd3b85:
@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_e055d0c6caba42ceb4bac07d685a8831:
-        m_Texture: {fileID: 2800000, guid: c1e63e7e128017d4eb83721be1b1cd80, type: 3}
+        m_Texture: {fileID: 2800000, guid: 6f49adcb478f1b243869b51e0a6a3a14, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -89,7 +89,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_25c3f6fbaba8438fb7fac8f21a3c6736: 1
+    - Vector1_25c3f6fbaba8438fb7fac8f21a3c6736: 0.07
     - Vector1_6f59ce7c848b4ec0ba7bbfa0e462bd99: 0
     - Vector1_d9edb8824a1746c5b17482e35623d797: 0
     - _AlphaClip: 0

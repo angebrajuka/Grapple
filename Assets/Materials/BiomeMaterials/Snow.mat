@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Plains
+  m_Name: Snow
   m_Shader: {fileID: -6465566751694194690, guid: 6e01b4b2f7a095e418f09b159e7bde32, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 1
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_13ffffdb230c4089a190bea4732cf6a7:
-        m_Texture: {fileID: 2800000, guid: e719950f044fce04b8ec090855ac0c72, type: 3}
+        m_Texture: {fileID: 2800000, guid: 14ad84f4706bacb458aef02cefa6958a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_5e238cfa83264033bc7c388696dd3b85:

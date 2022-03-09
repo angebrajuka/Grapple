@@ -309,7 +309,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -344,8 +344,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162ba650c653aff4b9954becfe85584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Tundra
-  material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
+  biome_name: Tundra
+  material: {fileID: 2100000, guid: f504f39893a712546895a41064be9e91, type: 2}
   rainTempArea: {fileID: 0}
   min: 20
   max: 24
@@ -931,7 +931,7 @@ CircleCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -3094,7 +3094,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -3131,7 +3131,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162ba650c653aff4b9954becfe85584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Rainforest
+  biome_name: Rainforest
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
   min: 24
@@ -5294,7 +5294,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -5329,8 +5329,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162ba650c653aff4b9954becfe85584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Desert
-  material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
+  biome_name: Desert
+  material: {fileID: 2100000, guid: 15ad465d2c373064caae82ba46af56c1, type: 2}
   rainTempArea: {fileID: 0}
   min: 20
   max: 30
@@ -5739,7 +5739,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -5776,8 +5776,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162ba650c653aff4b9954becfe85584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Taigia
-  material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
+  biome_name: Taigia
+  material: {fileID: 2100000, guid: f504f39893a712546895a41064be9e91, type: 2}
   rainTempArea: {fileID: 0}
   min: 24
   max: 28
@@ -8377,7 +8377,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -8414,7 +8414,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162ba650c653aff4b9954becfe85584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Plains
+  biome_name: Plains
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
   min: 20
@@ -8852,7 +8852,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: PumpActionShotgun
   ammoType: 1
-  damage: 60
+  damage: 75
   rpm: 96
   chamberPostShot: 1
   chamberPostLastShot: 1
@@ -8863,7 +8863,7 @@ MonoBehaviour:
   ammoPerShot: 1
   pellets: 16
   range: 100
-  spread: 10
+  spread: 4
   recoil: 600
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.4
@@ -11308,7 +11308,7 @@ MonoBehaviour:
   colliderGrounded: {fileID: 1887390192}
   walkAccelDefault: 20000
   walkAccelCrouch: 2000
-  walkAccelAir: 1000
+  walkAccelAir: 1500
   walkMaxSpeed: 6
   crouchMaxSpeed: 6
   friction_normal: 0.97
@@ -11561,7 +11561,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -11603,7 +11603,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162ba650c653aff4b9954becfe85584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Savanah
+  biome_name: Savanah
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
   min: 30
@@ -11653,7 +11653,7 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
@@ -11693,11 +11693,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 162ba650c653aff4b9954becfe85584d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: Forest
+  biome_name: Forest
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
   min: 24
-  max: 28
+  max: 27
   decorations: []
   density: 0
 --- !u!1 &1918868534
@@ -12515,7 +12515,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _name: DoubleBarrelShotgun
   ammoType: 1
-  damage: 140
+  damage: 200
   rpm: 140
   chamberPostShot: 1
   chamberPostLastShot: 1
@@ -12526,7 +12526,7 @@ MonoBehaviour:
   ammoPerShot: 2
   pellets: 32
   range: 100
-  spread: 10
+  spread: 4
   recoil: 1200
   clip_shoot: {fileID: 8300000, guid: 5564c1deb76096b499c0b02a2e50baa4, type: 3}
   vol_shoot: 0.6

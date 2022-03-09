@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Plains
+  m_Name: Desert
   m_Shader: {fileID: -6465566751694194690, guid: 6e01b4b2f7a095e418f09b159e7bde32, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 1
@@ -20,7 +20,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - Texture2D_13ffffdb230c4089a190bea4732cf6a7:
-        m_Texture: {fileID: 2800000, guid: e719950f044fce04b8ec090855ac0c72, type: 3}
+        m_Texture: {fileID: 2800000, guid: b5fd492fc4899764096841229214524e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_5e238cfa83264033bc7c388696dd3b85:
@@ -28,7 +28,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - Texture2D_e055d0c6caba42ceb4bac07d685a8831:
-        m_Texture: {fileID: 2800000, guid: e719950f044fce04b8ec090855ac0c72, type: 3}
+        m_Texture: {fileID: 2800000, guid: b5fd492fc4899764096841229214524e, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BaseMap:
@@ -89,7 +89,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - Vector1_25c3f6fbaba8438fb7fac8f21a3c6736: 0.07
+    - Vector1_25c3f6fbaba8438fb7fac8f21a3c6736: 0.1
     - Vector1_6f59ce7c848b4ec0ba7bbfa0e462bd99: 0
     - Vector1_d9edb8824a1746c5b17482e35623d797: 0
     - _AlphaClip: 0
