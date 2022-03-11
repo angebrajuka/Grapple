@@ -65,7 +65,7 @@ public class ProceduralGeneration : MonoBehaviour
     public static Vector3Int prevPos, currPos;
 
     static Biome[] biomes;
-    static int rainTempMapWidth=128;
+    static int rainTempMapWidth=256;
     static float[,] mins, maxs;
     static int[,] inds;
 
@@ -87,8 +87,8 @@ public class ProceduralGeneration : MonoBehaviour
         }
         Array.Resize(ref biomes, c);
 
-        var tmins = new float[rainTempMapWidth, rainTempMapWidth];
-        var tmaxs = new float[rainTempMapWidth, rainTempMapWidth];
+        mins = new float[rainTempMapWidth, rainTempMapWidth];
+        maxs = new float[rainTempMapWidth, rainTempMapWidth];
         inds      = new   int[rainTempMapWidth, rainTempMapWidth];
         var colliders = new Collider2D[biomes.Length];
         var contactFilter = new ContactFilter2D().NoFilter();
@@ -105,6 +105,7 @@ public class ProceduralGeneration : MonoBehaviour
             float shortest = 2;
             int closest=0;
             BiomeData cbd = null;
+            float tot=0;
             for(int i=0; i<numCollisions; ++i) {
                 var biomeData = colliders[i].transform.GetComponent<BiomeData>();
                 float dist = Vector2.Distance(colliders[i].ClosestPoint(f), f);
@@ -113,25 +114,20 @@ public class ProceduralGeneration : MonoBehaviour
                     closest = colliders[i].transform.GetSiblingIndex();
                     cbd = biomeData;
                 }
+                if(dist == 0) {
+                    mins[x,y] = biomeData.min;
+                    maxs[x,y] = biomeData.max;
+                    tot = 1;
+                    break;
+                }
+                float mult = 1f/dist;
+                mins[x,y] += mult*biomeData.min;
+                maxs[x,y] += mult*biomeData.max;
+                tot += mult;
             }
+            mins[x,y] /= tot;
+            maxs[x,y] /= tot;
             inds [x,y] = closest+1;
-            tmins[x,y] = cbd.min;
-            tmaxs[x,y] = cbd.max;
-        }
-
-        mins = new float[rainTempMapWidth, rainTempMapWidth];
-        maxs = new float[rainTempMapWidth, rainTempMapWidth];
-
-        int blurRadius = 9;
-        for(int y=0; y<rainTempMapWidth; ++y) for(int x=0; x<rainTempMapWidth; ++x) {
-            int i=0;
-            for(int iy=Mathf.Max(0, y-blurRadius); iy<=y+blurRadius && iy < rainTempMapWidth; ++iy) for(int ix=Mathf.Max(0, x-blurRadius); ix<=x+blurRadius && ix < rainTempMapWidth; ++ix) {
-                ++i;
-                mins[x,y] += tmins[ix,iy];
-                maxs[x,y] += tmaxs[ix,iy];
-            }
-            mins[x,y] /= i;
-            maxs[x,y] /= i;
         }
 
         rainTempMap.gameObject.SetActive(false);
