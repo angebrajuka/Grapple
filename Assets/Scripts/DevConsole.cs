@@ -6,8 +6,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-public class DevConsole : MonoBehaviour
-{
+public class DevConsole : MonoBehaviour {
     public static DevConsole instance;
 
     // hierarchy
@@ -17,20 +16,17 @@ public class DevConsole : MonoBehaviour
     public static bool isActive=false;
     static Dictionary<string, MethodInfo> commands = new Dictionary<string, MethodInfo>();
 
-    public void Init()
-    {
+    public void Init() {
         instance = this;
 
-        foreach(var methodInfo in typeof(Commands).GetMethods(BindingFlags.Static | BindingFlags.Public))
-        {
+        foreach(var methodInfo in typeof(Commands).GetMethods(BindingFlags.Static | BindingFlags.Public)) {
             commands.Add(methodInfo.Name, methodInfo);
         }
 
         Disable();
     }
 
-    void Enable()
-    {
+    void Enable() {
         isActive = true;
         PauseHandler.frozenInput = true;
         backing.SetActive(true);
@@ -38,19 +34,16 @@ public class DevConsole : MonoBehaviour
         inputField.text = "";
     }
 
-    public void Disable()
-    {
+    public void Disable() {
         isActive = false;
         PauseHandler.frozenInput = false;
         backing.SetActive(false);
     }
 
-    public void OnCommandEntered()
-    {
+    public void OnCommandEntered() {
         string text = inputField.text.ToLower();
         string[] words = text.Split(' ');
-        try
-        {
+        try {
             commands[words[0]].Invoke(null, new object[]{words}); // null because static
         }
         catch {}
@@ -66,14 +59,11 @@ public class DevConsole : MonoBehaviour
     }
 }
 
-public static class Commands
-{
-    public static void time(string[] args)
-    {
+public static class Commands {
+    public static void time(string[] args) {
         float amount = float.Parse(args[2]);
 
-        switch(args[1])
-        {
+        switch(args[1]) {
         case "set":
             DaylightCycle.time = amount;
             break;
@@ -83,12 +73,10 @@ public static class Commands
         }
     }
 
-    public static void health(string[] args)
-    {
+    public static void health(string[] args) {
         float amount = float.Parse(args[2]);
 
-        switch(args[1])
-        {
+        switch(args[1]) {
         case "add":
             PlayerTarget.instance.Heal(amount);
             break;
@@ -101,28 +89,26 @@ public static class Commands
     }
 
 
-    public static void tp(string[] args)
-    {
+    public static void tp(string[] args) {
         Vector3 pos = PlayerMovement.rb.position;
-        float.TryParse(args[1], out pos.x);
-        float.TryParse(args[2], out pos.y);
-        float.TryParse(args[3], out pos.z);
+        for(int i=0; i<3; ++i) {
+            if(args[i+1] == "~") continue;
+            float temp=0;
+            if(!float.TryParse(args[i+1], out temp)) return;
+            pos[i] = temp;
+        }
         PlayerMovement.rb.position = pos;
     }
 
-    public static void kfa(string[] args)
-    {
-        for(int i=0; i<PlayerInventory.hasGun.Length; i++)
-        {
+    public static void kfa(string[] args) {
+        for(int i=0; i<PlayerInventory.hasGun.Length; i++) {
             PlayerInventory.hasGun[i] = true;
         }
         fa(null);
     }
 
-    public static void fa(string[] args)
-    {
-        foreach(var pair in PlayerInventory.maxAmmo)
-        {
+    public static void fa(string[] args) {
+        foreach(var pair in PlayerInventory.maxAmmo) {
             PlayerInventory.reserveAmmo[pair.Key] = pair.Value;
         }
         PlayerHUD.UpdateAmmoReserve();

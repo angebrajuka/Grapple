@@ -120,7 +120,7 @@ public class ProceduralGeneration : MonoBehaviour
                     tot = 1;
                     break;
                 }
-                float mult = 1f/dist;
+                float mult = circle.radius/dist;
                 mins[x,y] += mult*biomeData.min;
                 maxs[x,y] += mult*biomeData.max;
                 tot += mult;
