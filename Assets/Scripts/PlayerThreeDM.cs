@@ -52,7 +52,7 @@ public class PlayerThreeDM : MonoBehaviour
         RaycastHit hit;
         Vector3 direction = PlayerMovement.instance.t_camera.TransformDirection(Vector3.forward);
         var rb = obj.GetComponent<Rigidbody>();
-        if(PlayerEyes.Raycast(out hit))
+        if(PlayerEyes.Raycast(out hit, out direction))
         {
             obj.transform.LookAt(hit.point);
             direction = (hit.point-rb.position).normalized;

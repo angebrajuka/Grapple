@@ -6,6 +6,7 @@
         {"name": "walk right",          "keys": [100] },
         {"name": "jump",                "keys": [32] },
         {"name": "slide",               "keys": [304] },
+        {"name": "flashlight",          "keys": [102] },
         {"name": "shoot grapple hook",  "keys": [324] },
         {"name": "gun_switch_0",        "keys": [49] },
         {"name": "gun_switch_1",        "keys": [50] },
