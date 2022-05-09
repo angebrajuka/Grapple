@@ -66,7 +66,7 @@ public class ProceduralGeneration : MonoBehaviour
 
     static Biome[] biomes;
     static int rainTempMapWidth=256;
-    static float[,] mins, maxs;
+    static float[,] devs;
     static int[,] inds;
 
     public void Init()
@@ -87,9 +87,8 @@ public class ProceduralGeneration : MonoBehaviour
         }
         Array.Resize(ref biomes, c);
 
-        mins = new float[rainTempMapWidth, rainTempMapWidth];
-        maxs = new float[rainTempMapWidth, rainTempMapWidth];
-        inds      = new   int[rainTempMapWidth, rainTempMapWidth];
+        devs = new float[rainTempMapWidth, rainTempMapWidth];
+        inds = new   int[rainTempMapWidth, rainTempMapWidth];
         var colliders = new Collider2D[biomes.Length];
         var contactFilter = new ContactFilter2D().NoFilter();
         int numCollisions;
@@ -115,18 +114,15 @@ public class ProceduralGeneration : MonoBehaviour
                     cbd = biomeData;
                 }
                 if(dist == 0) {
-                    mins[x,y] = biomeData.min;
-                    maxs[x,y] = biomeData.max;
+                    devs[x,y] = biomeData.dev;
                     tot = 1;
                     break;
                 }
                 float mult = circle.radius/dist;
-                mins[x,y] += mult*biomeData.min;
-                maxs[x,y] += mult*biomeData.max;
+                devs[x,y] += mult*biomeData.dev;
                 tot += mult;
             }
-            mins[x,y] /= tot;
-            maxs[x,y] /= tot;
+            devs[x,y] /= tot;
             inds [x,y] = closest+1;
         }
 
@@ -263,16 +259,16 @@ public class ProceduralGeneration : MonoBehaviour
         float perlinValRain = Perlin(seed_rain, x, z, chunkX, chunkZ, 0, 1, perlinScaleRain);
         float perlinValTemp = Perlin(seed_temp, x, z, chunkX, chunkZ, 0, 1, perlinScaleTemp);
 
-        float perlinScaleFine = 0.1f;
-        float fineNoise = Perlin(seed_fine, x, z, chunkX, chunkZ, 0, 0.05f, perlinScaleFine);
+        float perlinScaleFine = 0.99f;
+        float fineNoise = Perlin(seed_fine, x, z, chunkX, chunkZ, 0, 0.02f, perlinScaleFine);
 
-        // perlinValTemp -= fineNoise;
+        perlinValTemp -= fineNoise;
         perlinValTemp = Mathf.Clamp((int)Mathf.Round(perlinValTemp * rainTempMapWidth), 0, rainTempMapWidth-1);
-        // perlinValRain -= fineNoise;
+        perlinValRain -= fineNoise;
         perlinValRain = Mathf.Clamp((int)Mathf.Round(perlinValRain * rainTempMapWidth), 0, rainTempMapWidth-1);
 
-        min = mins[(int)perlinValTemp,(int)perlinValRain];
-        max = maxs[(int)perlinValTemp,(int)perlinValRain];
+        min = 20; // replace with perlin elevation
+        max = min + 1 + devs[(int)perlinValTemp,(int)perlinValRain];
         index = inds[(int)perlinValTemp,(int)perlinValRain];
     }
 

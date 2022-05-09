@@ -15,9 +15,9 @@ RenderSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 9
   m_Fog: 1
-  m_FogColor: {r: 0, g: 0, b: 0, a: 1}
-  m_FogMode: 2
-  m_FogDensity: 0.02
+  m_FogColor: {r: 0.67058825, g: 0.67058825, b: 0.67058825, a: 1}
+  m_FogMode: 3
+  m_FogDensity: 0.002
   m_LinearFogStart: 10
   m_LinearFogEnd: 400
   m_AmbientSkyColor: {r: 0.19215687, g: 0.22352941, b: 0.3764706, a: 1}
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 2138677392}
-  m_IndirectSpecularColor: {r: 0.00009487162, g: 0.00009487162, b: 0.00009487162, a: 1}
+  m_IndirectSpecularColor: {r: 0.08115283, g: 0.103571996, b: 0.07764588, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -347,8 +347,7 @@ MonoBehaviour:
   biome_name: Tundra
   material: {fileID: 2100000, guid: f504f39893a712546895a41064be9e91, type: 2}
   rainTempArea: {fileID: 0}
-  min: 20
-  max: 24
+  dev: 5
   decorations: []
   density: 0
 --- !u!1 &99497271
@@ -813,7 +812,7 @@ MonoBehaviour:
   colorDay: {r: 1, g: 0.95686275, b: 0.8392157, a: 1}
   colorNight: {r: 0.8392157, g: 0.9380811, b: 1, a: 1}
   brightness_day: 0.8
-  brightness_night: 0.1
+  brightness_night: 0
   sunriseAngle: 30
 --- !u!1 &138718392
 GameObject:
@@ -3134,8 +3133,7 @@ MonoBehaviour:
   biome_name: Rainforest
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
-  min: 24
-  max: 34
+  dev: 6
   decorations: []
   density: 0
 --- !u!1 &501616926
@@ -5309,14 +5307,14 @@ PolygonCollider2D:
   m_AutoTiling: 0
   m_Points:
     m_Paths:
-    - - {x: 0.35240614, y: -0.120935656}
-      - {x: 0.26404548, y: -0.15658677}
-      - {x: 0.10267676, y: -0.17365578}
-      - {x: 0.082186304, y: -0.27659118}
-      - {x: 0.10836273, y: -0.36872035}
-      - {x: 0.08814494, y: -0.5072369}
+    - - {x: 0.36349976, y: -0.14189024}
+      - {x: 0.28006956, y: -0.18247186}
+      - {x: 0.14581856, y: -0.1970756}
+      - {x: 0.12409548, y: -0.2716607}
+      - {x: 0.15273717, y: -0.36872035}
+      - {x: 0.13375199, y: -0.5060043}
       - {x: 0.51266456, y: -0.5090462}
-      - {x: 0.5108554, y: -0.085531905}
+      - {x: 0.51208806, y: -0.10278861}
 --- !u!114 &784905340
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5332,8 +5330,7 @@ MonoBehaviour:
   biome_name: Desert
   material: {fileID: 2100000, guid: 15ad465d2c373064caae82ba46af56c1, type: 2}
   rainTempArea: {fileID: 0}
-  min: 20
-  max: 30
+  dev: 12
   decorations: []
   density: 0
 --- !u!1001 &800170184
@@ -5779,8 +5776,7 @@ MonoBehaviour:
   biome_name: Taigia
   material: {fileID: 2100000, guid: f504f39893a712546895a41064be9e91, type: 2}
   rainTempArea: {fileID: 0}
-  min: 24
-  max: 28
+  dev: 3
   decorations: []
   density: 0
 --- !u!1 &863355254
@@ -8417,8 +8413,7 @@ MonoBehaviour:
   biome_name: Plains
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
-  min: 20
-  max: 24
+  dev: 3
   decorations: []
   density: 0
 --- !u!1001 &1388565250
@@ -11606,8 +11601,7 @@ MonoBehaviour:
   biome_name: Savanah
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
-  min: 30
-  max: 40
+  dev: 3
   decorations: []
   density: 0
 --- !u!1 &1917293096
@@ -11696,8 +11690,7 @@ MonoBehaviour:
   biome_name: Forest
   material: {fileID: 2100000, guid: 06dfacf54ee8b1c45bbc81ff5a9c6ea3, type: 2}
   rainTempArea: {fileID: 0}
-  min: 24
-  max: 27
+  dev: 3
   decorations: []
   density: 0
 --- !u!1 &1918868534

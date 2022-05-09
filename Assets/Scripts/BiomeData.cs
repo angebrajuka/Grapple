@@ -16,7 +16,7 @@ public class BiomeData : MonoBehaviour
     public Material material;
     // public float scale
     [HideInInspector] public PolygonCollider2D rainTempArea;
-    public float min, max, dev;
+    public float dev;
     public Decor[] decorations;
     public float density;
 }
